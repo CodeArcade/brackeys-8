@@ -5,4 +5,6 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "buttonHover", url: "/assets/sprites/ui/buttonHover.png" },
   { name: "buttonLock", url: "/assets/sprites/ui/buttonLock.png" },
   { name: "buttonSound", url: "/assets/sounds/ui/button.mp3" },
+  { name: "emptyTile", url: "/assets/sprites/terrain/emptyTile.png" },
+  { name: "emptyTileHover", url: "/assets/sprites/terrain/emptyTileHover.png" },
 ];

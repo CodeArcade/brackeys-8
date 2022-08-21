@@ -1,5 +1,6 @@
 import { Sound } from "@pixi/sound";
 import { Sprite, Texture, Container, Text } from "pixi.js";
+
 export class Button extends Container {
   public buttonTexture: Texture;
   public hoverTexture: Texture;

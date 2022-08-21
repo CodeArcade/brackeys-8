@@ -7,9 +7,13 @@ import { Level as LevelSelection } from "../models/level-selection/level";
 import { Level } from "../models/level/level";
 import { Assets } from "@pixi/assets";
 import { assets } from "../assets";
+import { Tile } from "../models/game/tile";
+import { Type } from "../models/level/tile";
+import { EmptyTile } from "../models/game/emptyTile";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
+  private grid!: Array<Array<Tile | undefined>>;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -33,7 +37,29 @@ export class GameScene extends Container implements IScene {
     );
   }
 
-  private generateLevel(): void {}
+  private generateLevel(): void {
+    const tileSize = 220;
+    this.grid = [];
+
+    for (let y = 0; y < this.level.height; y++) {
+      this.grid.push([]);
+
+      for (let x = 0; x < this.level.width; x++) {
+        this.grid[y].push(undefined);
+      }
+    }
+
+    for (let y = 0; y < this.level.tiles.length; y++) {
+      for (let x = 0; x < this.level.tiles[y].length; x++) {
+        let tile: Tile;
+        if (this.level.tiles[y][x].type === Type.Empty) {
+          tile = new EmptyTile(this.level.tiles[y][x], tileSize, x, y);
+          this.grid[y][x] = tile;
+          this.addChild(tile);
+        }
+      }
+    }
+  }
 
   update(_delta: number): void {}
 }
