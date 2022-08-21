@@ -1,11 +1,12 @@
+import { Sound } from "@pixi/sound";
 import { Sprite, Texture, Container, Text } from "pixi.js";
-
 export class Button extends Container {
   public buttonTexture: Texture;
   public hoverTexture: Texture;
   public buttonSprite: Sprite;
   public contentSprite?: Sprite;
   public text?: Text;
+  public buttonSound: Sound;
 
   public onClick?: (sender?: Button) => void;
 
@@ -21,6 +22,7 @@ export class Button extends Container {
 
     this.buttonTexture = Texture.from(buttonTexture);
     this.hoverTexture = Texture.from(hoverTexture);
+    this.buttonSound = Sound.from("assets/sounds/ui/button.mp3");
     this.interactive = true;
     this.buttonMode = true;
     this.x = x;
@@ -48,6 +50,10 @@ export class Button extends Container {
 
   onButtonDown(): void {
     if (!this.onClick) return;
+
+    if (!this.buttonSound.isPlaying) {
+      this.buttonSound.play();
+    }
 
     this.onClick(this);
   }

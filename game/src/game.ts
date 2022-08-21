@@ -1,7 +1,6 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { Ticker } from "@pixi/ticker";
-import { Container } from "pixi.js";
 
 /**
  * https://www.pixijselementals.com/#the-manager-class
@@ -13,6 +12,10 @@ export class Game {
 
   private static app: Application;
   private static currentScene: IScene;
+
+  public static get title(): string {
+    return "GAME TITLE";
+  }
 
   public static get scaleFactor() {
     return {

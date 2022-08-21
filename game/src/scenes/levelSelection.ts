@@ -1,64 +1,17 @@
 import { Game, IScene } from "../game";
-import { Container, Text } from "pixi.js";
+import { Container, Sprite, Text, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { GameScene } from "./game";
 import { centerX } from "../utils/ui";
 import { MenuScene } from "./menu";
+import { Level } from "../models/level-selection/level";
+import { Storage, Keys } from "../utils/storage";
 
 export class LevelSelectionScene extends Container implements IScene {
-  private readonly levels = [
-    "Tutorial 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-    "Level 1",
-  ];
+  private levels!: Array<Level>;
 
   load(): void {
-    const title = new Text("GAME TITLE", { fontSize: 72 });
+    const title = new Text(Game.title, { fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;
     this.addChild(title);
@@ -73,6 +26,8 @@ export class LevelSelectionScene extends Container implements IScene {
     menuButton.y = 20;
     menuButton.onClick = () => Game.changeScene(new MenuScene());
     this.addChild(menuButton);
+
+    this.levels = Storage.get<Array<Level>>(Keys.UnlockedLevels) || [];
 
     this.addLevelSelection({
       yOffset: 40 + subTitle.y + subTitle.height,
@@ -94,7 +49,7 @@ export class LevelSelectionScene extends Container implements IScene {
     let buttonWidth = -Infinity;
 
     this.levels.forEach((level, index) => {
-      const button = new Button(0, 0, "button", "buttonHover", level);
+      const button = new Button(0, 0, "button", "buttonHover", level.id);
       if (buttonWidth === -Infinity) {
         buttonWidth = button.width;
         const totalWidth = levelsPerRow * (buttonWidth + padding) - padding;
@@ -113,9 +68,22 @@ export class LevelSelectionScene extends Container implements IScene {
       const yIndex = Math.floor(index / levelsPerRow);
       const xIndex = index - levelsPerRow * yIndex;
 
-      button.onClick = () => {
-        Game.changeScene(new GameScene(), level);
-      };
+      if (level.unlocked) {
+        button.onClick = () => {
+          Game.changeScene(new GameScene(), level.id);
+        };
+      } else {
+        button.interactive = false;
+        button.buttonMode = false;
+
+        button.contentSprite = new Sprite(Texture.from("buttonLock"));
+        button.contentSprite.scale.set(2);
+        button.contentSprite.x =
+          button.width / 2 - button.contentSprite.width / 2;
+        button.contentSprite.y =
+          button.height / 2 - button.contentSprite.height / 2;
+        button.addChild(button.contentSprite);
+      }
       button.x = xOffset + xIndex * button.width + padding * xIndex;
       button.y = yOffset + yIndex * button.height + padding * yIndex;
       this.addChild(button);

@@ -1,14 +1,32 @@
 import { Game, IScene } from "../game";
-import { Container, Graphics, Loader } from "pixi.js";
+import { Container, Graphics, Loader, Text } from "pixi.js";
 import { assets } from "../assets";
 import { MenuScene } from "./menu";
+import { centerX } from "../utils/ui";
+import { Level } from "../models/level-selection/level";
+import { Keys, Storage } from "../utils/storage";
 
 export class LoadScene extends Container implements IScene {
   private loaderBar!: Container;
   private loaderBarBoder!: Graphics;
   private loaderBarFill!: Graphics;
 
+  private levels: Array<Level> = [
+    { id: "Tutorial 1", unlocked: true },
+    { id: "Level 1" },
+  ];
+
   load(): void {
+    const title = new Text(Game.title, { fontSize: 72 });
+    title.x = centerX(title);
+    title.y = 20;
+    this.addChild(title);
+
+    const subTitle = new Text("Loading", { fontSize: 48 });
+    subTitle.x = centerX(subTitle);
+    subTitle.y = 20 + title.y + title.height;
+    this.addChild(subTitle);
+
     const loaderBarWidth = Game.width * 0.8;
 
     this.loaderBarFill = new Graphics();
@@ -27,6 +45,10 @@ export class LoadScene extends Container implements IScene {
     this.loaderBar.position.x = (Game.width - this.loaderBar.width) / 2;
     this.loaderBar.position.y = (Game.height - this.loaderBar.height) / 2;
     this.addChild(this.loaderBar);
+
+    if (!Storage.get<Array<Level>>(Keys.UnlockedLevels)) {
+      Storage.set(Keys.UnlockedLevels, this.levels);
+    }
 
     Loader.shared.add(assets);
 

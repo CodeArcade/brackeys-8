@@ -7,7 +7,7 @@ import { LevelSelectionScene } from "./levelSelection";
 
 export class MenuScene extends Container implements IScene {
   load(): void {
-    const title = new Text("GAME TITLE", { fontSize: 72 });
+    const title = new Text(Game.title, { fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;
     this.addChild(title);
