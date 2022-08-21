@@ -1,5 +1,5 @@
 export interface Tile {
-    id: number;
+    type: string;
     rotation: Rotation;
 }
 

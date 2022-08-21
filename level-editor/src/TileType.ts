@@ -1,8 +1,8 @@
 export enum TileType {
-  Empty,
-  Blocked,
-  Start,
-  End,
+  Empty = "Empty",
+  Blocked = "Blocked",
+  Start = "Start",
+  End = "End",
 }
 
 export enum Rotation {

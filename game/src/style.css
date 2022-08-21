@@ -9,4 +9,5 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+  aspect-ratio: 16 / 9 !important;
 }

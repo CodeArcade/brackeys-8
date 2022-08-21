@@ -18,6 +18,7 @@
     "baseUrl": "src",
     "paths": {
       "@models": ["models/index.ts"],
+      "@scenes": ["scenes/index.ts"],
     }
   },
   "include": ["src"]
