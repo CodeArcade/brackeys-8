@@ -3,13 +3,16 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { Tile as TileComponent } from "./Tile";
 import { Rotation, Tile, TileType } from "./TileType";
+import { Level } from "./Level";
 
 function App() {
+  const [levelName, setLevelName] = useState("");
   const [width, setWidth] = useState(1);
   const [height, setHeight] = useState(1);
   const [startFishes, setStartFishes] = useState(2);
   const [goalFishes, setGoalFishes] = useState(2);
   const [tiles, setTiles] = useState<Tile[][]>([]);
+  const [level, setLevel] = useState<Level>();
   const [selectedTile, setSelectedTile] = useState<{
     i: number;
     j: number;
@@ -30,6 +33,17 @@ function App() {
 
     setTiles(newTiles);
   }, [width, height]);
+
+  useEffect(() => {
+    setLevel({
+      name: levelName,
+      width,
+      height,
+      startFishes,
+      goalFishes,
+      tiles,
+    });
+  }, [tiles, width, height, levelName, startFishes, goalFishes]);
 
   return (
     <div className="App">
@@ -74,7 +88,28 @@ function App() {
             onChange={(event) => setGoalFishes(parseInt(event.target.value))}
           />
         </div>
+        <div className="label-group">
+          <label>Level Name:</label>
+          <input
+            type="text"
+            value={levelName}
+            onChange={(event) => setLevelName(event.target.value)}
+            placeholder="Level Name"
+          />
+        </div>
       </div>
+
+      {levelName.length > 0 && (
+        <a
+          className="export"
+          href={`data:text/json;charset=utf-8,${encodeURIComponent(
+            JSON.stringify(level, null, 2)
+          )}`}
+          download={levelName + ".json"}
+        >
+          EXPORT
+        </a>
+      )}
 
       <div className="grid">
         {tiles.map((row, i) => (
