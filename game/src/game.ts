@@ -37,7 +37,7 @@ export class Game {
   }
 
   private static baseDimensions = { width: Game.width, height: Game.height };
-  
+
   public static initialize(background: number): void {
     const app = new Application({
       resizeTo: window, // This line here handles the actual resize!
@@ -50,8 +50,6 @@ export class Game {
     Ticker.shared.add(this.update);
 
     Game.app = app;
-    console.warn(Game.baseDimensions)
-
 
     window.onresize = () => {
       const { x, y } = Game.scaleFactor;
@@ -60,8 +58,6 @@ export class Game {
   }
 
   public static changeScene(newScene: IScene, ...args: Array<any>): void {
-    console.warn("changing scene to:", newScene);
-
     if (Game.currentScene) {
       Game.app.stage.removeChild(Game.currentScene);
       Game.currentScene.destroy();
