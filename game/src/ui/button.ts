@@ -37,6 +37,10 @@ export class Button extends Container {
 
     if (sprite) {
       this.contentSprite = new Sprite(Texture.from(sprite));
+      this.contentSprite.scale.set(
+        this.buttonSprite.width / this.contentSprite.width,
+        this.buttonSprite.height / this.contentSprite.height
+      );
       this.addChild(this.contentSprite);
     }
 

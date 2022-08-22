@@ -13,4 +13,6 @@ export enum Rotation {
 export enum Type {
   Empty = "Empty",
   Blocked = "Blocked",
+  Start = "Start",
+  End = "End",
 }
