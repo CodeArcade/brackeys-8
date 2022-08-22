@@ -10,6 +10,7 @@ import { assets } from "../assets";
 import { Tile } from "../models/game/tile";
 import { Type } from "../models/level/tile";
 import { EmptyTile } from "../models/game/emptyTile";
+import { TileDimensions } from "models/game/tileDimensions";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -38,7 +39,12 @@ export class GameScene extends Container implements IScene {
   }
 
   private generateLevel(): void {
-    const tileSize = 220;
+    const tileDimensions: TileDimensions = {
+      imageWidth: 220,
+      imageHeight: 379,
+      tileWidth: 180,
+      tileHeight: 115,
+    }
     this.grid = [];
 
     for (let y = 0; y < this.level.height; y++) {
@@ -53,7 +59,7 @@ export class GameScene extends Container implements IScene {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         let tile: Tile;
         if (this.level.tiles[y][x].type === Type.Empty) {
-          tile = new EmptyTile(this.level.tiles[y][x], tileSize, x, y);
+          tile = new EmptyTile(this.level.tiles[y][x], tileDimensions, x, y);
           this.grid[y][x] = tile;
           this.addChild(tile);
         }
