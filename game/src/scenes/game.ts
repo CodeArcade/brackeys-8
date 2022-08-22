@@ -12,6 +12,8 @@ import { Type } from "../models/level/tile";
 import { EmptyTile } from "../models/game/emptyTile";
 import { TileDimensions } from "../models/game/tileDimensions";
 import { BlockedTile } from "../models/game/blockedTile";
+import { StartTile } from "../models/game/startTile";
+import { EndTile } from "../models/game/endTile";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -61,25 +63,44 @@ export class GameScene extends Container implements IScene {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         let tile: Tile;
         const type = this.level.tiles[y][x].type;
-        if (type === Type.Empty) {
-          tile = new EmptyTile(
-            this.level.tiles[y][x],
-            this.tileDimensions,
-            x,
-            y
-          );
-          this.grid[y][x] = tile;
-          this.addChild(tile);
-        } else if (type === Type.Blocked) {
+        if (type === Type.Blocked) {
           tile = new BlockedTile(
             this.level.tiles[y][x],
             this.tileDimensions,
             x,
             y
           );
-          this.grid[y][x] = tile;
-          this.addChild(tile);
+        } else if (type === Type.Start) {
+          tile = new StartTile(
+            this.level.tiles[y][x],
+            this.tileDimensions,
+            x,
+            y,
+            this.level.startFishes
+          );
+
+          tile.onClick = () => {
+            console.warn("start");
+          };
+        } else if (type === Type.End) {
+          tile = new EndTile(
+            this.level.tiles[y][x],
+            this.tileDimensions,
+            x,
+            y,
+            this.level.goalFishes
+          );
+        } else {
+          tile = new EmptyTile(
+            this.level.tiles[y][x],
+            this.tileDimensions,
+            x,
+            y
+          );
         }
+
+        this.grid[y][x] = tile;
+        this.addChild(tile);
       }
     }
   }

@@ -20,4 +20,8 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "blockedTile1", url: "/assets/sprites/terrain/empty_1.png" },
   { name: "blockedTile2", url: "/assets/sprites/terrain/empty_2.png" },
   { name: "blockedTile3", url: "/assets/sprites/terrain/empty_3.png" },
+  { name: "riverEnd0", url: "/assets/sprites/terrain/river-end_0.png" },
+  { name: "riverEnd1", url: "/assets/sprites/terrain/river-end_1.png" },
+  { name: "riverEnd2", url: "/assets/sprites/terrain/river-end_2.png" },
+  { name: "riverEnd3", url: "/assets/sprites/terrain/river-end_3.png" },
 ];
