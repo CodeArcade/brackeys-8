@@ -11,6 +11,7 @@ export abstract class Tile extends Container {
   gridX: number;
   gridY: number;
   border!: Graphics;
+  canBeRemoved: boolean = false;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -72,7 +73,7 @@ export abstract class Tile extends Container {
   }
 
   onButtonOver(): void {
-    this.sprite.tint = 0xff0000;
+    this.sprite.tint = this.canBeRemoved ? 0xff0000 : 0xdcdcdc;
   }
 
   onButtonOut(): void {

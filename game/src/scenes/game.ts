@@ -8,6 +8,7 @@ import { Level } from "../models/level/level";
 import { Assets } from "@pixi/assets";
 import { assets } from "../assets";
 import { Tile } from "../models/game/tile";
+import { Tile as BaseTile } from "../models/level/tile";
 import { Rotation, Type } from "../models/level/tile";
 import { EmptyTile } from "../models/game/emptyTile";
 import { TileDimensions } from "../models/game/tileDimensions";
@@ -66,64 +67,81 @@ export class GameScene extends Container implements IScene {
 
     for (let y = 0; y < this.level.tiles.length; y++) {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
-        let tile: Tile;
-        const type = this.level.tiles[y][x].type;
-        if (type === Type.Blocked) {
-          tile = new BlockedTile(
-            this.level.tiles[y][x],
-            this.tileDimensions,
-            x,
-            y
-          );
-        } else if (type === Type.Start) {
-          tile = new StartTile(
-            this.level.tiles[y][x],
-            this.tileDimensions,
-            x,
-            y,
-            this.level.startFishes
-          );
-
-          tile.onClick = () => {
-            this.startLevel();
-          };
-        } else if (type === Type.End) {
-          tile = new EndTile(
-            this.level.tiles[y][x],
-            this.tileDimensions,
-            x,
-            y,
-            this.level.goalFishes
-          );
-        } else {
-          tile = new EmptyTile(
-            this.level.tiles[y][x],
-            this.tileDimensions,
-            x,
-            y
-          );
-
-          tile.onClick = () => {
-            if (this.selectedPlacable) {
-              const placeable = first(
-                this.level.placeables.filter(
-                  (x) => x.type === this.selectedPlacable?.type
-                )
-              )!;
-
-              placeable.count -= 1;
-
-              if (placeable.count <= 0) {
-                this.selectedPlacable = undefined;
-              }
-            }
-          };
-        }
-
+        let tile: Tile = this.getTile(this.level.tiles[y][x].type, x, y);
         this.grid[y][x] = tile;
         this.addChild(tile);
       }
     }
+  }
+
+  private getTile(
+    type: string,
+    x: number,
+    y: number,
+    baseTile?: BaseTile
+  ): Tile {
+    if (!baseTile) {
+      baseTile = this.level.tiles[y][x];
+    }
+
+    let tile: Tile;
+    if (type === Type.Blocked) {
+      tile = new BlockedTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.Start) {
+      tile = new StartTile(
+        baseTile,
+        this.tileDimensions,
+        x,
+        y,
+        this.level.startFishes
+      );
+
+      tile.onClick = () => {
+        this.startLevel();
+      };
+    } else if (type === Type.End) {
+      tile = new EndTile(
+        baseTile,
+        this.tileDimensions,
+        x,
+        y,
+        this.level.goalFishes
+      );
+    } else {
+      tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
+
+      tile.onClick = () => {
+        if (this.selectedPlacable) {
+          const placeable = first(
+            this.level.placeables.filter(
+              (x) => x.type === this.selectedPlacable?.type
+            )
+          )!;
+
+          if (placeable.count < 1) return;
+
+          placeable.count -= 1;
+
+          this.removeChild(this.grid[y][x]!);
+          this.grid[y][x] = this.getTile(placeable.type, x, y, {
+            type: placeable.type,
+            rotation: placeable.rotation,
+          });
+          this.grid[y][x]!.canBeRemoved = true;
+          this.grid[y][x]!.interactive = true;
+          this.grid[y][x]!.buttonMode = true;
+          this.grid[y][x]!.onClick = () => {
+            this.removeChild(this.grid[y][x]!);
+            this.grid[y][x] = this.getTile(Type.Empty, x, y);
+            this.addChild(this.grid[y][x]!);
+            placeable.count += 1;
+          };
+          this.addChild(this.grid[y][x]!);
+        }
+      };
+    }
+
+    return tile;
   }
 
   private addTileSelection(): void {
@@ -135,7 +153,6 @@ export class GameScene extends Container implements IScene {
     this.level.placeables = [
       { type: Type.Blocked, count: 4, rotation: 0 },
       { type: Type.Start, count: 4, rotation: 0 },
-      { type: Type.Blocked, count: 4, rotation: 0 },
     ];
     this.level.placeables.forEach((placeable, index) => {
       const texture = Tile.getTextureToType(placeable.type) + "0";
@@ -169,11 +186,6 @@ export class GameScene extends Container implements IScene {
           this.selectedPlacable.rotation = Rotation.Bottom;
           this.selectedPlacable.texture = texture;
         }
-
-        // TODO: set selected tile as active in Hand
-        // reduce this counter by one if placed
-        // increase counter by on if removed
-        // can not be selected if count === 0
       };
 
       this.placableButtons.push(button);
@@ -192,11 +204,16 @@ export class GameScene extends Container implements IScene {
             this.selectedPlacable ? this.selectedPlacable.texture! : "emptyTile"
           );
         }
+
+        this.removeChild(cell!);
+        this.addChild(cell!);
       });
     });
 
     this.placableButtons.forEach((button) => {
       button.text!.text = `${button.tag.count}`;
+      button.buttonSprite.tint =
+        button.tag.type === this.selectedPlacable?.type ? 0xffeb2a : 0xffffff;
     });
   }
 

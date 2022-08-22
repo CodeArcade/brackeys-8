@@ -1,11 +1,9 @@
 import { Tile as BaseTile } from "@models";
-import { Sound } from "@pixi/sound";
 import { Texture } from "pixi.js";
 import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
 
 export class EmptyTile extends Tile {
-  public buttonSound: Sound;
   public normalTexture: Texture;
   public hoverTexture: Texture;
 
@@ -14,17 +12,8 @@ export class EmptyTile extends Tile {
 
     this.normalTexture = Texture.from("emptyTile");
     this.hoverTexture = Texture.from("emptyTile");
-    this.buttonSound = Sound.from("assets/sounds/ui/button.mp3");
 
     this.buttonMode = true;
-  }
-
-  onButtonDown(): void {
-    if (!this.buttonSound.isPlaying) {
-      this.buttonSound.play();
-    }
-
-    super.onButtonDown();
   }
 
   onButtonOver(): void {
