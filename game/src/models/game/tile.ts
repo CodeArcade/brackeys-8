@@ -2,6 +2,7 @@ import { Container, Graphics, Rectangle, Sprite, Texture } from "pixi.js";
 import { Tile as BaseTile } from "@models";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
+import TileHitbox from "./tileHitbox";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -52,12 +53,7 @@ export abstract class Tile extends Container {
     );
     this.sprite.interactive = false;
     this.sprite.buttonMode = false;
-    this.sprite.hitArea = new Rectangle(
-      0,
-      -size.tileHeight,
-      size.tileWidth - 20,
-      size.tileHeight - 20
-    );
+    this.sprite.hitArea = new TileHitbox(texture, size.tileWidth, size.tileHeight)
     this.sprite.anchor.set(0, 1);
 
     this.addChild(this.sprite);
