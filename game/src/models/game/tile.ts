@@ -1,4 +1,10 @@
-import { Container, Graphics, Sprite, Texture } from "pixi.js";
+import {
+  Container,
+  Graphics,
+  InteractionEvent,
+  Sprite,
+  Texture,
+} from "pixi.js";
 import { Tile as BaseTile } from "@models";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
@@ -88,6 +94,16 @@ export abstract class Tile extends Container {
         return "riverEnd";
       case Type.End:
         return "riverEnd";
+      case Type.Straight:
+        return "riverStraight";
+      case Type.Bendy:
+        return "riverBendy";
+      case Type.Cross:
+        return "riverCross";
+      case Type.T:
+        return "riverT";
+      case Type.Straight:
+        return "riverStraight";
       default:
         return "emptyTile";
     }

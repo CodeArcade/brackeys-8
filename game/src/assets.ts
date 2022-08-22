@@ -24,4 +24,32 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "riverEnd1", url: "/assets/sprites/terrain/river-end_1.png" },
   { name: "riverEnd2", url: "/assets/sprites/terrain/river-end_2.png" },
   { name: "riverEnd3", url: "/assets/sprites/terrain/river-end_3.png" },
+  { name: "riverBendy0", url: "/assets/sprites/terrain/river-bendy_0.png" },
+  { name: "riverBendy1", url: "/assets/sprites/terrain/river-bendy_1.png" },
+  { name: "riverBendy2", url: "/assets/sprites/terrain/river-bendy_2.png" },
+  { name: "riverBendy3", url: "/assets/sprites/terrain/river-bendy_3.png" },
+  { name: "riverCross0", url: "/assets/sprites/terrain/river-cross_0.png" },
+  { name: "riverCross1", url: "/assets/sprites/terrain/river-cross_1.png" },
+  { name: "riverCross2", url: "/assets/sprites/terrain/river-cross_2.png" },
+  { name: "riverCross3", url: "/assets/sprites/terrain/river-cross_3.png" },
+  {
+    name: "riverStraight0",
+    url: "/assets/sprites/terrain/river-straight_0.png",
+  },
+  {
+    name: "riverStraight1",
+    url: "/assets/sprites/terrain/river-straight_1.png",
+  },
+  {
+    name: "riverStraight2",
+    url: "/assets/sprites/terrain/river-straight_2.png",
+  },
+  {
+    name: "riverStraight3",
+    url: "/assets/sprites/terrain/river-straight_3.png",
+  },
+  { name: "riverT0", url: "/assets/sprites/terrain/river-t_0.png" },
+  { name: "riverT1", url: "/assets/sprites/terrain/river-t_1.png" },
+  { name: "riverT2", url: "/assets/sprites/terrain/river-t_2.png" },
+  { name: "riverT3", url: "/assets/sprites/terrain/river-t_3.png" },
 ];

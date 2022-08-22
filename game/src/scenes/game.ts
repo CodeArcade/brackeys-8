@@ -17,6 +17,7 @@ import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
 import { cloneDeep, first } from "lodash";
+import { StraightTile } from "../models/game/straightTile";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -129,6 +130,8 @@ export class GameScene extends Container implements IScene {
         y,
         this.level.goalFishes
       );
+    } else if (type === Type.Straight) {
+      tile = new StraightTile(baseTile, this.tileDimensions, x, y);
     } else {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
 
@@ -147,7 +150,7 @@ export class GameScene extends Container implements IScene {
           this.removeChild(this.grid[y][x]!);
           this.grid[y][x] = this.getTile(placeable.type, x, y, {
             type: placeable.type,
-            rotation: placeable.rotation,
+            rotation: this.selectedPlacable.rotation,
           });
           this.grid[y][x]!.canBeRemoved = true;
           this.grid[y][x]!.interactive = true;
@@ -171,20 +174,16 @@ export class GameScene extends Container implements IScene {
     const xOffset = 20;
     const padding = 20;
 
-    // TODO: entfernen
-    this.level.placeables = [
-      { type: Type.Blocked, count: 4, rotation: 0 },
-      { type: Type.Start, count: 4, rotation: 0 },
-    ];
     this.level.placeables.forEach((placeable, index) => {
-      const texture = Tile.getTextureToType(placeable.type) + "0";
+      placeable.rotation = 0;
+      const texture = Tile.getTextureToType(placeable.type);
       const button = new Button(
         0,
         0,
         "buttonSelectTile",
         "buttonSelectTileHover",
         `${placeable.count}`,
-        texture
+        texture + "0"
       );
 
       if (yOffset === -Infinity) {
@@ -201,8 +200,14 @@ export class GameScene extends Container implements IScene {
       button.onClick = () => {
         if (placeable.count < 1) return;
 
-        if (this.selectedPlacable && this.selectedPlacable === placeable) {
-          this.selectedPlacable = undefined;
+        if (
+          this.selectedPlacable &&
+          this.selectedPlacable.type === placeable.type
+        ) {
+          this.selectedPlacable.rotation += 1;
+          if (this.selectedPlacable.rotation > 3) {
+            this.selectedPlacable.rotation = 0;
+          }
         } else {
           this.selectedPlacable = cloneDeep(placeable);
           this.selectedPlacable.rotation = Rotation.Bottom;
@@ -223,7 +228,9 @@ export class GameScene extends Container implements IScene {
         if (cell?.baseTile.type === Type.Empty) {
           const empty = cell as EmptyTile;
           empty.hoverTexture = Texture.from(
-            this.selectedPlacable ? this.selectedPlacable.texture! : "emptyTile"
+            this.selectedPlacable
+              ? this.selectedPlacable.texture! + this.selectedPlacable!.rotation
+              : "emptyTile"
           );
         }
 

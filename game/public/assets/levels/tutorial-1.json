@@ -155,5 +155,6 @@
         "rotation": 0
       }
     ]
-  ]
+  ],
+  "placeables": [{ "type": "Straight", "count": 40 }]
 }

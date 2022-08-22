@@ -15,4 +15,8 @@ export enum Type {
   Blocked = "Blocked",
   Start = "Start",
   End = "End",
+  Straight = "Straight",
+  Bendy = "Bendy",
+  T = "T",
+  Cross = "Cross",
 }
