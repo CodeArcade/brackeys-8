@@ -48,7 +48,7 @@ export class GameScene extends Container implements IScene {
 
     Assets.load(assets.filter((x) => x.name === level)[0].url).then(
       (levelAsset) => {
-        this.level = levelAsset;
+        this.level = cloneDeep(levelAsset);
         this.generateLevel();
         this.addTileSelection();
       }
@@ -78,8 +78,6 @@ export class GameScene extends Container implements IScene {
         }
       }
     }
-
-    console.warn(this.level);
 
     for (let y = 0; y < this.level.height; y++) {
       this.grid.push([]);

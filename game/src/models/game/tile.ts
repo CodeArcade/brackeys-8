@@ -1,4 +1,4 @@
-import { Container, Graphics, Rectangle, Sprite, Texture } from "pixi.js";
+import { Container, Graphics, Sprite, Texture } from "pixi.js";
 import { Tile as BaseTile } from "@models";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
