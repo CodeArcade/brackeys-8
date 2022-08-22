@@ -3,6 +3,7 @@ import { Tile as BaseTile } from "@models";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
 import TileHitbox from "./tileHitbox";
+import { Type } from "../../models/level/tile";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -13,13 +14,7 @@ export abstract class Tile extends Container {
 
   public onClick?: (sender?: Tile) => void;
 
-  constructor(
-    tile: BaseTile,
-    texture: string,
-    size: TileDimensions,
-    x: number,
-    y: number
-  ) {
+  constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
     super();
 
     this.baseTile = tile;
@@ -42,6 +37,7 @@ export abstract class Tile extends Container {
     this.x = isometricCoordinates.x + 600;
     this.y = isometricCoordinates.y + 120;
 
+    let texture = Tile.getTextureToType(tile.type);
     if (texture !== "emptyTile") {
       texture = `${texture}${tile.rotation}`;
     }
@@ -53,7 +49,11 @@ export abstract class Tile extends Container {
     );
     this.sprite.interactive = false;
     this.sprite.buttonMode = false;
-    this.sprite.hitArea = new TileHitbox(texture, size.tileWidth, size.tileHeight)
+    this.sprite.hitArea = new TileHitbox(
+      texture,
+      size.tileWidth,
+      size.tileHeight
+    );
     this.sprite.anchor.set(0, 1);
 
     this.addChild(this.sprite);
@@ -77,5 +77,18 @@ export abstract class Tile extends Container {
 
   onButtonOut(): void {
     this.sprite.tint = 0xffffff;
+  }
+
+  public static getTextureToType(type: string): string {
+    switch (type) {
+      case Type.Blocked:
+        return "blockedTile";
+      case Type.Start:
+        return "riverEnd";
+      case Type.End:
+        return "riverEnd";
+      default:
+        return "emptyTile";
+    }
   }
 }

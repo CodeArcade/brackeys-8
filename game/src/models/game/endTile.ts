@@ -14,7 +14,7 @@ export class EndTile extends Tile {
     y: number,
     fish: number
   ) {
-    super(tile, "riverEnd", size, x, y);
+    super(tile, size, x, y);
     this.fish = fish;
 
     const text = new Text(`${this.fishReached}/${fish}`);

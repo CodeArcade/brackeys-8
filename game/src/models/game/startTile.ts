@@ -13,7 +13,7 @@ export class StartTile extends Tile {
     y: number,
     fish: number
   ) {
-    super(tile, "riverEnd", size, x, y);
+    super(tile, size, x, y);
 
     this.fish = fish;
     this.buttonMode = true;
@@ -27,7 +27,11 @@ export class StartTile extends Tile {
     this.addChild(text);
   }
 
-  onButtonOver(): void {}
+  onButtonOver(): void {
+    this.sprite.tint = 0xaadb1e;
+  }
 
-  onButtonOut(): void {}
+  onButtonOut(): void {
+    this.sprite.tint = 0xffffff;
+  }
 }

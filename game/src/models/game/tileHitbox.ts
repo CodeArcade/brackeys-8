@@ -8,7 +8,7 @@ export default class TileHitbox extends Sprite implements IHitArea {
     this.height = height;
   }
   contains(x: number, y: number): boolean {
-    y += 379 // image size is 379px
+    y += 379; // image size is 379px
     const tempPoint = { x: 0, y: 0 };
     this.worldTransform.applyInverse({ x, y }, tempPoint);
     const width = this._texture.orig.width;
@@ -35,7 +35,7 @@ export default class TileHitbox extends Sprite implements IHitArea {
     const res = baseTex.resolution;
 
     if (!baseTex.hitmap) {
-      if (!this.generateHitmap(baseTex, 255)) {
+      if (!this.generateHitmap(baseTex, 32)) {
         return false;
       }
     }
@@ -43,11 +43,9 @@ export default class TileHitbox extends Sprite implements IHitArea {
     const hitmap = baseTex.hitmap;
     let dx = Math.round((tempPoint.x - x1 + tex.frame.x) * res);
     let dy = Math.round((tempPoint.y - y1 + tex.frame.y) * res);
-            console.log(dx);
-        console.log(dy);
-    let ind = (dx + dy * baseTex.realWidth);
+    let ind = dx + dy * baseTex.realWidth;
     let ind1 = ind % 32;
-    let ind2 = ind / 32 | 0;
+    let ind2 = (ind / 32) | 0;
     return (hitmap[ind2] & (1 << ind1)) !== 0;
   }
 

@@ -1,4 +1,6 @@
-export interface Placeable {
-    id: number;
-    count: number;
+import { Tile } from "./tile";
+
+export interface Placeable extends Tile {
+  count: number;
+  texture?: string;
 }

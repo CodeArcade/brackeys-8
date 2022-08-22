@@ -1,5 +1,5 @@
 import { Game, IScene } from "../game";
-import { Container } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { MenuScene } from "./menu";
 import { Storage, Keys } from "../utils/storage";
@@ -8,25 +8,30 @@ import { Level } from "../models/level/level";
 import { Assets } from "@pixi/assets";
 import { assets } from "../assets";
 import { Tile } from "../models/game/tile";
-import { Type } from "../models/level/tile";
+import { Rotation, Type } from "../models/level/tile";
 import { EmptyTile } from "../models/game/emptyTile";
 import { TileDimensions } from "../models/game/tileDimensions";
 import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
+import { Placeable } from "@models";
+import { cloneDeep, first, last, toNumber } from "lodash";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
   private grid!: Array<Array<Tile | undefined>>;
+  private placableButtons!: Array<Button>;
   private readonly tileDimensions: TileDimensions = {
     imageWidth: 220,
     imageHeight: 379,
     tileWidth: 180,
     tileHeight: 115,
   };
+  private selectedPlacable?: Placeable;
 
   load(args: Array<any>): void {
     let level = args[0];
+    this.placableButtons = [];
 
     const menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
     menuButton.x = 20;
@@ -80,7 +85,7 @@ export class GameScene extends Container implements IScene {
           );
 
           tile.onClick = () => {
-            console.warn("start");
+            this.startLevel();
           };
         } else if (type === Type.End) {
           tile = new EndTile(
@@ -97,6 +102,22 @@ export class GameScene extends Container implements IScene {
             x,
             y
           );
+
+          tile.onClick = () => {
+            if (this.selectedPlacable) {
+              const placeable = first(
+                this.level.placeables.filter(
+                  (x) => x.type === this.selectedPlacable?.type
+                )
+              )!;
+
+              placeable.count -= 1;
+
+              if (placeable.count <= 0) {
+                this.selectedPlacable = undefined;
+              }
+            }
+          };
         }
 
         this.grid[y][x] = tile;
@@ -112,18 +133,19 @@ export class GameScene extends Container implements IScene {
 
     // TODO: entfernen
     this.level.placeables = [
-      { id: 1, count: 4 },
-      { id: 2, count: 3 },
-      { id: 3, count: 1 },
+      { type: Type.Blocked, count: 4, rotation: 0 },
+      { type: Type.Start, count: 4, rotation: 0 },
+      { type: Type.Blocked, count: 4, rotation: 0 },
     ];
     this.level.placeables.forEach((placeable, index) => {
+      const texture = Tile.getTextureToType(placeable.type) + "0";
       const button = new Button(
         0,
         0,
         "buttonSelectTile",
         "buttonSelectTileHover",
-        placeable.count.toString(),
-        "emptyTileHover"
+        `${placeable.count}`,
+        texture
       );
 
       if (yOffset === -Infinity) {
@@ -135,16 +157,56 @@ export class GameScene extends Container implements IScene {
 
       button.text!.y = padding;
 
+      button.tag = placeable;
+
       button.onClick = () => {
+        if (placeable.count < 1) return;
+
+        if (this.selectedPlacable && this.selectedPlacable === placeable) {
+          this.selectedPlacable = undefined;
+        } else {
+          this.selectedPlacable = cloneDeep(placeable);
+          this.selectedPlacable.rotation = Rotation.Bottom;
+          this.selectedPlacable.texture = texture;
+        }
+
         // TODO: set selected tile as active in Hand
         // reduce this counter by one if placed
         // increase counter by on if removed
         // can not be selected if count === 0
       };
 
+      this.placableButtons.push(button);
       this.addChild(button);
     });
   }
 
-  update(_delta: number): void {}
+  private updateUi(): void {
+    if (!this.grid) return;
+
+    this.grid.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell?.baseTile.type === Type.Empty) {
+          const empty = cell as EmptyTile;
+          empty.hoverTexture = Texture.from(
+            this.selectedPlacable ? this.selectedPlacable.texture! : "emptyTile"
+          );
+        }
+      });
+    });
+
+    this.placableButtons.forEach((button) => {
+      button.text!.text = `${button.tag.count}`;
+    });
+  }
+
+  private startLevel(): void {
+    // TODO: validate Tiles
+    // Move fish
+    // disable tile placement
+  }
+
+  update(_delta: number): void {
+    this.updateUi();
+  }
 }

@@ -8,6 +8,7 @@ export class Button extends Container {
   public contentSprite?: Sprite;
   public text?: Text;
   public buttonSound: Sound;
+  public tag: any;
 
   public onClick?: (sender?: Button) => void;
 

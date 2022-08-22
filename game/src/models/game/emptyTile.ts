@@ -10,10 +10,10 @@ export class EmptyTile extends Tile {
   public hoverTexture: Texture;
 
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
-    super(tile, "emptyTile", size, x, y);
+    super(tile, size, x, y);
 
     this.normalTexture = Texture.from("emptyTile");
-    this.hoverTexture = Texture.from("emptyTileHover");
+    this.hoverTexture = Texture.from("emptyTile");
     this.buttonSound = Sound.from("assets/sounds/ui/button.mp3");
 
     this.buttonMode = true;
@@ -29,9 +29,11 @@ export class EmptyTile extends Tile {
 
   onButtonOver(): void {
     this.sprite.texture = this.hoverTexture;
+    this.sprite.tint = 0xffeb2a;
   }
 
   onButtonOut(): void {
     this.sprite.texture = this.normalTexture;
+    this.sprite.tint = 0xffffff;
   }
 }
