@@ -31,6 +31,7 @@ export class GameScene extends Container implements IScene {
   };
   private selectedPlacable?: Placeable;
   private tileBorderRadius = 2;
+  private tileContextMenu!: Container;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -41,6 +42,8 @@ export class GameScene extends Container implements IScene {
     menuButton.y = 20;
     menuButton.onClick = () => Game.changeScene(new MenuScene());
     this.addChild(menuButton);
+
+    this.generateContextMenu();
 
     if (level === "continue") {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels);
@@ -54,6 +57,94 @@ export class GameScene extends Container implements IScene {
         this.addTileSelection();
       }
     );
+  }
+
+  private generateContextMenu(): void {
+    const padding = 20;
+    this.tileContextMenu = new Container();
+    this.tileContextMenu.y = -this.tileDimensions.tileHeight - padding * 2;
+    this.tileContextMenu.x = padding;
+
+    const rotateLeftButton = new Button(
+      0,
+      0,
+      "buttonSelectTile",
+      "buttonSelectTileHover",
+      "<-"
+    );
+    rotateLeftButton.scale.set(0.5);
+    rotateLeftButton.onClick = () => {
+      const tile = removeButton.tag as Tile;
+      let rotation = tile.baseTile.rotation;
+
+      rotation -= 1;
+      if (rotation < 0) {
+        rotation = 3;
+      }
+      tile.updateRotation(rotation);
+    };
+
+    const removeButton = new Button(
+      rotateLeftButton.x + rotateLeftButton.width + padding,
+      -padding - padding / 2,
+      "buttonSelectTile",
+      "buttonSelectTileHover",
+      "X"
+    );
+    removeButton.scale.set(0.5);
+    removeButton.onClick = () => {
+      const tile = removeButton.tag as Tile;
+      const placeable = first(
+        this.level.placeables.filter((x) => x.type === tile.baseTile.type)
+      )!;
+      this.removeChild(tile);
+      this.grid[tile.gridY][tile.gridX] = this.getTile(
+        Type.Empty,
+        tile.gridX,
+        tile.gridY
+      );
+      this.addChild(this.grid[tile.gridY][tile.gridX]!);
+      placeable.count += 1;
+    };
+
+    const hideButton = new Button(
+      rotateLeftButton.x + rotateLeftButton.width + padding,
+      padding + padding / 2,
+      "buttonSelectTile",
+      "buttonSelectTileHover",
+      "Hide"
+    );
+    hideButton.scale.set(0.5);
+    hideButton.onClick = () => {
+      const tile = removeButton.tag as Tile;
+      tile.canShowContextMenu = false;
+      tile.removeChild(tile.contextMenu!);
+      setTimeout(() => (tile.canShowContextMenu = true), 250);
+    };
+
+    const rotateRightButton = new Button(
+      removeButton.x + removeButton.width + padding,
+      0,
+      "buttonSelectTile",
+      "buttonSelectTileHover",
+      "->"
+    );
+    rotateRightButton.scale.set(0.5);
+    rotateRightButton.onClick = () => {
+      const tile = removeButton.tag as Tile;
+      let rotation = tile.baseTile.rotation;
+
+      rotation += 1;
+      if (rotation > 3) {
+        rotation = 0;
+      }
+      tile.updateRotation(rotation);
+    };
+
+    this.tileContextMenu.addChild(removeButton);
+    this.tileContextMenu.addChild(hideButton);
+    this.tileContextMenu.addChild(rotateLeftButton);
+    this.tileContextMenu.addChild(rotateRightButton);
   }
 
   private generateLevel(): void {
@@ -155,12 +246,8 @@ export class GameScene extends Container implements IScene {
           this.grid[y][x]!.canBeRemoved = true;
           this.grid[y][x]!.interactive = true;
           this.grid[y][x]!.buttonMode = true;
-          this.grid[y][x]!.onClick = () => {
-            this.removeChild(this.grid[y][x]!);
-            this.grid[y][x] = this.getTile(Type.Empty, x, y);
-            this.addChild(this.grid[y][x]!);
-            placeable.count += 1;
-          };
+          this.grid[y][x]!.contextMenu = this.tileContextMenu;
+          this.grid[y][x]!.showConextMenu();
           this.addChild(this.grid[y][x]!);
         }
       };
@@ -204,10 +291,7 @@ export class GameScene extends Container implements IScene {
           this.selectedPlacable &&
           this.selectedPlacable.type === placeable.type
         ) {
-          this.selectedPlacable.rotation += 1;
-          if (this.selectedPlacable.rotation > 3) {
-            this.selectedPlacable.rotation = 0;
-          }
+          this.selectedPlacable = undefined;
         } else {
           this.selectedPlacable = cloneDeep(placeable);
           this.selectedPlacable.rotation = Rotation.Bottom;

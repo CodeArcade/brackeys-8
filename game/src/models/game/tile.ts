@@ -1,15 +1,10 @@
-import {
-  Container,
-  Graphics,
-  InteractionEvent,
-  Sprite,
-  Texture,
-} from "pixi.js";
+import { Container, Graphics, Sprite, Texture } from "pixi.js";
 import { Tile as BaseTile } from "@models";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
 import TileHitbox from "./tileHitbox";
-import { Type } from "../../models/level/tile";
+import { Rotation, Type } from "../../models/level/tile";
+import { Button } from "ui/button";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -18,6 +13,8 @@ export abstract class Tile extends Container {
   gridY: number;
   border!: Graphics;
   canBeRemoved: boolean = false;
+  contextMenu?: Container;
+  canShowContextMenu: boolean = true;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -73,17 +70,37 @@ export abstract class Tile extends Container {
   }
 
   onButtonDown(): void {
-    if (!this.onClick) return;
+    this.showConextMenu();
 
+    if (!this.onClick) return;
     this.onClick(this);
   }
 
   onButtonOver(): void {
-    this.sprite.tint = this.canBeRemoved ? 0xff0000 : 0xdcdcdc;
+    this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
   }
 
   onButtonOut(): void {
     this.sprite.tint = 0xffffff;
+  }
+
+  public showConextMenu(): void {
+    if (this.contextMenu && this.canShowContextMenu) {
+      this.addChild(this.contextMenu);
+      this.contextMenu.children.forEach((child) => {
+        (child as Button).tag = this;
+      });
+    }
+  }
+
+  public updateRotation(rotation: Rotation) {
+    this.baseTile.rotation = rotation;
+
+    let texture = Tile.getTextureToType(this.baseTile.type);
+    if (texture !== "emptyTile") {
+      texture = `${texture}${rotation}`;
+    }
+    this.sprite.texture = Texture.from(texture);
   }
 
   public static getTextureToType(type: string): string {
