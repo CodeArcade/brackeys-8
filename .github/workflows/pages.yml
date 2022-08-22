@@ -33,8 +33,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Dependencies
+        working-directory: ./game
         run: npm ci
       - name: Build
+        working-directory: ./game
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v1
@@ -42,7 +44,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: './dist'
+          path: './gane/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
