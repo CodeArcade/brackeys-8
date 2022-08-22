@@ -4,4 +4,5 @@ export default {
   server: {
     port: 3000,
   },
+  base: "/brackeys-8/"
 };
