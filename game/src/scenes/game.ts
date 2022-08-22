@@ -16,7 +16,7 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, last, toNumber } from "lodash";
+import { cloneDeep, first } from "lodash";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -29,6 +29,7 @@ export class GameScene extends Container implements IScene {
     tileHeight: 115,
   };
   private selectedPlacable?: Placeable;
+  private tileBorderRadius = 2;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -56,6 +57,29 @@ export class GameScene extends Container implements IScene {
 
   private generateLevel(): void {
     this.grid = [];
+
+    this.level.height += this.tileBorderRadius * 2;
+    this.level.width += this.tileBorderRadius * 2;
+
+    for (let i = 0; i < this.tileBorderRadius; i++) {
+      this.level.tiles.unshift([]);
+      this.level.tiles.push([]);
+    }
+
+    for (let i = 0; i < this.level.height; i++) {
+      for (let k = 0; k < this.tileBorderRadius; k++) {
+        this.level.tiles[i].unshift({ rotation: 0, type: Type.Blocked });
+        this.level.tiles[i].push({ rotation: 0, type: Type.Blocked });
+      }
+
+      for (let j = 0; j < this.level.width; j++) {
+        if (!this.level.tiles[i][j]) {
+          this.level.tiles[i][j] = { rotation: 0, type: Type.Blocked };
+        }
+      }
+    }
+
+    console.warn(this.level);
 
     for (let y = 0; y < this.level.height; y++) {
       this.grid.push([]);
