@@ -18,6 +18,11 @@ function App() {
     j: number;
   } | null>(null);
 
+  const [straightTiles, setStraightTiles] = useState(0);
+  const [bendyTiles, setBendyTiles] = useState(0);
+  const [tTiles, setTTiles] = useState(0);
+  const [crossTiles, setCrossTiles] = useState(0);
+
   useEffect(() => {
     const newTiles: Tile[][] = [];
     for (let i = 0; i < height; i++) {
@@ -42,12 +47,39 @@ function App() {
       startFishes,
       goalFishes,
       tiles,
+      placeables: [
+        {
+          type: TileType.Straight,
+          count: straightTiles,
+        },
+        {
+          type: TileType.Bendy,
+          count: bendyTiles,
+        },
+        {
+          type: TileType.Cross,
+          count: crossTiles,
+        },
+        {
+          type: TileType.TCross,
+          count: tTiles,
+        },
+      ],
     });
   }, [tiles, width, height, levelName, startFishes, goalFishes]);
 
   return (
     <div className="App">
       <div className="dimensions">
+        <div className="label-group">
+          <label>Level Name:</label>
+          <input
+            type="text"
+            value={levelName}
+            onChange={(event) => setLevelName(event.target.value)}
+            placeholder="Level Name"
+          />
+        </div>
         <div className="label-group">
           <label>Width: </label>
           <input
@@ -89,12 +121,43 @@ function App() {
           />
         </div>
         <div className="label-group">
-          <label>Level Name:</label>
+          <label>Straight tiles: </label>
           <input
-            type="text"
-            value={levelName}
-            onChange={(event) => setLevelName(event.target.value)}
-            placeholder="Level Name"
+            type="number"
+            value={straightTiles}
+            min={0}
+            step={1}
+            onChange={(event) => setStraightTiles(parseInt(event.target.value))}
+          />
+        </div>
+        <div className="label-group">
+          <label>Bendy tiles: </label>
+          <input
+            type="number"
+            value={bendyTiles}
+            min={0}
+            step={1}
+            onChange={(event) => setBendyTiles(parseInt(event.target.value))}
+          />
+        </div>
+        <div className="label-group">
+          <label>T-cross tiles: </label>
+          <input
+            type="number"
+            value={tTiles}
+            min={0}
+            step={1}
+            onChange={(event) => setTTiles(parseInt(event.target.value))}
+          />
+        </div>
+        <div className="label-group">
+          <label>Cross tiles: </label>
+          <input
+            type="number"
+            value={crossTiles}
+            min={0}
+            step={1}
+            onChange={(event) => setCrossTiles(parseInt(event.target.value))}
           />
         </div>
       </div>

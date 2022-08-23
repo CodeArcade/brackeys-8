@@ -3,6 +3,10 @@ export enum TileType {
   Blocked = "Blocked",
   Start = "Start",
   End = "End",
+  Straight = "Straight",
+  Cross = "Cross",
+  TCross = "T",
+  Bendy = "Bendy"
 }
 
 export enum Rotation {

@@ -1,4 +1,4 @@
-import { Tile } from "./TileType";
+import { Tile, TileType } from "./TileType";
 
 export interface Level {
   name: string;
@@ -7,4 +7,8 @@ export interface Level {
   startFishes: number;
   goalFishes: number;
   tiles: Tile[][];
+  placeables: {
+    type: TileType,
+    count: number,
+  }[]
 }
