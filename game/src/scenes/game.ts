@@ -18,6 +18,9 @@ import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
 import { cloneDeep, first } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
+import { BendyTile } from "../models/game/bendyTile";
+import { TTile } from "../models/game/tTile";
+import { CrossTile } from "../models/game/crossTile";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -201,6 +204,14 @@ export class GameScene extends Container implements IScene {
     let tile: Tile;
     if (type === Type.Blocked) {
       tile = new BlockedTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.Straight) {
+      tile = new StraightTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.Bendy) {
+      tile = new BendyTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.T) {
+      tile = new TTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.Cross) {
+      tile = new CrossTile(baseTile, this.tileDimensions, x, y);
     } else if (type === Type.Start) {
       tile = new StartTile(
         baseTile,
@@ -221,8 +232,6 @@ export class GameScene extends Container implements IScene {
         y,
         this.level.goalFishes
       );
-    } else if (type === Type.Straight) {
-      tile = new StraightTile(baseTile, this.tileDimensions, x, y);
     } else {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
 
