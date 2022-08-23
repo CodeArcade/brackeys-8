@@ -225,6 +225,21 @@ function App() {
         <TileComponent
           tile={{
             rotation: Rotation.Left,
+            type: TileType.Blocked,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.Blocked,
+            };
+            setTiles(newTiles);
+          }}
+        />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
             type: TileType.Empty,
           }}
           selected={false}
@@ -240,14 +255,29 @@ function App() {
         <TileComponent
           tile={{
             rotation: Rotation.Left,
-            type: TileType.Blocked,
+            type: TileType.Fisher,
           }}
           selected={false}
           onClick={() => {
             const newTiles = [...tiles];
             newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
               rotation: Rotation.Left,
-              type: TileType.Blocked,
+              type: TileType.Fisher,
+            };
+            setTiles(newTiles);
+          }}
+        />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.Factory,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.Factory,
             };
             setTiles(newTiles);
           }}
