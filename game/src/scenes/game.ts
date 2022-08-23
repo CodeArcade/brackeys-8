@@ -97,6 +97,8 @@ export class GameScene extends Container implements IScene {
     );
     removeButton.scale.set(0.5);
     removeButton.onClick = () => {
+      this.canPlaceTiles = false;
+
       const tile = removeButton.tag as Tile;
       const placeable = first(
         this.level.placeables.filter((x) => x.type === tile.baseTile.type)
@@ -109,6 +111,8 @@ export class GameScene extends Container implements IScene {
       );
       this.addChild(this.grid[tile.gridY][tile.gridX]!);
       placeable.count += 1;
+
+      setTimeout(() => (this.canPlaceTiles = true), 50);
     };
 
     const hideButton = new Button(
@@ -238,7 +242,7 @@ export class GameScene extends Container implements IScene {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
 
       tile.onClick = () => {
-        if (this.selectedPlacable) {
+        if (this.selectedPlacable && this.canPlaceTiles) {
           const placeable = first(
             this.level.placeables.filter(
               (x) => x.type === this.selectedPlacable?.type
