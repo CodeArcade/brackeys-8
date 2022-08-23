@@ -17,6 +17,7 @@ export abstract class Tile extends Container {
   canShowContextMenu: boolean = true;
   isValid = true;
   riverEnds?: Array<Rotation>;
+  isActive = false;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -69,6 +70,9 @@ export abstract class Tile extends Container {
     this.on("pointerover", this.onButtonOver)
       .on("pointerout", this.onButtonOut)
       .on("pointerdown", this.onButtonDown);
+
+    window.addEventListener("keydown", this.keyRotateEvent.bind(this))
+    window.addEventListener("keydown", this.keyHideContextEvent.bind(this))
   }
 
   public get riverEndsWithRotation() {
@@ -105,6 +109,7 @@ export abstract class Tile extends Container {
 
   public showConextMenu(): void {
     if (this.contextMenu && this.canShowContextMenu) {
+      this.isActive = true;
       this.addChild(this.contextMenu);
       this.contextMenu.children.forEach((child) => {
         (child as Button).tag = this;
@@ -113,6 +118,7 @@ export abstract class Tile extends Container {
   }
 
   public hideContextMenu(): void {
+    this.isActive = false;
     if (this.contextMenu) {
       this.contextMenu.children.forEach((child) => {
         (child as Button).tag = undefined;
@@ -124,6 +130,34 @@ export abstract class Tile extends Container {
   public updateValiditiy(valid: boolean): void {
     this.isValid = valid;
     this.sprite.tint = valid ? 0xffffff : 0xff0000;
+  }
+
+  public keyHideContextEvent(event: KeyboardEvent) {
+    if (!this.isActive) return;
+    if (event.key === "Escape") {
+      this.hideContextMenu();
+    }
+  }
+
+  public keyRotateEvent(event: KeyboardEvent) {
+    if (!this.isActive) return;
+    let rotation = this.baseTile.rotation
+    switch (event.key) {
+      case "q":
+        rotation -= 1;
+        break;
+      case "e":
+        rotation += 1;
+        break;
+    }
+
+    if (rotation >= 4) {
+      rotation -= 4;
+    } else if (rotation < 0) {
+      rotation += 4
+    }
+
+    this.updateRotation(rotation)
   }
 
   public updateRotation(rotation: Rotation) {

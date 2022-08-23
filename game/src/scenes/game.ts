@@ -36,6 +36,8 @@ export class GameScene extends Container implements IScene {
   private tileBorderRadius = 2;
   private tileContextMenu!: Container;
   private canPlaceTiles: boolean = true;
+  private currentlySelected?: Tile;
+  private previousSelected?: Tile;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -316,6 +318,13 @@ export class GameScene extends Container implements IScene {
       };
     }
 
+    this.previousSelected = this.currentlySelected
+    this.currentlySelected = tile;
+
+    if (this.previousSelected) {
+      this.previousSelected.isActive = false;
+    }
+
     return tile;
   }
 
@@ -501,6 +510,7 @@ export class GameScene extends Container implements IScene {
     if (contextMenuButton) {
       const tile = contextMenuButton.tag;
       if (!tile) return;
+      tile.isActive = false;
       tile.removeChild(tile.contextMenu!);
     }
   }
