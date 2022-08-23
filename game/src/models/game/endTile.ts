@@ -2,7 +2,6 @@ import { Tile as BaseTile } from "@models";
 import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
 import { Text } from "pixi.js";
-import { Rotation } from "../level/tile";
 
 export class EndTile extends Tile {
   fish: number;
@@ -18,7 +17,6 @@ export class EndTile extends Tile {
     super(tile, size, x, y);
 
     this.fish = fish;
-    this.riverEnds = [Rotation.Left];
 
     const text = new Text(`${this.fishReached}/${fish}`);
     text.x = size.tileWidth / 2;

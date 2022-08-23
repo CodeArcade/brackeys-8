@@ -16,7 +16,7 @@ export abstract class Tile extends Container {
   contextMenu?: Container;
   canShowContextMenu: boolean = true;
   isValid = true;
-  protected riverEnds?: Array<Rotation>;
+  riverEnds?: Array<Rotation>;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -44,7 +44,7 @@ export abstract class Tile extends Container {
     this.y = isometricCoordinates.y + 120;
 
     let texture = Tile.getTextureToType(tile.type);
-    if (texture !== "emptyTile") {
+    if (texture !== "emptyTile" && texture !== "lake") {
       texture = `${texture}${tile.rotation}`;
     }
 
@@ -141,9 +141,9 @@ export abstract class Tile extends Container {
       case Type.Blocked:
         return "blockedTile";
       case Type.Start:
-        return "riverEnd";
+        return "lake";
       case Type.End:
-        return "riverEnd";
+        return "lake";
       case Type.Straight:
         return "riverStraight";
       case Type.Bendy:

@@ -52,4 +52,5 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "riverT1", url: "/assets/sprites/terrain/river-t_1.png" },
   { name: "riverT2", url: "/assets/sprites/terrain/river-t_2.png" },
   { name: "riverT3", url: "/assets/sprites/terrain/river-t_3.png" },
+  { name: "lake", url: "/assets/sprites/terrain/lake.png" },
 ];

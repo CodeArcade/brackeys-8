@@ -16,7 +16,7 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, isEmpty } from "lodash";
+import { cloneDeep, first, isEmpty, remove, xorWith } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";
@@ -111,6 +111,27 @@ export class GameScene extends Container implements IScene {
       );
       this.addChild(this.grid[tile.gridY][tile.gridX]!);
       placeable.count += 1;
+
+      const neighbours = this.getNeighbours(tile.gridX, tile.gridY);
+      neighbours.forEach((neighbour) => {
+        if (!("fish" in neighbour)) return;
+
+        if (!neighbour.riverEnds) neighbour.riverEnds = [];
+
+        let riverEnd: Rotation;
+        if (neighbour.gridX > tile.gridX) {
+          riverEnd = Rotation.Left;
+        } else if (neighbour.gridX < tile.gridX) {
+          riverEnd = Rotation.Right;
+        } else if (neighbour.gridY > tile.gridY) {
+          riverEnd = Rotation.Top;
+        } else {
+          riverEnd = Rotation.Bottom;
+        }
+
+        remove(neighbour.riverEnds, (x) => x === riverEnd);
+        this.setNewLakeTexture(tile.gridX, tile.gridY, neighbour);
+      });
 
       setTimeout(() => (this.canPlaceTiles = true), 50);
     };
@@ -270,11 +291,115 @@ export class GameScene extends Container implements IScene {
           this.grid[y][x]!.contextMenu = this.tileContextMenu;
           this.grid[y][x]!.showConextMenu();
           this.addChild(this.grid[y][x]!);
+
+          const neighbours = this.getNeighbours(x, y);
+          neighbours.forEach((neighbour) => {
+            if (!("fish" in neighbour)) return;
+
+            if (!neighbour.riverEnds) neighbour.riverEnds = [];
+
+            let riverEnd: Rotation;
+            if (neighbour.gridX > x) {
+              riverEnd = Rotation.Left;
+            } else if (neighbour.gridX < x) {
+              riverEnd = Rotation.Right;
+            } else if (neighbour.gridY > y) {
+              riverEnd = Rotation.Top;
+            } else {
+              riverEnd = Rotation.Bottom;
+            }
+
+            neighbour.riverEnds.push(riverEnd);
+            this.setNewLakeTexture(x, y, neighbour);
+          });
         }
       };
     }
 
     return tile;
+  }
+
+  private setNewLakeTexture(x: number, y: number, lake: Tile): void {
+    const riverEndsCount = lake.riverEnds!.length;
+    let texture = "";
+    switch (riverEndsCount) {
+      case 1:
+        texture = `riverEnd${lake.riverEnds![0]}`;
+        break;
+      case 2:
+      case 3:
+        const combinations = [
+          {
+            texture: "riverStraight0",
+            rotations: [Rotation.Left, Rotation.Right],
+          },
+          {
+            texture: "riverStraight1",
+            rotations: [Rotation.Top, Rotation.Bottom],
+          },
+          {
+            texture: "riverBendy3",
+            rotations: [Rotation.Top, Rotation.Left],
+          },
+          {
+            texture: "riverBendy0",
+            rotations: [Rotation.Right, Rotation.Top],
+          },
+          {
+            texture: "riverBendy1",
+            rotations: [Rotation.Right, Rotation.Bottom],
+          },
+          {
+            texture: "riverBendy2",
+            rotations: [Rotation.Bottom, Rotation.Left],
+          },
+          {
+            texture: "riverT0",
+            rotations: [Rotation.Left, Rotation.Top, Rotation.Right],
+          },
+          {
+            texture: "riverT1",
+            rotations: [Rotation.Top, Rotation.Right, Rotation.Bottom],
+          },
+          {
+            texture: "riverT2",
+            rotations: [Rotation.Right, Rotation.Bottom, Rotation.Left],
+          },
+          {
+            texture: "riverT3",
+            rotations: [Rotation.Bottom, Rotation.Left, Rotation.Top],
+          },
+        ];
+
+        combinations.forEach((c) => {
+          if (
+            lake.riverEnds!.every((x) => c.rotations.includes(x)) &&
+            lake.riverEnds!.length === c.rotations.length
+          ) {
+            texture = c.texture;
+          }
+        });
+        break;
+      case 4:
+        texture = "riverCross0";
+        break;
+      default:
+        texture = "lake";
+        break;
+    }
+
+    lake.sprite.texture = Texture.from(texture);
+  }
+
+  private getNeighbours(x: number, y: number): Array<Tile> {
+    const neighbours: Array<Tile> = [];
+
+    neighbours.push(this.grid[y - 1][x]!);
+    neighbours.push(this.grid[y + 1][x]!);
+    neighbours.push(this.grid[y][x + 1]!);
+    neighbours.push(this.grid[y][x - 1]!);
+
+    return neighbours;
   }
 
   private addTileSelection(): void {
