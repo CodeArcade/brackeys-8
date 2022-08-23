@@ -73,6 +73,7 @@ export abstract class Tile extends Container {
 
     window.addEventListener("keydown", this.keyRotateEvent.bind(this))
     window.addEventListener("keydown", this.keyHideContextEvent.bind(this))
+    window.addEventListener("wheel", this.wheelRotateEvent.bind(this))
   }
 
   public get riverEndsWithRotation() {
@@ -151,6 +152,15 @@ export abstract class Tile extends Container {
         break;
     }
 
+    this.updateRotationFromEvent(rotation)
+  }
+
+  public wheelRotateEvent(event: WheelEvent) {
+    if (!this.isActive) return;
+    this.updateRotationFromEvent(event.deltaY)
+  }
+
+  private updateRotationFromEvent(rotation: Rotation) {
     if (rotation >= 4) {
       rotation -= 4;
     } else if (rotation < 0) {
