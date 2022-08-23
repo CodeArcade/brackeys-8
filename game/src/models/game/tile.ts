@@ -15,6 +15,7 @@ export abstract class Tile extends Container {
   canBeRemoved: boolean = false;
   contextMenu?: Container;
   canShowContextMenu: boolean = true;
+  isValid = true;
   protected riverEnds?: Array<Rotation>;
 
   public onClick?: (sender?: Tile) => void;
@@ -92,10 +93,14 @@ export abstract class Tile extends Container {
 
   onButtonOver(): void {
     this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
+
+    if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   onButtonOut(): void {
     this.sprite.tint = 0xffffff;
+
+    if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   public showConextMenu(): void {
@@ -105,6 +110,11 @@ export abstract class Tile extends Container {
         (child as Button).tag = this;
       });
     }
+  }
+
+  public updateValiditiy(valid: boolean): void {
+    this.isValid = valid;
+    this.sprite.tint = valid ? 0xffffff : 0xff0000;
   }
 
   public updateRotation(rotation: Rotation) {

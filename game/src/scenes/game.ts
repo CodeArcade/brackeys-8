@@ -344,6 +344,7 @@ export class GameScene extends Container implements IScene {
   private startLevel(): void {
     this.togglePlacement(false);
 
+    this.resetValidity();
     console.warn(this.validateTiles());
 
     this.togglePlacement(true);
@@ -402,6 +403,7 @@ export class GameScene extends Container implements IScene {
       console.debug("no new river ends");
       if (result === undefined) {
         result = true;
+        tile.updateValiditiy(result);
       }
       return result;
     }
@@ -431,12 +433,14 @@ export class GameScene extends Container implements IScene {
       if (!nextTile) {
         console.debug("no next");
         result = false;
+        tile.updateValiditiy(result);
         return;
       }
 
       if (!nextTile.riverEndsWithRotation) {
         console.debug("no river ends");
         result = false;
+        tile.updateValiditiy(result);
         return;
       }
 
@@ -491,6 +495,14 @@ export class GameScene extends Container implements IScene {
     }
 
     return result;
+  }
+
+  private resetValidity(): void {
+    for (let y = 0; y < this.level.tiles.length; y++) {
+      for (let x = 0; x < this.level.tiles[y].length; x++) {
+        this.grid[y][x]?.updateValiditiy(true);
+      }
+    }
   }
 
   private findStartTile(): StartTile | undefined {
