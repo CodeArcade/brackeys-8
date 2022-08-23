@@ -15,6 +15,7 @@ export abstract class Tile extends Container {
   canBeRemoved: boolean = false;
   contextMenu?: Container;
   canShowContextMenu: boolean = true;
+  riverEnds?: Array<Rotation>;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -94,6 +95,7 @@ export abstract class Tile extends Container {
   }
 
   public updateRotation(rotation: Rotation) {
+    const rotationDelta = rotation - this.baseTile.rotation;
     this.baseTile.rotation = rotation;
 
     let texture = Tile.getTextureToType(this.baseTile.type);
@@ -101,6 +103,22 @@ export abstract class Tile extends Container {
       texture = `${texture}${rotation}`;
     }
     this.sprite.texture = Texture.from(texture);
+
+    if (this.riverEnds) {
+      this.riverEnds.forEach((end) => {
+        if (rotationDelta > 0) {
+          for (let i = 0; i < rotationDelta; i++) {
+            end += 1;
+            if (end > 3) end = 0;
+          }
+        } else if (rotationDelta < 0) {
+          for (let i = 0; i < rotationDelta * -1; i++) {
+            end -= 1;
+            if (end < 0) end = 3;
+          }
+        }
+      });
+    }
   }
 
   public static getTextureToType(type: string): string {
