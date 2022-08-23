@@ -369,12 +369,89 @@ export class GameScene extends Container implements IScene {
   }
 
   private validateTiles(): boolean {
-    // find start tile
-    // check if all river ends conect to a river end of neigbouring tile in direction of river end
-    // repeat for new found tiles
-    const startTile: StartTile = this.findStartTile()!;
+    let result: boolean = true;
 
-    return this.validateTile(startTile, []);
+    for (let y = 0; y < this.level.tiles.length; y++) {
+      for (let x = 0; x < this.level.tiles[y].length; x++) {
+        const tile = this.grid[y][x]!;
+        if (!tile.riverEndsWithRotation || isEmpty(tile.riverEndsWithRotation))
+          continue;
+
+        for (let end of tile.riverEndsWithRotation) {
+          let nextTile: Tile | undefined;
+          let xNextTile = tile.gridX;
+          let yNextTile = tile.gridY;
+
+          switch (end) {
+            case Rotation.Left:
+              xNextTile -= 1;
+              break;
+            case Rotation.Top:
+              yNextTile -= 1;
+              break;
+            case Rotation.Right:
+              xNextTile += 1;
+              break;
+            case Rotation.Bottom:
+              yNextTile += 1;
+              break;
+          }
+
+          nextTile = this.grid[yNextTile][xNextTile];
+
+          if (!nextTile) {
+            result = false;
+            tile.updateValiditiy(false);
+
+            continue;
+          }
+
+          if (!nextTile.riverEndsWithRotation) {
+            result = false;
+            tile.updateValiditiy(false);
+
+            continue;
+          }
+
+          let connected: boolean = false;
+          nextTile.riverEndsWithRotation.forEach((entry) => {
+            if (connected) return;
+
+            switch (entry) {
+              case Rotation.Left:
+                if (end === Rotation.Right) {
+                  connected = true;
+                }
+                break;
+              case Rotation.Top:
+                if (end === Rotation.Bottom) {
+                  connected = true;
+                }
+                break;
+              case Rotation.Right:
+                if (end === Rotation.Left) {
+                  connected = true;
+                }
+                break;
+              case Rotation.Bottom:
+                if (end === Rotation.Top) {
+                  connected = true;
+                }
+                break;
+            }
+          });
+
+          if (!connected) {
+            result = false;
+            tile.updateValiditiy(false);
+
+            continue;
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   private validateTile(
