@@ -3,6 +3,7 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "Level 1", url: "/assets/levels/1.json" },
   { name: "Tutorial 1", url: "/assets/levels/tutorial-1.json" },
   { name: "render test", url: "/assets/levels/render-test.json" },
+  { name: "Fisher 1", url: "/assets/levels/Fisher 1.json" },
   // UI
   { name: "button", url: "/assets/sprites/ui/button.png" },
   { name: "buttonHover", url: "/assets/sprites/ui/buttonHover.png" },
@@ -13,6 +14,8 @@ export const assets: Array<{ name: string; url: string }> = [
     name: "buttonSelectTileHover",
     url: "/assets/sprites/ui/buttonSelectTileHover.png",
   },
+  // SPRITES
+  { name: "fisher", url: "/assets/sprites/entities/fisher.png" },
   // TERRAIN
   { name: "emptyTile", url: "/assets/sprites/terrain/emptyTile.png" },
   { name: "emptyTileHover", url: "/assets/sprites/terrain/emptyTileHover.png" },

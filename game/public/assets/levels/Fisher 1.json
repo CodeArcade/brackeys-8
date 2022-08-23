@@ -90,15 +90,15 @@
         "fishers": [
           {
             "direction": 0,
-            "count": 1
+            "count": 3
           },
           {
             "direction": 1,
-            "count": 0
+            "count": 3
           },
           {
             "direction": 2,
-            "count": 0
+            "count": 3
           },
           {
             "direction": 3,
@@ -107,8 +107,26 @@
         ]
       },
       {
+        "type": "Fisher",
         "rotation": 0,
-        "type": "Empty"
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 0
+          },
+          {
+            "direction": 1,
+            "count": 3
+          },
+          {
+            "direction": 2,
+            "count": 3
+          },
+          {
+            "direction": 3,
+            "count": 3
+          }
+        ]
       }
     ],
     [

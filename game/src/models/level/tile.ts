@@ -19,4 +19,5 @@ export enum Type {
   Bendy = "Bendy",
   T = "T",
   Cross = "Cross",
+  Fisher = "Fisher",
 }

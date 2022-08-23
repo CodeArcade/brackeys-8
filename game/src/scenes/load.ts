@@ -12,7 +12,8 @@ export class LoadScene extends Container implements IScene {
   private loaderBarFill!: Graphics;
 
   private levels: Array<Level> = [
-    { id: 'render test', unlocked: true},
+    { id: "Fisher 1", unlocked: true },
+    { id: "render test", unlocked: true },
     { id: "Tutorial 1", unlocked: true },
     { id: "Level 1" },
   ];

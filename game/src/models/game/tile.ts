@@ -5,6 +5,7 @@ import { toScreenCoordinate } from "../../utils/isometricCoordinates";
 import TileHitbox from "./tileHitbox";
 import { Rotation, Type } from "../../models/level/tile";
 import { Button } from "ui/button";
+import { Vector2 } from "models/Vector2";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -40,8 +41,8 @@ export abstract class Tile extends Container {
       }
     );
 
-    this.x = isometricCoordinates.x + 600;
-    this.y = isometricCoordinates.y + 120;
+    this.x = isometricCoordinates.x + Tile.Constants.RenderOffset.x;
+    this.y = isometricCoordinates.y + Tile.Constants.RenderOffset.y;
 
     let texture = Tile.getTextureToType(tile.type);
     if (texture !== "emptyTile" && texture !== "lake") {
@@ -139,6 +140,7 @@ export abstract class Tile extends Container {
   public static getTextureToType(type: string): string {
     switch (type) {
       case Type.Blocked:
+      case Type.Fisher:
         return "blockedTile";
       case Type.Start:
         return "lake";
@@ -157,5 +159,21 @@ export abstract class Tile extends Container {
       default:
         return "emptyTile";
     }
+  }
+}
+
+export namespace Tile {
+  export namespace Constants {
+    export const TileDimensions: TileDimensions = {
+      imageWidth: 220,
+      imageHeight: 379,
+      tileWidth: 180,
+      tileHeight: 115,
+    };
+
+    export const RenderOffset: Vector2 = {
+      x: 600,
+      y: 120,
+    };
   }
 }

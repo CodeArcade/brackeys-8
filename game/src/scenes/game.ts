@@ -16,11 +16,12 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, isEmpty, remove, xorWith } from "lodash";
+import { cloneDeep, first, isEmpty, remove } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";
 import { CrossTile } from "../models/game/crossTile";
+import { FisherTile } from "../models/game/fisherTile";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -130,7 +131,7 @@ export class GameScene extends Container implements IScene {
         }
 
         remove(neighbour.riverEnds, (x) => x === riverEnd);
-        this.setNewLakeTexture(tile.gridX, tile.gridY, neighbour);
+        this.setNewLakeTexture(neighbour);
       });
 
       setTimeout(() => (this.canPlaceTiles = true), 50);
@@ -235,6 +236,16 @@ export class GameScene extends Container implements IScene {
       };
     } else if (type === Type.Straight) {
       tile = new StraightTile(baseTile, this.tileDimensions, x, y);
+    } else if (type === Type.Fisher) {
+      tile = new FisherTile(baseTile, this.tileDimensions, x, y);
+      (baseTile as any).fishers.forEach(
+        (f: { direction: Rotation; count: number }) => {
+          let { direction, count } = f;
+          if (count > 0) {
+            (tile as FisherTile).addFisher(direction, count);
+          }
+        }
+      );
     } else if (type === Type.Bendy) {
       tile = new BendyTile(baseTile, this.tileDimensions, x, y);
     } else if (type === Type.T) {
@@ -310,7 +321,7 @@ export class GameScene extends Container implements IScene {
             }
 
             neighbour.riverEnds.push(riverEnd);
-            this.setNewLakeTexture(x, y, neighbour);
+            this.setNewLakeTexture(neighbour);
           });
         }
       };
@@ -319,9 +330,10 @@ export class GameScene extends Container implements IScene {
     return tile;
   }
 
-  private setNewLakeTexture(x: number, y: number, lake: Tile): void {
+  private setNewLakeTexture(lake: Tile): void {
     const riverEndsCount = lake.riverEnds!.length;
     let texture = "";
+    // this switch is for runtime improvement ;)
     switch (riverEndsCount) {
       case 1:
         texture = `riverEnd${lake.riverEnds![0]}`;
@@ -475,6 +487,9 @@ export class GameScene extends Container implements IScene {
       button.text!.text = `${button.tag.count}`;
       button.buttonSprite.tint =
         button.tag.type === this.selectedPlacable?.type ? 0xffeb2a : 0xffffff;
+
+      this.removeChild(button);
+      this.addChild(button);
     });
   }
 
