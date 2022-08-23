@@ -2,6 +2,15 @@
   position: absolute;
   top: 10px;
   left: 10px;
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.label-group {
+  display: flex;
+  justify-content: space-between;
 }
 
 .export {
