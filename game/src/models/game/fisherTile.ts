@@ -5,13 +5,13 @@ import { Rotation } from "../level/tile";
 import { BlockedTile } from "./blockedTile";
 import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
+import { Vector2 } from "models/Vector2";
 
 export class FisherTile extends BlockedTile {
   fisher: Array<{
     rotation: Rotation;
     count: number;
     sprite: Sprite;
-    text: Text;
     caught: number;
   }> = [];
 
@@ -20,58 +20,77 @@ export class FisherTile extends BlockedTile {
   }
 
   addFisher(rotation: Rotation, count: number): void {
-    const sprite = new Sprite(
-      Texture.from(this.getRotateSpriteTexture(rotation))
-    );
+    for (let i = 0; i < count; i++) {
+      const sprite = new Sprite(
+        Texture.from(this.getRotateSpriteTexture(rotation))
+      );
 
-    switch (rotation) {
-      case Rotation.Left:
-        const coordinates = toScreenCoordinate(
-          { x: this.gridX, y: this.gridY },
-          {
-            x: Tile.Constants.TileDimensions.tileWidth,
-            y: Tile.Constants.TileDimensions.tileHeight,
-          }
-        );
-        sprite.x = coordinates.x + Tile.Constants.RenderOffset.x - this.x + 55;
-        sprite.y = coordinates.y - this.y - 25;
-        console.warn(`Tree: x: ${sprite.x} y: ${sprite.y}`);
-        console.warn(`Tile: x: ${this.x} y: ${this.y}`);
-        break;
-      case Rotation.Top:
-        sprite.anchor.set(-2.8, 1.9);
-        break;
-      case Rotation.Right:
-        sprite.anchor.set(-2.8, 1.5);
-        break;
-      case Rotation.Bottom:
-        sprite.anchor.set(-1.3, 1.5);
-        break;
+      const coordinates = this.getCoordinates();
+
+      switch (rotation) {
+        case Rotation.Left:
+          sprite.x =
+            coordinates.x +
+            Tile.Constants.RenderOffset.x -
+            this.x +
+            35 +
+            i * 20 + (count === 1 ? 20 : 0);
+          sprite.y = coordinates.y - this.y - 15 - i * 10 - (count === 1 ? 10 : 0);
+          break;
+        case Rotation.Top:
+          sprite.x =
+            coordinates.x +
+            Tile.Constants.RenderOffset.x -
+            this.x +
+            100 +
+            i * 20 + (count === 1 ? 20 : 0);
+          sprite.y = coordinates.y - this.y - 35 + i * 10 + (count === 1 ? 10 : 0);
+          break;
+        case Rotation.Right:
+          sprite.x =
+            coordinates.x +
+            Tile.Constants.RenderOffset.x -
+            this.x +
+            140 -
+            i * 20 - (count === 1 ? 20 : 0);
+          sprite.y = coordinates.y - this.y + i * 10 + (count === 1 ? 10 : 0);
+          break;
+        case Rotation.Bottom:
+          sprite.x =
+            coordinates.x +
+            Tile.Constants.RenderOffset.x -
+            this.x + 35 +
+            i * 20 + (count === 1 ? 20 : 0);
+          sprite.y = coordinates.y - this.y + i * 10 + (count === 1 ? 10 : 0);
+
+          break;
+      }
+      sprite.scale.set(0.2);
+
+      const loaderBarBoder = new Graphics();
+      loaderBarBoder.lineStyle(10, 0x0, 1);
+      loaderBarBoder.drawRect(0, 0, 50, 50);
+
+      const f = {
+        rotation,
+        sprite,
+        count,
+        caught: 0,
+      };
+      this.fisher.push(f);
+      this.addChild(sprite);
     }
-    sprite.scale.set(0.2);
+  }
 
-    const loaderBarBoder = new Graphics();
-    loaderBarBoder.lineStyle(10, 0x0, 1);
-    loaderBarBoder.drawRect(0, 0, 50, 50);
-
-    const text = new Text(`0/${count}`);
-    text.style.fontSize = 18;
-    text.style.fill = "#FFFFFF";
-    text.style.dropShadow = true;
-    text.style.dropShadowDistance = 2;
-    text.x = sprite.x;
-    text.y = sprite.y;
-
-    const f = {
-      rotation,
-      sprite,
-      count,
-      caught: 0,
-      text,
-    };
-    this.fisher.push(f);
-    this.addChild(text);
-    this.addChild(sprite);
+  private getCoordinates(): Vector2 {
+    const coordinates = toScreenCoordinate(
+      { x: this.gridX, y: this.gridY },
+      {
+        x: Tile.Constants.TileDimensions.tileWidth,
+        y: Tile.Constants.TileDimensions.tileHeight,
+      }
+    );
+    return coordinates;
   }
 
   private getRotateSpriteTexture(rotation: Rotation): string {
