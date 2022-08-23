@@ -15,7 +15,7 @@ export abstract class Tile extends Container {
   canBeRemoved: boolean = false;
   contextMenu?: Container;
   canShowContextMenu: boolean = true;
-  riverEnds?: Array<Rotation>;
+  protected riverEnds?: Array<Rotation>;
 
   public onClick?: (sender?: Tile) => void;
 
@@ -68,6 +68,19 @@ export abstract class Tile extends Container {
     this.on("pointerover", this.onButtonOver)
       .on("pointerout", this.onButtonOut)
       .on("pointerdown", this.onButtonDown);
+  }
+
+  public get riverEndsWithRotation() {
+    return this.riverEnds?.map(end => {
+      let rotation = end + this.rotation;
+      if (rotation >= 4) {
+        rotation -= 4
+      } else if (rotation < 0) {
+        rotation += 4
+      }
+
+      return rotation as Rotation
+    })
   }
 
   onButtonDown(): void {
