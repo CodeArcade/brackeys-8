@@ -71,16 +71,16 @@ export abstract class Tile extends Container {
   }
 
   public get riverEndsWithRotation() {
-    return this.riverEnds?.map(end => {
-      let rotation = end + this.rotation;
+    return this.riverEnds?.map((end) => {
+      let rotation = end + this.baseTile.rotation;
       if (rotation >= 4) {
-        rotation -= 4
+        rotation -= 4;
       } else if (rotation < 0) {
-        rotation += 4
+        rotation += 4;
       }
 
-      return rotation as Rotation
-    })
+      return rotation as Rotation;
+    });
   }
 
   onButtonDown(): void {
@@ -108,7 +108,6 @@ export abstract class Tile extends Container {
   }
 
   public updateRotation(rotation: Rotation) {
-    const rotationDelta = rotation - this.baseTile.rotation;
     this.baseTile.rotation = rotation;
 
     let texture = Tile.getTextureToType(this.baseTile.type);
@@ -116,22 +115,6 @@ export abstract class Tile extends Container {
       texture = `${texture}${rotation}`;
     }
     this.sprite.texture = Texture.from(texture);
-
-    if (this.riverEnds) {
-      this.riverEnds.forEach((end) => {
-        if (rotationDelta > 0) {
-          for (let i = 0; i < rotationDelta; i++) {
-            end += 1;
-            if (end > 3) end = 0;
-          }
-        } else if (rotationDelta < 0) {
-          for (let i = 0; i < rotationDelta * -1; i++) {
-            end -= 1;
-            if (end < 0) end = 3;
-          }
-        }
-      });
-    }
   }
 
   public static getTextureToType(type: string): string {
