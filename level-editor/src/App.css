@@ -66,10 +66,72 @@
   bottom: 10px;
 }
 
+.tile-fisher {
+  font-size: 25px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
 .tile-rotation {
   position: absolute;
   bottom: 10px;
   left: 10px;
   display: flex;
   gap: 1rem;
+}
+
+.fisher-inspector {
+  width: 300px;
+  padding: 10px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem
+}
+
+.fisher {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  gap: 2px;
+}
+
+.fisher-0, .fisher-2 {
+  flex-direction: column;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fisher-1, .fisher-3 {
+  flex-direction: row;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fisher-0 {
+  left: 2px;
+}
+
+.fisher-1 {
+  top: 2px;
+}
+
+.fisher-2 {
+  right: 2px;
+}
+
+.fisher-3 {
+  bottom: 2px;
+}
+
+.fisher-dot {
+  width: 3px;
+  height: 3px;
+  background: white;
 }

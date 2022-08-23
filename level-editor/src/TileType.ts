@@ -27,5 +27,5 @@ export interface FisherTile extends Tile {
   fishers?: {
     direction: Rotation;
     count: number;
-  };
+  }[];
 }

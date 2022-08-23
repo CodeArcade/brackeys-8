@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import { Tile as TileComponent } from "./Tile";
-import { Rotation, Tile, TileType } from "./TileType";
+import { FisherTile, Rotation, Tile, TileType } from "./TileType";
 import { Level } from "./Level";
 
 function App() {
@@ -259,11 +259,30 @@ function App() {
           }}
           selected={false}
           onClick={() => {
-            const newTiles = [...tiles];
-            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
-              rotation: Rotation.Left,
+            const fisherTile: FisherTile = {
               type: TileType.Fisher,
+              rotation: Rotation.Left,
+              fishers: [
+                {
+                  direction: Rotation.Left,
+                  count: 0,
+                },
+                {
+                  direction: Rotation.Top,
+                  count: 0,
+                },
+                {
+                  direction: Rotation.Right,
+                  count: 0,
+                },
+                {
+                  direction: Rotation.Bottom,
+                  count: 0,
+                },
+              ],
             };
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = fisherTile;
             setTiles(newTiles);
           }}
         />
@@ -314,6 +333,117 @@ function App() {
           ⥁
         </button>
       </div>
+
+      {selectedTile &&
+        tiles[selectedTile?.i || 0][selectedTile?.j || 0].type ===
+          TileType.Fisher && (
+          <div className="fisher-inspector">
+            <div className="label-group">
+              <label>Left: </label>
+              <input
+                type="number"
+                value={
+                  (
+                    tiles[selectedTile?.i || 0][
+                      selectedTile?.j || 0
+                    ] as FisherTile
+                  ).fishers?.[Rotation.Left]?.count
+                }
+                min={0}
+                step={1}
+                onChange={(event) => {
+                  const tile = tiles[selectedTile?.i || 0][
+                    selectedTile?.j || 0
+                  ] as FisherTile;
+                  tile.fishers![Rotation.Left].count = parseInt(
+                    event.target.value || "0"
+                  );
+                  const newTiles = [...tiles];
+                  newTiles[selectedTile?.i || 0][selectedTile?.j || 0] = tile;
+                  setTiles(newTiles);
+                }}
+              />
+            </div>
+            <div className="label-group">
+              <label>Top: </label>
+              <input
+                type="number"
+                value={
+                  (
+                    tiles[selectedTile?.i || 0][
+                      selectedTile?.j || 0
+                    ] as FisherTile
+                  ).fishers?.[Rotation.Top]?.count
+                }
+                min={0}
+                step={1}
+                onChange={(event) => {
+                  const tile = tiles[selectedTile?.i || 0][
+                    selectedTile?.j || 0
+                  ] as FisherTile;
+                  tile.fishers![Rotation.Top].count = parseInt(
+                    event.target.value || "0"
+                  );
+                  const newTiles = [...tiles];
+                  newTiles[selectedTile?.i || 0][selectedTile?.j || 0] = tile;
+                  setTiles(newTiles);
+                }}
+              />
+            </div>
+            <div className="label-group">
+              <label>Right: </label>
+              <input
+                type="number"
+                value={
+                  (
+                    tiles[selectedTile?.i || 0][
+                      selectedTile?.j || 0
+                    ] as FisherTile
+                  ).fishers?.[Rotation.Right]?.count
+                }
+                min={0}
+                step={1}
+                onChange={(event) => {
+                  const tile = tiles[selectedTile?.i || 0][
+                    selectedTile?.j || 0
+                  ] as FisherTile;
+                  tile.fishers![Rotation.Right].count = parseInt(
+                    event.target.value || "0"
+                  );
+                  const newTiles = [...tiles];
+                  newTiles[selectedTile?.i || 0][selectedTile?.j || 0] = tile;
+                  setTiles(newTiles);
+                }}
+              />
+            </div>
+            <div className="label-group">
+              <label>Bottom: </label>
+              <input
+                type="number"
+                value={
+                  (
+                    tiles[selectedTile?.i || 0][
+                      selectedTile?.j || 0
+                    ] as FisherTile
+                  ).fishers?.[Rotation.Bottom]?.count
+                }
+                min={0}
+                step={1}
+                onChange={(event) => {
+                  const tile = tiles[selectedTile?.i || 0][
+                    selectedTile?.j || 0
+                  ] as FisherTile;
+                  tile.fishers![Rotation.Bottom].count = parseInt(
+                    event.target.value || "0"
+                  );
+                  const newTiles = [...tiles];
+                  newTiles[selectedTile?.i || 0][selectedTile?.j || 0] = tile;
+                  setTiles(newTiles);
+                }}
+              />
+            </div>
+          </div>
+        )}
     </div>
   );
 }
