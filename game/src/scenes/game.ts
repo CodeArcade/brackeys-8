@@ -16,7 +16,7 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first } from "lodash";
+import { cloneDeep, first, isEmpty } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";
@@ -35,6 +35,7 @@ export class GameScene extends Container implements IScene {
   private selectedPlacable?: Placeable;
   private tileBorderRadius = 2;
   private tileContextMenu!: Container;
+  private canPlaceTiles: boolean = true;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -222,6 +223,7 @@ export class GameScene extends Container implements IScene {
       );
 
       tile.onClick = () => {
+        if (!this.canPlaceTiles) return;
         this.startLevel();
       };
     } else if (type === Type.End) {
@@ -294,7 +296,7 @@ export class GameScene extends Container implements IScene {
       button.tag = placeable;
 
       button.onClick = () => {
-        if (placeable.count < 1) return;
+        if (placeable.count < 1 || !this.canPlaceTiles) return;
 
         if (
           this.selectedPlacable &&
@@ -340,9 +342,167 @@ export class GameScene extends Container implements IScene {
   }
 
   private startLevel(): void {
-    // TODO: validate Tiles
-    // Move fish
-    // disable tile placement
+    this.togglePlacement(false);
+
+    console.warn(this.validateTiles());
+
+    this.togglePlacement(true);
+  }
+
+  private togglePlacement(enabled: boolean): void {
+    this.canPlaceTiles = enabled;
+    if (!enabled) {
+      this.selectedPlacable = undefined;
+
+      const contextMenuButton = first(this.tileContextMenu.children) as Button;
+      if (contextMenuButton) {
+        const tile = contextMenuButton.tag;
+        if (!tile) return;
+        tile.removeChild(tile.contextMenu!);
+      }
+    }
+  }
+
+  private validateTiles(): boolean {
+    // find start tile
+    // check if all river ends conect to a river end of neigbouring tile in direction of river end
+    // repeat for new found tiles
+    const startTile: StartTile = this.findStartTile()!;
+
+    return this.validateTile(startTile, []);
+  }
+
+  private validateTile(
+    tile: Tile,
+    checkedTiles: Array<Tile>,
+    riverEntry?: Rotation,
+    result?: boolean
+  ): boolean {
+    console.info("current", tile.gridX, tile.gridY);
+    if (!tile.riverEndsWithRotation) {
+      console.debug("no river ends with rotation");
+      return true;
+    }
+
+    const alreadyCheckedTile = first(checkedTiles.filter((x) => x === tile));
+    if (alreadyCheckedTile) {
+      console.debug("tile already checked");
+      return result!;
+    }
+
+    console.debug("all ends", tile.riverEndsWithRotation);
+    const riverEnds = tile.riverEndsWithRotation.filter(
+      (x) => x !== riverEntry
+    );
+    let nextTile: Tile | undefined;
+
+    console.debug("ends without entry", riverEnds);
+
+    if (isEmpty(riverEnds)) {
+      console.debug("no new river ends");
+      if (result === undefined) {
+        result = true;
+      }
+      return result;
+    }
+
+    riverEnds.forEach((end) => {
+      let xNextTile = tile.gridX;
+      let yNextTile = tile.gridY;
+
+      switch (end) {
+        case Rotation.Left:
+          xNextTile -= 1;
+          break;
+        case Rotation.Top:
+          yNextTile -= 1;
+          break;
+        case Rotation.Right:
+          xNextTile += 1;
+          break;
+        case Rotation.Bottom:
+          yNextTile += 1;
+          break;
+      }
+      console.debug("next tile", xNextTile, yNextTile);
+
+      nextTile = this.grid[yNextTile][xNextTile];
+
+      if (!nextTile) {
+        console.debug("no next");
+        result = false;
+        return;
+      }
+
+      if (!nextTile.riverEndsWithRotation) {
+        console.debug("no river ends");
+        result = false;
+        return;
+      }
+
+      let nextEntry: Rotation | undefined = undefined;
+      nextTile.riverEndsWithRotation.forEach((entry) => {
+        if (nextEntry) return;
+        console.debug("comparing entry and end", { end, entry });
+
+        switch (entry) {
+          case Rotation.Left:
+            if (end === Rotation.Right) {
+              nextEntry = entry;
+            }
+            break;
+          case Rotation.Top:
+            if (end === Rotation.Bottom) {
+              nextEntry = entry;
+            }
+            break;
+          case Rotation.Right:
+            if (end === Rotation.Left) {
+              nextEntry = entry;
+            }
+            break;
+          case Rotation.Bottom:
+            if (end === Rotation.Top) {
+              nextEntry = entry;
+            }
+            break;
+        }
+      });
+
+      if (nextEntry !== undefined) {
+        console.debug("next entry");
+        checkedTiles.push(tile);
+        result = this.validateTile(nextTile!, checkedTiles, nextEntry, result);
+      } else {
+        console.debug("no next entry");
+      }
+    });
+
+    console.info(
+      "ending recursion of",
+      tile.gridX,
+      tile.gridY,
+      "result",
+      result
+    );
+
+    if (result === undefined) {
+      result = false;
+    }
+
+    return result;
+  }
+
+  private findStartTile(): StartTile | undefined {
+    for (let y = 0; y < this.level.tiles.length; y++) {
+      for (let x = 0; x < this.level.tiles[y].length; x++) {
+        if (this.grid[y][x]?.baseTile.type === Type.Start) {
+          return this.grid[y][x] as StartTile;
+        }
+      }
+    }
+
+    return undefined;
   }
 
   update(_delta: number): void {

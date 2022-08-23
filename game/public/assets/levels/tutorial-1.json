@@ -157,9 +157,9 @@
     ]
   ],
   "placeables": [
-    { "type": "Straight", "count": 4 },
-    { "type": "Cross", "count": 3 },
-    { "type": "T", "count": 1 },
-    { "type": "Bendy", "count": 3 }
+    { "type": "Straight", "count": 40 },
+    { "type": "Cross", "count": 30 },
+    { "type": "T", "count": 10 },
+    { "type": "Bendy", "count": 30 }
   ]
 }
