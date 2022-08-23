@@ -126,8 +126,8 @@ export class GameScene extends Container implements IScene {
     hideButton.onClick = () => {
       const tile = removeButton.tag as Tile;
       tile.canShowContextMenu = false;
-      tile.removeChild(tile.contextMenu!);
-      setTimeout(() => (tile.canShowContextMenu = true), 250);
+      this.hideContextMenu();
+      setTimeout(() => (tile.canShowContextMenu = true), 50);
     };
 
     const rotateRightButton = new Button(
@@ -209,6 +209,9 @@ export class GameScene extends Container implements IScene {
     let tile: Tile;
     if (type === Type.Blocked) {
       tile = new BlockedTile(baseTile, this.tileDimensions, x, y);
+      tile.onClick = () => {
+        this.hideContextMenu();
+      };
     } else if (type === Type.Straight) {
       tile = new StraightTile(baseTile, this.tileDimensions, x, y);
     } else if (type === Type.Bendy) {
@@ -238,6 +241,9 @@ export class GameScene extends Container implements IScene {
         y,
         this.level.goalFishes
       );
+      tile.onClick = () => {
+        this.hideContextMenu();
+      };
     } else {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
 
@@ -300,6 +306,8 @@ export class GameScene extends Container implements IScene {
       button.tag = placeable;
 
       button.onClick = () => {
+        this.hideContextMenu();
+
         if (placeable.count < 1 || !this.canPlaceTiles) return;
 
         if (
@@ -359,12 +367,16 @@ export class GameScene extends Container implements IScene {
     if (!enabled) {
       this.selectedPlacable = undefined;
 
-      const contextMenuButton = first(this.tileContextMenu.children) as Button;
-      if (contextMenuButton) {
-        const tile = contextMenuButton.tag;
-        if (!tile) return;
-        tile.removeChild(tile.contextMenu!);
-      }
+      this.hideContextMenu();
+    }
+  }
+
+  private hideContextMenu(): void {
+    const contextMenuButton = first(this.tileContextMenu.children) as Button;
+    if (contextMenuButton) {
+      const tile = contextMenuButton.tag;
+      if (!tile) return;
+      tile.removeChild(tile.contextMenu!);
     }
   }
 

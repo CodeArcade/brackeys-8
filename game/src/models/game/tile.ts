@@ -112,6 +112,15 @@ export abstract class Tile extends Container {
     }
   }
 
+  public hideContextMenu(): void {
+    if (this.contextMenu) {
+      this.contextMenu.children.forEach((child) => {
+        (child as Button).tag = undefined;
+      });
+      this.removeChild(this.contextMenu);
+    }
+  }
+
   public updateValiditiy(valid: boolean): void {
     this.isValid = valid;
     this.sprite.tint = valid ? 0xffffff : 0xff0000;
