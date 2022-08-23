@@ -72,9 +72,9 @@ export abstract class Tile extends Container {
       .on("pointerout", this.onButtonOut)
       .on("pointerdown", this.onButtonDown);
 
-    window.addEventListener("keydown", this.keyRotateEvent.bind(this))
-    window.addEventListener("keydown", this.keyHideContextEvent.bind(this))
-    window.addEventListener("wheel", this.wheelRotateEvent.bind(this))
+    window.addEventListener("keydown", this.keyRotateEvent.bind(this));
+    window.addEventListener("keydown", this.keyHideContextEvent.bind(this));
+    window.addEventListener("wheel", this.wheelRotateEvent.bind(this));
   }
 
   public get riverEndsWithRotation() {
@@ -143,7 +143,7 @@ export abstract class Tile extends Container {
 
   public keyRotateEvent(event: KeyboardEvent) {
     if (!this.isActive) return;
-    let rotation = this.baseTile.rotation
+    let rotation = this.baseTile.rotation;
     switch (event.key) {
       case "q":
         rotation -= 1;
@@ -153,22 +153,25 @@ export abstract class Tile extends Container {
         break;
     }
 
-    this.updateRotationFromEvent(rotation)
+    this.updateRotationFromEvent(rotation);
   }
 
   public wheelRotateEvent(event: WheelEvent) {
     if (!this.isActive) return;
-    this.updateRotationFromEvent(event.deltaY)
+
+    this.updateRotationFromEvent(
+      (event.deltaY > 0 ? 1 : -1) + this.baseTile.rotation
+    );
   }
 
   private updateRotationFromEvent(rotation: Rotation) {
     if (rotation >= 4) {
       rotation -= 4;
     } else if (rotation < 0) {
-      rotation += 4
+      rotation += 4;
     }
 
-    this.updateRotation(rotation)
+    this.updateRotation(rotation);
   }
 
   public updateRotation(rotation: Rotation) {

@@ -325,11 +325,15 @@ export class GameScene extends Container implements IScene {
             neighbour.riverEnds.push(riverEnd);
             this.setNewLakeTexture(neighbour);
           });
+
+          if (this.previousSelected) {
+            this.previousSelected.isActive = false;
+          }
         }
       };
     }
 
-    this.previousSelected = this.currentlySelected
+    this.previousSelected = this.currentlySelected;
     this.currentlySelected = tile;
 
     if (this.previousSelected) {
