@@ -472,14 +472,14 @@ export class GameScene extends Container implements IScene {
 
     this.grid.forEach((row) => {
       row.forEach((cell) => {
-        if (cell?.baseTile.type === Type.Empty) {
-          const empty = cell as EmptyTile;
-          empty.hoverTexture = Texture.from(
-            this.selectedPlacable
-              ? this.selectedPlacable.texture! + this.selectedPlacable!.rotation
-              : "emptyTile"
-          );
-        }
+        // if (cell?.baseTile.type === Type.Empty) {
+        //   const empty = cell as EmptyTile;
+        //   // empty.hoverTexture = Texture.from(
+        //   //   this.selectedPlacable
+        //   //     ? this.selectedPlacable.texture! + this.selectedPlacable!.rotation
+        //   //     : "emptyTile"
+        //   // );
+        // }
 
         this.removeChild(cell!);
         this.addChild(cell!);

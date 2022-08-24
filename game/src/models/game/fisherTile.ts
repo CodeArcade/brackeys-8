@@ -15,6 +15,8 @@ export class FisherTile extends BlockedTile {
     caught: number;
   }> = [];
 
+  blocking = true;
+
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
     super(tile, size, x, y);
   }
@@ -66,10 +68,6 @@ export class FisherTile extends BlockedTile {
           break;
       }
       sprite.scale.set(0.2);
-
-      const loaderBarBoder = new Graphics();
-      loaderBarBoder.lineStyle(10, 0x0, 1);
-      loaderBarBoder.drawRect(0, 0, 50, 50);
 
       const f = {
         rotation,

@@ -19,6 +19,7 @@ export abstract class Tile extends Container {
   isValid = true;
   riverEnds?: Array<Rotation>;
   isActive = false;
+  blocking = false;
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;
@@ -116,7 +117,7 @@ export abstract class Tile extends Container {
   onButtonOver(): void {
     // this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
     // this.x -= 10 * 0.5
-    if (this.canBeRemoved) {
+    if (!this.blocking) {
       this.y -= 7 * 0.91
       this.isActive = true;
     }
@@ -127,7 +128,7 @@ export abstract class Tile extends Container {
   onButtonOut(): void {
     // this.sprite.tint = 0xffffff;
     // this.x += 10 * 0.5
-    if (this.canBeRemoved) {
+    if (!this.blocking) {
       this.y += 7 * 0.91
       this.isActive = false;
     }
