@@ -38,7 +38,6 @@ export class GameScene extends Container implements IScene {
   private tileContextMenu!: Container;
   private canPlaceTiles: boolean = true;
   private currentlySelected?: Tile;
-  private previousSelected?: Tile;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -325,20 +324,18 @@ export class GameScene extends Container implements IScene {
             neighbour.riverEnds.push(riverEnd);
             this.setNewLakeTexture(neighbour);
           });
-
-          if (this.previousSelected) {
-            this.previousSelected.isActive = false;
-          }
         }
       };
     }
 
-    this.previousSelected = this.currentlySelected;
     this.currentlySelected = tile;
 
-    if (this.previousSelected) {
-      this.previousSelected.isActive = false;
-    }
+    tile.onIsActive = (tile: Tile | undefined) => {
+      this.resetIsActive();
+      if (tile) {
+        tile.isActive = true;
+      }
+    };
 
     return tile;
   }
@@ -759,6 +756,14 @@ export class GameScene extends Container implements IScene {
     for (let y = 0; y < this.level.tiles.length; y++) {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         this.grid[y][x]?.updateValiditiy(true);
+      }
+    }
+  }
+
+  private resetIsActive(): void {
+    for (let y = 0; y < this.level.tiles.length; y++) {
+      for (let x = 0; x < this.level.tiles[y].length; x++) {
+        this.grid[y][x]!.isActive = false;
       }
     }
   }

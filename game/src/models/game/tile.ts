@@ -20,7 +20,8 @@ export abstract class Tile extends Container {
   riverEnds?: Array<Rotation>;
   isActive = false;
 
-  public onClick?: (sender?: Tile) => void;
+  onClick?: (sender?: Tile) => void;
+  onIsActive?: (sender?: Tile) => void;
 
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
     super();
@@ -112,6 +113,9 @@ export abstract class Tile extends Container {
   public showConextMenu(): void {
     if (this.contextMenu && this.canShowContextMenu) {
       this.isActive = true;
+      if (!!this.onIsActive) {
+        this.onIsActive(this);
+      }
       this.addChild(this.contextMenu);
       this.contextMenu.children.forEach((child) => {
         (child as Button).tag = this;
