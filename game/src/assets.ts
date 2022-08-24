@@ -14,9 +14,10 @@ export const assets: Array<{ name: string; url: string }> = [
     name: "buttonSelectTileHover",
     url: "/assets/sprites/ui/buttonSelectTileHover.png",
   },
-  // SPRITES
+  //#region SPRITES
   { name: "fisher", url: "/assets/sprites/entities/fisher.png" },
-  // TERRAIN
+  //#endregion
+  //#region TERRAIN
   { name: "emptyTile", url: "/assets/sprites/terrain/emptyTile.png" },
   { name: "emptyTileHover", url: "/assets/sprites/terrain/emptyTileHover.png" },
   { name: "blockedTile0", url: "/assets/sprites/terrain/empty_0.png" },
@@ -56,4 +57,36 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "riverT2", url: "/assets/sprites/terrain/river-t_2.png" },
   { name: "riverT3", url: "/assets/sprites/terrain/river-t_3.png" },
   { name: "lake", url: "/assets/sprites/terrain/lake.png" },
+  //#endregion
+  //#region decoration
+  { name: "redFlower0", url: "/assets/sprites/decoration/redFlower0.png"},
+  { name: "redFlower1", url: "/assets/sprites/decoration/redFlower1.png"},
+  { name: "redFlower2", url: "/assets/sprites/decoration/redFlower2.png"},
+  { name: "redFlower3", url: "/assets/sprites/decoration/redFlower3.png"},
+  { name: "shrub1-0", url: "/assets/sprites/decoration/shrub1-0.png"},
+  { name: "shrub1-1", url: "/assets/sprites/decoration/shrub1-1.png"},
+  { name: "shrub1-2", url: "/assets/sprites/decoration/shrub1-2.png"},
+  { name: "shrub1-3", url: "/assets/sprites/decoration/shrub1-3.png"},
+  { name: "grass1-0", url: "/assets/sprites/decoration/grass1-0.png"},
+  { name: "grass1-1", url: "/assets/sprites/decoration/grass1-1.png"},
+  { name: "grass1-2", url: "/assets/sprites/decoration/grass1-2.png"},
+  { name: "grass1-3", url: "/assets/sprites/decoration/grass1-3.png"},
+  { name: "grass2-0", url: "/assets/sprites/decoration/grass2-0.png"},
+  { name: "grass2-1", url: "/assets/sprites/decoration/grass2-1.png"},
+  { name: "grass2-2", url: "/assets/sprites/decoration/grass2-2.png"},
+  { name: "grass2-3", url: "/assets/sprites/decoration/grass2-3.png"},
+  { name: "stoneFlat0", url: "/assets/sprites/decoration/stoneFlat0.png"},
+  { name: "stoneFlat1", url: "/assets/sprites/decoration/stoneFlat1.png"},
+  { name: "stoneFlat2", url: "/assets/sprites/decoration/stoneFlat2.png"},
+  { name: "stoneFlat3", url: "/assets/sprites/decoration/stoneFlat3.png"},
+  { name: "yellowMushroom0", url: "/assets/sprites/decoration/yellowMushroom0.png"},
+  { name: "yellowMushroom1", url: "/assets/sprites/decoration/yellowMushroom1.png"},
+  { name: "yellowMushroom2", url: "/assets/sprites/decoration/yellowMushroom2.png"},
+  { name: "yellowMushroom3", url: "/assets/sprites/decoration/yellowMushroom3.png"},
+  { name: "pebble0", url: "/assets/sprites/decoration/pebble0.png"},
+  { name: "pebble1", url: "/assets/sprites/decoration/pebble1.png"},
+  { name: "pebble2", url: "/assets/sprites/decoration/pebble2.png"},
+  { name: "pebble3", url: "/assets/sprites/decoration/pebble3.png"},
+  
+  //#endregion
 ];

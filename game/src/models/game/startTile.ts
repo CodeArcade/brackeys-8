@@ -6,6 +6,7 @@ import { Rotation } from "../level/tile";
 
 export class StartTile extends Tile {
   fish: number;
+  blocking = true;
 
   constructor(
     tile: BaseTile,
