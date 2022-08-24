@@ -330,13 +330,6 @@ export class GameScene extends Container implements IScene {
 
     this.currentlySelected = tile;
 
-    tile.onIsActive = (tile: Tile | undefined) => {
-      this.resetIsActive();
-      if (tile) {
-        tile.isActive = true;
-      }
-    };
-
     return tile;
   }
 
@@ -526,7 +519,7 @@ export class GameScene extends Container implements IScene {
     if (contextMenuButton) {
       const tile = contextMenuButton.tag;
       if (!tile) return;
-      tile.isActive = false;
+      // tile.isActive = false;
       tile.removeChild(tile.contextMenu!);
     }
   }

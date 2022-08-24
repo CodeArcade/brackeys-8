@@ -91,28 +91,53 @@ export abstract class Tile extends Container {
     });
   }
 
-  onButtonDown(): void {
+  onButtonDown(event: any): void {
+    switch (event.data.originalEvent.buttons) {
+      case 1:
+        this.onLeftClick()
+        break;
+      case 2:
+        this.onRightClick()
+        break;
+    }
+  }
+
+  onLeftClick() {
     this.showConextMenu();
 
     if (!this.onClick) return;
     this.onClick(this);
   }
 
-  onButtonOver(): void {
-    this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
+  onRightClick() {
 
-    if (!this.isValid) this.sprite.tint = 0xff0000;
+  }
+
+  onButtonOver(): void {
+    // this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
+    // this.x -= 10 * 0.5
+    if (this.canBeRemoved) {
+      this.y -= 7 * 0.91
+      this.isActive = true;
+    }
+
+    // if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   onButtonOut(): void {
-    this.sprite.tint = 0xffffff;
+    // this.sprite.tint = 0xffffff;
+    // this.x += 10 * 0.5
+    if (this.canBeRemoved) {
+      this.y += 7 * 0.91
+      this.isActive = false;
+    }
 
-    if (!this.isValid) this.sprite.tint = 0xff0000;
+    // if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   public showConextMenu(): void {
     if (this.contextMenu && this.canShowContextMenu) {
-      this.isActive = true;
+      // this.isActive = true;
       if (!!this.onIsActive) {
         this.onIsActive(this);
       }
@@ -124,7 +149,7 @@ export abstract class Tile extends Container {
   }
 
   public hideContextMenu(): void {
-    this.isActive = false;
+    // this.isActive = false;
     if (this.contextMenu) {
       this.contextMenu.children.forEach((child) => {
         (child as Button).tag = undefined;

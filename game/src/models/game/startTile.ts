@@ -31,13 +31,13 @@ export class StartTile extends Tile {
     this.baseTile.rotation = 0;
   }
 
-  onButtonOver(): void {
-    this.sprite.tint = 0xaadb1e;
-  }
+  // onButtonOver(): void {
+  //   this.sprite.tint = 0xaadb1e;
+  // }
 
-  onButtonOut(): void {
-    this.sprite.tint = 0xffffff;
-  }
+  // onButtonOut(): void {
+  //   this.sprite.tint = 0xffffff;
+  // }
 
   public updateRotation(_rotation: Rotation) {
     // not needed every time the same texture
