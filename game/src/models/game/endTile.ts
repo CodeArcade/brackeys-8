@@ -2,6 +2,7 @@ import { Tile as BaseTile } from "@models";
 import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
 import { Text } from "pixi.js";
+import { Rotation } from "../level/tile";
 
 export class EndTile extends Tile {
   fish: number;
@@ -25,5 +26,12 @@ export class EndTile extends Tile {
     text.style.dropShadow = true;
     text.style.dropShadowDistance = 2;
     this.addChild(text);
+
+    this.riverEnds = [];
+    this.baseTile.rotation = 0;
+  }
+
+  public updateRotation(_rotation: Rotation) {
+    // not needed every time the same texture
   }
 }

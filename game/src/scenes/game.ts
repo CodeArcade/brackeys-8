@@ -540,8 +540,19 @@ export class GameScene extends Container implements IScene {
     for (let y = 0; y < this.level.tiles.length; y++) {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         const tile = this.grid[y][x]!;
-        if (!tile.riverEndsWithRotation || isEmpty(tile.riverEndsWithRotation))
+        // dont check tiles without river
+        if (tile.riverEnds === undefined) continue;
+
+        if (
+          !tile.riverEndsWithRotation ||
+          isEmpty(tile.riverEndsWithRotation)
+        ) {
+          if ("fish" in tile) {
+            result = false;
+          }
+
           continue;
+        }
 
         for (let end of tile.riverEndsWithRotation) {
           let nextTile: Tile | undefined;
