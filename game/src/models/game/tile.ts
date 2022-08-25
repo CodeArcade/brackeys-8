@@ -48,7 +48,11 @@ export abstract class Tile extends Container {
     this.y = isometricCoordinates.y + Tile.Constants.RenderOffset.y;
 
     let texture = Tile.getTextureToType(tile.type);
-    if (texture !== "emptyTile" && texture !== "lake") {
+    if (
+      this.baseTile.type !== Type.Empty &&
+      this.baseTile.type !== Type.Start &&
+      this.baseTile.type !== Type.End
+    ) {
       texture = `${texture}${tile.rotation}`;
     }
 
@@ -95,10 +99,10 @@ export abstract class Tile extends Container {
   onButtonDown(event: any): void {
     switch (event.data.originalEvent.buttons) {
       case 1:
-        this.onLeftClick()
+        this.onLeftClick();
         break;
       case 2:
-        this.onRightClick()
+        this.onRightClick();
         break;
     }
   }
@@ -110,15 +114,13 @@ export abstract class Tile extends Container {
     this.onClick(this);
   }
 
-  onRightClick() {
-
-  }
+  onRightClick() {}
 
   onButtonOver(): void {
     // this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
     // this.x -= 10 * 0.5
     if (!this.blocking) {
-      this.y -= 7 * 0.91
+      this.y -= 7 * 0.91;
       this.isActive = true;
     }
 
@@ -129,7 +131,7 @@ export abstract class Tile extends Container {
     // this.sprite.tint = 0xffffff;
     // this.x += 10 * 0.5
     if (!this.blocking) {
-      this.y += 7 * 0.91
+      this.y += 7 * 0.91;
       this.isActive = false;
     }
 
@@ -208,7 +210,11 @@ export abstract class Tile extends Container {
     this.baseTile.rotation = rotation;
 
     let texture = Tile.getTextureToType(this.baseTile.type);
-    if (texture !== "emptyTile") {
+    if (
+      this.baseTile.type !== Type.Empty &&
+      this.baseTile.type !== Type.Start &&
+      this.baseTile.type !== Type.End
+    ) {
       texture = `${texture}${rotation}`;
     }
     this.sprite.texture = Texture.from(texture);
@@ -234,7 +240,7 @@ export abstract class Tile extends Container {
       case Type.Straight:
         return "riverStraight";
       default:
-        return "emptyTile";
+        return "blockedTile0";
     }
   }
 }
