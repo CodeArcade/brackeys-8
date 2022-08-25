@@ -159,11 +159,11 @@
   "placeables": [
     {
       "type": "Straight",
-      "count": 0
+      "count": 6
     },
     {
       "type": "Bendy",
-      "count": 0
+      "count": 4
     },
     {
       "type": "Cross",

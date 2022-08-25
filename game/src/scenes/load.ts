@@ -16,6 +16,7 @@ export class LoadScene extends Container implements IScene {
     { id: "Tutorial 2" },
     { id: "Tutorial 3" },
     { id: "Tutorial 4" },
+    { id: "Tutorial 5" },
   ];
 
   load(): void {
