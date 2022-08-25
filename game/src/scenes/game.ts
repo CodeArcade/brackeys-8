@@ -499,9 +499,8 @@ export class GameScene extends Container implements IScene {
       this.addChild(button);
     });
 
+    this.fish = this.fish.sort((a, b) => (a.y > b.y ? 1 : -1));
 
-    this.fish = this.fish.sort((a, b) => a.y > b.y ? 1 : -1)
-    
     this.fish.forEach((f) => {
       this.removeChild(f);
       this.addChild(f);
@@ -509,6 +508,7 @@ export class GameScene extends Container implements IScene {
   }
 
   private startLevel(): void {
+    if (!this.canPlaceTiles) return;
     this.togglePlacement(false);
 
     this.resetValidity();
@@ -521,10 +521,22 @@ export class GameScene extends Container implements IScene {
     } else {
       this.togglePlacement(true);
     }
+
+    this.findStartTile()!.sprite.tint = 0xffffff;
   }
 
   private togglePlacement(enabled: boolean): void {
     this.canPlaceTiles = enabled;
+
+    this.grid.forEach((row) => {
+      row.forEach((cell) => {
+        cell!.canHover = enabled;
+        if (!enabled) {
+          cell!.isActive = false;
+        }
+      });
+    });
+
     if (!enabled) {
       this.selectedPlacable = undefined;
 
@@ -537,7 +549,7 @@ export class GameScene extends Container implements IScene {
     if (contextMenuButton) {
       const tile = contextMenuButton.tag;
       if (!tile) return;
-      // tile.isActive = false;
+
       tile.removeChild(tile.contextMenu!);
     }
   }

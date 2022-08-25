@@ -20,6 +20,7 @@ export abstract class Tile extends Container {
   riverEnds?: Array<Rotation>;
   isActive = false;
   blocking = false;
+  canHover = true;
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;
@@ -108,7 +109,9 @@ export abstract class Tile extends Container {
   }
 
   onLeftClick() {
-    this.showConextMenu();
+    if (this.isActive) {
+      this.showConextMenu();
+    }
 
     if (!this.onClick) return;
     this.onClick(this);
@@ -117,6 +120,8 @@ export abstract class Tile extends Container {
   onRightClick() {}
 
   onButtonOver(): void {
+    if (!this.canHover) return;
+
     // this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
     // this.x -= 10 * 0.5
     if (!this.blocking) {
@@ -128,6 +133,8 @@ export abstract class Tile extends Container {
   }
 
   onButtonOut(): void {
+    if (!this.canHover) return;
+
     // this.sprite.tint = 0xffffff;
     // this.x += 10 * 0.5
     if (!this.blocking) {

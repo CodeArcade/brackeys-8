@@ -33,6 +33,8 @@ export class StartTile extends Tile {
   }
 
   onButtonOver(): void {
+    if (!this.canHover) return;
+
     if (!this.blocking) {
       this.y -= 7 * 0.91;
       this.isActive = true;
