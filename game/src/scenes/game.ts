@@ -1,5 +1,5 @@
 import { Game, IScene } from "../game";
-import { Container, Texture } from "pixi.js";
+import { Container, Sprite, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { MenuScene } from "./menu";
 import { Storage, Keys } from "../utils/storage";
@@ -23,6 +23,7 @@ import { TTile } from "../models/game/tTile";
 import { CrossTile } from "../models/game/crossTile";
 import { FisherTile } from "../models/game/fisherTile";
 import { Fish } from "../models/game/fish";
+import TileHitbox from "../models/game/tileHitbox";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -193,7 +194,6 @@ export class GameScene extends Container implements IScene {
     for (let i = 0; i < this.level.height; i++) {
       for (let k = 0; k < this.tileBorderRadius; k++) {
         this.level.tiles[i].unshift({ rotation: 0, type: Type.Blocked });
-        this.level.tiles[i].push({ rotation: 0, type: Type.Blocked });
       }
 
       for (let j = 0; j < this.level.width; j++) {
@@ -216,6 +216,71 @@ export class GameScene extends Container implements IScene {
         let tile: Tile = this.getTile(this.level.tiles[y][x].type, x, y);
         this.grid[y][x] = tile;
         this.addChild(tile);
+      }
+    }
+
+    const topBendyFenceTile = this.grid[this.tileBorderRadius - 1][this.tileBorderRadius - 1]
+    const topBendyFence = new Sprite(Texture.from("bendyFence3"))
+    topBendyFence.anchor.set(0, 1)
+    topBendyFence.hitArea = new TileHitbox(
+      "bendyFence3",
+      Tile.Constants.TileDimensions.tileWidth,
+      Tile.Constants.TileDimensions.tileHeight
+    );
+    topBendyFenceTile?.addChild(topBendyFence)
+    
+    const rightBendyFence = new Sprite(Texture.from("bendyFence0"))
+    const rightBendyFenceTile = this.grid[this.tileBorderRadius - 1][this.level.width - this.tileBorderRadius]
+    rightBendyFence.anchor.set(0, 1)
+    rightBendyFence.hitArea = new TileHitbox(
+      "bendyFence0",
+      Tile.Constants.TileDimensions.tileWidth,
+      Tile.Constants.TileDimensions.tileHeight
+    );
+    rightBendyFenceTile?.addChild(rightBendyFence)
+    
+    const bottomBendyFence = new Sprite(Texture.from("bendyFence1"))
+    const bottomBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.level.width - this.tileBorderRadius]
+    bottomBendyFence.anchor.set(0, 1)
+    bottomBendyFence.hitArea = new TileHitbox(
+      "bendyFence1",
+      Tile.Constants.TileDimensions.tileWidth,
+      Tile.Constants.TileDimensions.tileHeight
+    );
+    bottomBendyFenceTile?.addChild(bottomBendyFence)
+
+    const leftBendyFence = new Sprite(Texture.from("bendyFence2"))
+    const leftBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.tileBorderRadius - 1]
+    leftBendyFence.anchor.set(0, 1)
+    leftBendyFence.hitArea = new TileHitbox(
+      "bendyFence2",
+      Tile.Constants.TileDimensions.tileWidth,
+      Tile.Constants.TileDimensions.tileHeight
+    );
+    leftBendyFenceTile?.addChild(leftBendyFence)
+
+    // place fences from top to right
+    // and bottom to right
+    for (let i = 0; i < 2; i++) {
+      for (let x = this.tileBorderRadius; x < this.level.width - this.tileBorderRadius; x++) {
+        const y = i === 0 ? this.tileBorderRadius - 1 : this.level.height - this.tileBorderRadius;
+        const fenceVariant = i === 0 ? 1 : 3
+        const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
+        fence.anchor.set(0, 1)
+        fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
+        this.grid[y][x]?.addChild(fence)
+      }
+    }
+
+    // place fences from top to left
+    for (let i = 0; i < 2; i++) {
+      for (let y = this.tileBorderRadius; y < this.level.height - this.tileBorderRadius; y++) {
+        const x = i === 0 ? this.tileBorderRadius - 1 : this.level.width - this.tileBorderRadius
+        const fenceVariant = i === 0 ? 0 : 2
+        const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
+        fence.anchor.set(0, 1)
+        fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
+        this.grid[y][x]?.addChild(fence)
       }
     }
   }
