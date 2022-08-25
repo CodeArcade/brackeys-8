@@ -41,6 +41,7 @@ export class GameScene extends Container implements IScene {
   private canPlaceTiles: boolean = true;
   private fish: Array<Fish> = [];
   private fisher: Array<FisherTile> = [];
+  private fences: Array<Sprite> = []
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -484,6 +485,11 @@ export class GameScene extends Container implements IScene {
       });
     });
 
+    this.fences.forEach((fence) => {
+      this.removeChild(fence)
+      this.addChild(fence)
+    })
+
     this.placableButtons.forEach((button) => {
       button.text!.text = `${button.tag.count}`;
       button.buttonSprite.tint =
@@ -835,7 +841,10 @@ export class GameScene extends Container implements IScene {
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    topBendyFenceTile?.addChild(topBendyFence)
+    topBendyFence.x = topBendyFenceTile!.x
+    topBendyFence.y = topBendyFenceTile!.y
+    this.addChild(topBendyFence)
+    this.fences.push(topBendyFence)
     
     const rightBendyFence = new Sprite(Texture.from("bendyFence0"))
     const rightBendyFenceTile = this.grid[this.tileBorderRadius - 1][this.level.width - this.tileBorderRadius]
@@ -845,7 +854,10 @@ export class GameScene extends Container implements IScene {
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    rightBendyFenceTile?.addChild(rightBendyFence)
+    rightBendyFence.x = rightBendyFenceTile!.x
+    rightBendyFence.y = rightBendyFenceTile!.y
+    this.addChild(rightBendyFence)
+    this.fences.push(rightBendyFence)
     
     const bottomBendyFence = new Sprite(Texture.from("bendyFence1"))
     const bottomBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.level.width - this.tileBorderRadius]
@@ -855,7 +867,10 @@ export class GameScene extends Container implements IScene {
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    bottomBendyFenceTile?.addChild(bottomBendyFence)
+    bottomBendyFence.x = bottomBendyFenceTile!.x
+    bottomBendyFence.y = bottomBendyFenceTile!.y
+    this.addChild(bottomBendyFence)
+    this.fences.push(bottomBendyFence)
 
     const leftBendyFence = new Sprite(Texture.from("bendyFence2"))
     const leftBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.tileBorderRadius - 1]
@@ -865,7 +880,10 @@ export class GameScene extends Container implements IScene {
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    leftBendyFenceTile?.addChild(leftBendyFence)
+    leftBendyFence.x = leftBendyFenceTile!.x
+    leftBendyFence.y = leftBendyFenceTile!.y
+    this.addChild(leftBendyFence)
+    this.fences.push(leftBendyFence)
 
     // place fences from top to right
     // and bottom to right
@@ -876,7 +894,11 @@ export class GameScene extends Container implements IScene {
         const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
         fence.anchor.set(0, 1)
         fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
-        this.grid[y][x]?.addChild(fence)
+        const tile = this.grid[y][x]
+        fence.x = tile!.x
+        fence.y = tile!.y
+        this.addChild(fence)
+        this.fences.push(fence)
       }
     }
 
@@ -888,8 +910,14 @@ export class GameScene extends Container implements IScene {
         const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
         fence.anchor.set(0, 1)
         fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
-        this.grid[y][x]?.addChild(fence)
+        const tile = this.grid[y][x]
+        fence.x = tile!.x
+        fence.y = tile!.y
+        this.addChild(fence)
+        this.fences.push(fence)
       }
     }
+
+    this.fences = this.fences.sort((a, b) => (a.y > b.y ? 1 : -1))
   }
 }
