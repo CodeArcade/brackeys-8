@@ -37,7 +37,7 @@ export class StartTile extends Tile {
       this.y -= 7 * 0.91;
       this.isActive = true;
     } else {
-      this.sprite.tint = 0x83c663;
+      this.sprite.tint = 0xa3f779;
     }
   }
 
