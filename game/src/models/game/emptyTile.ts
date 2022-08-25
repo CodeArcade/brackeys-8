@@ -39,7 +39,7 @@ export class EmptyTile extends Tile {
 
     this.buttonMode = true;
 
-    const decorationAmount = Math.max(2, Math.floor(Math.random() * 5));
+    const decorationAmount = Math.max(4, Math.floor(Math.random() * 7));
 
     let usedDecorationPoints: number[] = [];
 
@@ -68,8 +68,10 @@ export class EmptyTile extends Tile {
       sprite.anchor.set(0, 1);
 
       if (randomDecoration === "stoneFlat" || randomDecoration === "pebble") {
-        sprite.scale.set(0.3);
+        sprite.scale.set(0.15);
       } else if (randomDecoration.startsWith("grass")) {
+        sprite.scale.set(0.4);
+      } else {
         sprite.scale.set(0.7);
       }
 
