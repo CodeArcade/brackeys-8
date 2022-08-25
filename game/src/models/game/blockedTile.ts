@@ -3,7 +3,6 @@ import { Sprite, Texture } from "pixi.js";
 import { Rotation } from "../level/tile";
 import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
-import TileHitbox from "./tileHitbox";
 
 export class BlockedTile extends Tile {
   blocking = true;

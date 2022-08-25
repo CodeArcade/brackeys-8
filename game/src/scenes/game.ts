@@ -24,6 +24,7 @@ import { CrossTile } from "../models/game/crossTile";
 import { FisherTile } from "../models/game/fisherTile";
 import { Fish } from "../models/game/fish";
 import TileHitbox from "../models/game/tileHitbox";
+import { getRandomNumber } from "../utils/random";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -118,26 +119,7 @@ export class GameScene extends Container implements IScene {
       this.addChild(this.grid[tile.gridY][tile.gridX]!);
       placeable.count += 1;
 
-      const neighbours = this.getNeighbours(tile.gridX, tile.gridY);
-      neighbours.forEach((neighbour) => {
-        if (!("fish" in neighbour)) return;
-
-        if (!neighbour.riverEnds) neighbour.riverEnds = [];
-
-        let riverEnd: Rotation;
-        if (neighbour.gridX > tile.gridX) {
-          riverEnd = Rotation.Left;
-        } else if (neighbour.gridX < tile.gridX) {
-          riverEnd = Rotation.Right;
-        } else if (neighbour.gridY > tile.gridY) {
-          riverEnd = Rotation.Top;
-        } else {
-          riverEnd = Rotation.Bottom;
-        }
-
-        remove(neighbour.riverEnds, (x) => x === riverEnd);
-        this.setNewLakeTexture(neighbour);
-      });
+      this.updateLakes();
 
       setTimeout(() => (this.canPlaceTiles = true), 50);
     };
@@ -224,12 +206,18 @@ export class GameScene extends Container implements IScene {
     this.generateFences();
     this.grid.forEach((row, y) => {
       row.forEach((tile, x) => {
-        if (y === 0 || y === this.level.height - 1 || x === 0 || x === this.level.width - 1) return; 
+        if (
+          y === 0 ||
+          y === this.level.height - 1 ||
+          x === 0 ||
+          x === this.level.width - 1
+        )
+          return;
         if (tile?.baseTile.type !== Type.Blocked) return;
         if ((tile as BlockedTile).hasFence) return;
         (tile as BlockedTile).placeDecoration();
-      })
-    })
+      });
+    });
   }
 
   private getTile(
@@ -322,31 +310,67 @@ export class GameScene extends Container implements IScene {
           this.grid[y][x]!.showConextMenu();
           this.addChild(this.grid[y][x]!);
 
-          const neighbours = this.getNeighbours(x, y);
-          neighbours.forEach((neighbour) => {
-            if (!("fish" in neighbour)) return;
-
-            if (!neighbour.riverEnds) neighbour.riverEnds = [];
-
-            let riverEnd: Rotation;
-            if (neighbour.gridX > x) {
-              riverEnd = Rotation.Left;
-            } else if (neighbour.gridX < x) {
-              riverEnd = Rotation.Right;
-            } else if (neighbour.gridY > y) {
-              riverEnd = Rotation.Top;
-            } else {
-              riverEnd = Rotation.Bottom;
-            }
-
-            neighbour.riverEnds.push(riverEnd);
-            this.setNewLakeTexture(neighbour);
-          });
+          this.updateLakes();
         }
       };
     }
 
+    tile.onRotation = () => {
+      this.updateLakes();
+    };
+
     return tile;
+  }
+
+  private updateLakes(): void {
+    const lakeTiles = [this.findStartTile(), this.findEndTile()];
+    lakeTiles.forEach((lakeTile) => {
+      if (!lakeTile) return;
+      if (!lakeTile.riverEnds) lakeTile.riverEnds = [];
+      const neighbours = this.getNeighbours(lakeTile.gridX, lakeTile.gridY);
+
+      neighbours.forEach((neighbour) => {
+        let riverEnd: Rotation | undefined = undefined;
+        if (
+          neighbour.riverEndsWithRotation?.includes(Rotation.Right) &&
+          lakeTile.gridX > neighbour.gridX
+        ) {
+          riverEnd = Rotation.Left;
+        } else if (
+          neighbour.riverEndsWithRotation?.includes(Rotation.Left) &&
+          lakeTile.gridX < neighbour.gridX
+        ) {
+          riverEnd = Rotation.Right;
+        } else if (
+          neighbour.riverEndsWithRotation?.includes(Rotation.Bottom) &&
+          lakeTile.gridY > neighbour.gridY
+        ) {
+          riverEnd = Rotation.Top;
+        } else if (
+          neighbour.riverEndsWithRotation?.includes(Rotation.Top) &&
+          lakeTile.gridY < neighbour.gridY
+        ) {
+          riverEnd = Rotation.Bottom;
+        }
+
+        if (riverEnd !== undefined && !lakeTile.riverEnds?.includes(riverEnd)) {
+          lakeTile.riverEnds!.push(riverEnd);
+        } else if (riverEnd === undefined) {
+          if (lakeTile.gridX > neighbour.gridX) {
+            riverEnd = Rotation.Left;
+          } else if (lakeTile.gridX < neighbour.gridX) {
+            riverEnd = Rotation.Right;
+          } else if (lakeTile.gridY > neighbour.gridY) {
+            riverEnd = Rotation.Top;
+          } else if (lakeTile.gridY < neighbour.gridY) {
+            riverEnd = Rotation.Bottom;
+          }
+
+          remove(lakeTile.riverEnds!, (x) => x === riverEnd);
+        }
+        this.setNewLakeTexture(lakeTile);
+      });
+    });
   }
 
   private setNewLakeTexture(lake: Tile): void {
@@ -662,8 +686,8 @@ export class GameScene extends Container implements IScene {
   private findShortestPath(): Array<Tile> {
     const paths: Array<Array<Tile>> = [];
 
-    for (let i = 0; i < 4; i++) {
-      paths.push(this.findPath(i));
+    for (let i = 0; i < 100; i++) {
+      paths.push(this.findPath());
     }
 
     const lengths = paths.map((x) => x.length);
@@ -671,7 +695,7 @@ export class GameScene extends Container implements IScene {
     return paths[lengths.indexOf(min)];
   }
 
-  private findPath(preferedNeighbour: number): Array<Tile> {
+  private findPath(): Array<Tile> {
     const startTile = this.findStartTile()!;
     const endTile = this.findEndTile()!;
     let currentTile: Tile = startTile;
@@ -694,12 +718,8 @@ export class GameScene extends Container implements IScene {
           path.push(currentTile);
         }
 
-        const targetTile =
-          connectableNeighbours[
-            connectableNeighbours.length >= preferedNeighbour + 1
-              ? preferedNeighbour
-              : 0
-          ];
+        const index = getRandomNumber(0, connectableNeighbours.length - 1);
+        const targetTile = connectableNeighbours[index];
 
         visited.push(targetTile);
 
@@ -967,7 +987,7 @@ export class GameScene extends Container implements IScene {
           Tile.Constants.TileDimensions.tileHeight
         );
         const tile = this.grid[y][x];
-        (tile as BlockedTile).hasFence = true
+        (tile as BlockedTile).hasFence = true;
         fence.x = tile!.x;
         fence.y = tile!.y;
         this.addChild(fence);
@@ -995,7 +1015,7 @@ export class GameScene extends Container implements IScene {
           Tile.Constants.TileDimensions.tileHeight
         );
         const tile = this.grid[y][x];
-        (tile as BlockedTile).hasFence = true
+        (tile as BlockedTile).hasFence = true;
         fence.x = tile!.x;
         fence.y = tile!.y;
         this.addChild(fence);

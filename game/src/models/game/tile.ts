@@ -25,6 +25,7 @@ export abstract class Tile extends Container {
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;
+  onRotation?: (sender?: Tile) => void;
   readonly basePosition: Vector2;
 
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
@@ -239,6 +240,10 @@ export abstract class Tile extends Container {
       texture = `${texture}${rotation}`;
     }
     this.sprite.texture = Texture.from(texture);
+
+    if (this.onRotation) {
+      this.onRotation(this);
+    }
   }
 
   public static getTextureToType(type: string): string {
