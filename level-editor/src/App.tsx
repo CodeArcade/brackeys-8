@@ -301,6 +301,66 @@ function App() {
             setTiles(newTiles);
           }}
         />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.TCross,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.TCross,
+            };
+            setTiles(newTiles);
+          }}
+        />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.Cross,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.Cross,
+            };
+            setTiles(newTiles);
+          }}
+        />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.Straight,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.Straight,
+            };
+            setTiles(newTiles);
+          }}
+        />
+        <TileComponent
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.Bendy,
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.Bendy,
+            };
+            setTiles(newTiles);
+          }}
+        />
       </div>
 
       <div className="tile-rotation">
