@@ -5,6 +5,7 @@ import EndTile from "./Tiles/EndTile";
 import FactoryTile from "./Tiles/FactoryTile";
 import FisherTile from "./Tiles/FisherTile";
 import StartTile from "./Tiles/StartTile";
+import TCross from "./Tiles/TCross";
 import { Tile as TileModel, TileType, FisherTile as FisherTileModel } from "./TileType";
 
 interface TileProps {
@@ -39,6 +40,8 @@ export const Tile: FC<TileProps> = ({ tile, selected, onClick }) => {
     case TileType.Fisher:
       currentTile = <FisherTile tile={tile as FisherTileModel} />
       break;
+    case TileType.TCross:
+      currentTile = <TCross />
   }
 
   return <div style={{

@@ -135,3 +135,24 @@
   height: 3px;
   background: white;
 }
+
+.tile-t {
+  position: relative;
+}
+
+.tile-t .line-through {
+  width: 100%;
+  height: 1px;
+  background: white;
+  position: absolute;
+  top: 50%;
+}
+
+.tile-t .half-line {
+  width: 1px;
+  height: 50%;
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 50%;
+}

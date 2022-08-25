@@ -301,6 +301,21 @@ function App() {
             setTiles(newTiles);
           }}
         />
+        <TileComponent 
+          tile={{
+            rotation: Rotation.Left,
+            type: TileType.TCross
+          }}
+          selected={false}
+          onClick={() => {
+            const newTiles = [...tiles];
+            newTiles[selectedTile?.i ?? 0][selectedTile?.j ?? 0] = {
+              rotation: Rotation.Left,
+              type: TileType.TCross,
+            };
+            setTiles(newTiles);
+          }}
+        />
       </div>
 
       <div className="tile-rotation">
