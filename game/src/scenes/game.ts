@@ -499,6 +499,9 @@ export class GameScene extends Container implements IScene {
       this.addChild(button);
     });
 
+
+    this.fish = this.fish.sort((a, b) => a.y > b.y ? 1 : -1)
+    
     this.fish.forEach((f) => {
       this.removeChild(f);
       this.addChild(f);
