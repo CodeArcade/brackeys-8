@@ -96,4 +96,19 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "bendyFence2", url: "/assets/sprites/decoration/bendyFence2.png"},
   { name: "bendyFence3", url: "/assets/sprites/decoration/bendyFence3.png"},
   //#endregion
+
+  //#region BigDecoration
+  { name: "bigRock1-0", url: "/assets/sprites/decoration/bigRock1-0.png"},
+  { name: "bigRock1-1", url: "/assets/sprites/decoration/bigRock1-1.png"},
+  { name: "bigRock1-2", url: "/assets/sprites/decoration/bigRock1-2.png"},
+  { name: "bigRock1-3", url: "/assets/sprites/decoration/bigRock1-3.png"},
+  { name: "bigRock2-0", url: "/assets/sprites/decoration/bigRock2-0.png"},
+  { name: "bigRock2-1", url: "/assets/sprites/decoration/bigRock2-1.png"},
+  { name: "bigRock2-2", url: "/assets/sprites/decoration/bigRock2-2.png"},
+  { name: "bigRock2-3", url: "/assets/sprites/decoration/bigRock2-3.png"},
+  { name: "pineTree0", url: "/assets/sprites/decoration/pineTree0.png"},
+  { name: "pineTree1", url: "/assets/sprites/decoration/pineTree1.png"},
+  { name: "pineTree2", url: "/assets/sprites/decoration/pineTree2.png"},
+  { name: "pineTree3", url: "/assets/sprites/decoration/pineTree3.png"},
+  //#endregion
 ];
