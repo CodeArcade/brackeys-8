@@ -8,6 +8,7 @@ export class EndTile extends Tile {
   fish: number;
   fishReached: number = 0;
   blocking = true;
+  text: Text;
 
   constructor(
     tile: BaseTile,
@@ -20,19 +21,24 @@ export class EndTile extends Tile {
 
     this.fish = fish;
 
-    const text = new Text(`${this.fishReached}/${fish}`);
-    text.x = size.tileWidth / 2;
-    text.y = -size.tileHeight;
-    text.style.fill = "#FFFFFF";
-    text.style.dropShadow = true;
-    text.style.dropShadowDistance = 2;
-    this.addChild(text);
+    this.text = new Text(`${this.fishReached}/${fish}`);
+    this.text.x = size.tileWidth / 2;
+    this.text.y = -size.tileHeight;
+    this.text.style.fill = "#FFFFFF";
+    this.text.style.dropShadow = true;
+    this.text.style.dropShadowDistance = 2;
+    this.addChild(this.text);
 
     this.riverEnds = [];
     this.baseTile.rotation = 0;
   }
 
-  public updateRotation(_rotation: Rotation) {
+  addFish(): void {
+    this.fishReached += 1;
+    this.text.text = `${this.fishReached}/${this.fish}`;
+  }
+
+  updateRotation(_rotation: Rotation) {
     // not needed every time the same texture
   }
 }

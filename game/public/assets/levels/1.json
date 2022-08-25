@@ -155,5 +155,23 @@
         "rotation": 0
       }
     ]
+  ],
+  "placeables": [
+    {
+      "type": "Straight",
+      "count": 3
+    },
+    {
+      "type": "Bendy",
+      "count": 0
+    },
+    {
+      "type": "Cross",
+      "count": 0
+    },
+    {
+      "type": "T",
+      "count": 0
+    }
   ]
 }

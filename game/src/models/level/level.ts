@@ -1,6 +1,7 @@
 import { Tile, Placeable } from "@models";
 
 export interface Level {
+  name: string;
   width: number;
   height: number;
   goalFishes: number;

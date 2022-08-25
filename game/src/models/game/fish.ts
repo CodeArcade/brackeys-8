@@ -1,5 +1,6 @@
 import { isEmpty, last } from "lodash";
 import { Sprite, Texture } from "pixi.js";
+import { EndTile } from "./endTile";
 import { Tile } from "./tile";
 
 export class Fish extends Sprite {
@@ -7,7 +8,7 @@ export class Fish extends Sprite {
   pathIndex = 0;
   startTile: Tile;
   currentTile: Tile;
-
+  addedFish: boolean = false;
   moveSpeed = 50;
   timer = 0;
   swim = false;
@@ -35,6 +36,10 @@ export class Fish extends Sprite {
 
         if (!isEmpty(this.path)) {
           if (this.currentTile === last(this.path)!) {
+            if (!this.addedFish) {
+              this.addedFish = true;
+              (this.currentTile as EndTile).addFish();
+            }
           } else {
             this.currentTile = this.path[this.pathIndex];
             this.pathIndex += 1;
@@ -42,6 +47,7 @@ export class Fish extends Sprite {
         }
       }
     } else {
+      this.addedFish = false;
       this.currentTile = this.startTile;
       this.pathIndex = 0;
     }
