@@ -87,6 +87,13 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "pebble1", url: "/assets/sprites/decoration/pebble1.png"},
   { name: "pebble2", url: "/assets/sprites/decoration/pebble2.png"},
   { name: "pebble3", url: "/assets/sprites/decoration/pebble3.png"},
-  
+  { name: "fence0", url: "/assets/sprites/decoration/fence0.png"},
+  { name: "fence1", url: "/assets/sprites/decoration/fence1.png"},
+  { name: "fence2", url: "/assets/sprites/decoration/fence2.png"},
+  { name: "fence3", url: "/assets/sprites/decoration/fence3.png"},
+  { name: "bendyFence0", url: "/assets/sprites/decoration/bendyFence0.png"},
+  { name: "bendyFence1", url: "/assets/sprites/decoration/bendyFence1.png"},
+  { name: "bendyFence2", url: "/assets/sprites/decoration/bendyFence2.png"},
+  { name: "bendyFence3", url: "/assets/sprites/decoration/bendyFence3.png"},
   //#endregion
 ];
