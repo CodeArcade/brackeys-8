@@ -222,6 +222,14 @@ export class GameScene extends Container implements IScene {
     }
 
     this.generateFences();
+    this.grid.forEach((row, y) => {
+      row.forEach((tile, x) => {
+        if (y === 0 || y === this.level.height - 1 || x === 0 || x === this.level.width - 1) return; 
+        if (tile?.baseTile.type !== Type.Blocked) return;
+        if ((tile as BlockedTile).hasFence) return;
+        (tile as BlockedTile).placeDecoration();
+      })
+    })
   }
 
   private getTile(
@@ -875,6 +883,7 @@ export class GameScene extends Container implements IScene {
     const topBendyFenceTile =
       this.grid[this.tileBorderRadius - 1][this.tileBorderRadius - 1];
     const topBendyFence = new Sprite(Texture.from("bendyFence3"));
+    (topBendyFenceTile as BlockedTile).hasFence = true;
     topBendyFence.anchor.set(0, 1);
     topBendyFence.hitArea = new TileHitbox(
       "bendyFence3",
@@ -891,6 +900,7 @@ export class GameScene extends Container implements IScene {
       this.grid[this.tileBorderRadius - 1][
         this.level.width - this.tileBorderRadius
       ];
+    (rightBendyFenceTile as BlockedTile).hasFence = true;
     rightBendyFence.anchor.set(0, 1);
     rightBendyFence.hitArea = new TileHitbox(
       "bendyFence0",
@@ -907,6 +917,7 @@ export class GameScene extends Container implements IScene {
       this.grid[this.level.height - this.tileBorderRadius][
         this.level.width - this.tileBorderRadius
       ];
+    (bottomBendyFenceTile as BlockedTile).hasFence = true;
     bottomBendyFence.anchor.set(0, 1);
     bottomBendyFence.hitArea = new TileHitbox(
       "bendyFence1",
@@ -923,6 +934,7 @@ export class GameScene extends Container implements IScene {
       this.grid[this.level.height - this.tileBorderRadius][
         this.tileBorderRadius - 1
       ];
+    (leftBendyFenceTile as BlockedTile).hasFence = true;
     leftBendyFence.anchor.set(0, 1);
     leftBendyFence.hitArea = new TileHitbox(
       "bendyFence2",
@@ -955,6 +967,7 @@ export class GameScene extends Container implements IScene {
           Tile.Constants.TileDimensions.tileHeight
         );
         const tile = this.grid[y][x];
+        (tile as BlockedTile).hasFence = true
         fence.x = tile!.x;
         fence.y = tile!.y;
         this.addChild(fence);
@@ -982,6 +995,7 @@ export class GameScene extends Container implements IScene {
           Tile.Constants.TileDimensions.tileHeight
         );
         const tile = this.grid[y][x];
+        (tile as BlockedTile).hasFence = true
         fence.x = tile!.x;
         fence.y = tile!.y;
         this.addChild(fence);
