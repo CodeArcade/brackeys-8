@@ -38,6 +38,11 @@ export class EndTile extends Tile {
     this.text.text = `${this.fishReached}/${this.fish}`;
   }
 
+  reset(): void {
+    this.fishReached = 0;
+    this.text.text = `${this.fishReached}/${this.fish}`;
+  }
+
   updateRotation(_rotation: Rotation) {
     // not needed every time the same texture
   }

@@ -41,7 +41,7 @@ export class GameScene extends Container implements IScene {
   private canPlaceTiles: boolean = true;
   private fish: Array<Fish> = [];
   private fisher: Array<FisherTile> = [];
-  private fences: Array<Sprite> = []
+  private fences: Array<Sprite> = [];
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -221,7 +221,7 @@ export class GameScene extends Container implements IScene {
       }
     }
 
-    this.generateFences()
+    this.generateFences();
   }
 
   private getTile(
@@ -486,9 +486,9 @@ export class GameScene extends Container implements IScene {
     });
 
     this.fences.forEach((fence) => {
-      this.removeChild(fence)
-      this.addChild(fence)
-    })
+      this.removeChild(fence);
+      this.addChild(fence);
+    });
 
     this.placableButtons.forEach((button) => {
       button.text!.text = `${button.tag.count}`;
@@ -766,7 +766,11 @@ export class GameScene extends Container implements IScene {
   private checkWin(): void {
     const endTile = this.findEndTile()!;
 
-    if (endTile && endTile.fishReached === endTile.fish) {
+    if (
+      endTile &&
+      endTile.fishReached >= endTile.fish &&
+      this.fish.every((x) => x.dead || x.addedFish)
+    ) {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels)!;
       let levelIndex = -Infinity;
 
@@ -786,6 +790,26 @@ export class GameScene extends Container implements IScene {
       } else {
         Game.changeScene(new MenuScene());
       }
+    }
+
+    if (
+      endTile &&
+      endTile.fishReached < endTile.fish &&
+      this.fish.every((x) => x.dead || x.addedFish)
+    ) {
+      this.fish.forEach((f) => {
+        f.reset();
+      });
+
+      this.fisher.forEach((f) => {
+        f.fisher.forEach((f2) => {
+          f2.caught = 0;
+        });
+      });
+
+      endTile.reset();
+
+      this.togglePlacement(true);
     }
   }
 
@@ -833,91 +857,123 @@ export class GameScene extends Container implements IScene {
   }
 
   private generateFences() {
-    const topBendyFenceTile = this.grid[this.tileBorderRadius - 1][this.tileBorderRadius - 1]
-    const topBendyFence = new Sprite(Texture.from("bendyFence3"))
-    topBendyFence.anchor.set(0, 1)
+    const topBendyFenceTile =
+      this.grid[this.tileBorderRadius - 1][this.tileBorderRadius - 1];
+    const topBendyFence = new Sprite(Texture.from("bendyFence3"));
+    topBendyFence.anchor.set(0, 1);
     topBendyFence.hitArea = new TileHitbox(
       "bendyFence3",
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    topBendyFence.x = topBendyFenceTile!.x
-    topBendyFence.y = topBendyFenceTile!.y
-    this.addChild(topBendyFence)
-    this.fences.push(topBendyFence)
-    
-    const rightBendyFence = new Sprite(Texture.from("bendyFence0"))
-    const rightBendyFenceTile = this.grid[this.tileBorderRadius - 1][this.level.width - this.tileBorderRadius]
-    rightBendyFence.anchor.set(0, 1)
+    topBendyFence.x = topBendyFenceTile!.x;
+    topBendyFence.y = topBendyFenceTile!.y;
+    this.addChild(topBendyFence);
+    this.fences.push(topBendyFence);
+
+    const rightBendyFence = new Sprite(Texture.from("bendyFence0"));
+    const rightBendyFenceTile =
+      this.grid[this.tileBorderRadius - 1][
+        this.level.width - this.tileBorderRadius
+      ];
+    rightBendyFence.anchor.set(0, 1);
     rightBendyFence.hitArea = new TileHitbox(
       "bendyFence0",
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    rightBendyFence.x = rightBendyFenceTile!.x
-    rightBendyFence.y = rightBendyFenceTile!.y
-    this.addChild(rightBendyFence)
-    this.fences.push(rightBendyFence)
-    
-    const bottomBendyFence = new Sprite(Texture.from("bendyFence1"))
-    const bottomBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.level.width - this.tileBorderRadius]
-    bottomBendyFence.anchor.set(0, 1)
+    rightBendyFence.x = rightBendyFenceTile!.x;
+    rightBendyFence.y = rightBendyFenceTile!.y;
+    this.addChild(rightBendyFence);
+    this.fences.push(rightBendyFence);
+
+    const bottomBendyFence = new Sprite(Texture.from("bendyFence1"));
+    const bottomBendyFenceTile =
+      this.grid[this.level.height - this.tileBorderRadius][
+        this.level.width - this.tileBorderRadius
+      ];
+    bottomBendyFence.anchor.set(0, 1);
     bottomBendyFence.hitArea = new TileHitbox(
       "bendyFence1",
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    bottomBendyFence.x = bottomBendyFenceTile!.x
-    bottomBendyFence.y = bottomBendyFenceTile!.y
-    this.addChild(bottomBendyFence)
-    this.fences.push(bottomBendyFence)
+    bottomBendyFence.x = bottomBendyFenceTile!.x;
+    bottomBendyFence.y = bottomBendyFenceTile!.y;
+    this.addChild(bottomBendyFence);
+    this.fences.push(bottomBendyFence);
 
-    const leftBendyFence = new Sprite(Texture.from("bendyFence2"))
-    const leftBendyFenceTile = this.grid[this.level.height - this.tileBorderRadius][this.tileBorderRadius - 1]
-    leftBendyFence.anchor.set(0, 1)
+    const leftBendyFence = new Sprite(Texture.from("bendyFence2"));
+    const leftBendyFenceTile =
+      this.grid[this.level.height - this.tileBorderRadius][
+        this.tileBorderRadius - 1
+      ];
+    leftBendyFence.anchor.set(0, 1);
     leftBendyFence.hitArea = new TileHitbox(
       "bendyFence2",
       Tile.Constants.TileDimensions.tileWidth,
       Tile.Constants.TileDimensions.tileHeight
     );
-    leftBendyFence.x = leftBendyFenceTile!.x
-    leftBendyFence.y = leftBendyFenceTile!.y
-    this.addChild(leftBendyFence)
-    this.fences.push(leftBendyFence)
+    leftBendyFence.x = leftBendyFenceTile!.x;
+    leftBendyFence.y = leftBendyFenceTile!.y;
+    this.addChild(leftBendyFence);
+    this.fences.push(leftBendyFence);
 
     // place fences from top to right
     // and bottom to right
     for (let i = 0; i < 2; i++) {
-      for (let x = this.tileBorderRadius; x < this.level.width - this.tileBorderRadius; x++) {
-        const y = i === 0 ? this.tileBorderRadius - 1 : this.level.height - this.tileBorderRadius;
-        const fenceVariant = i === 0 ? 1 : 3
-        const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
-        fence.anchor.set(0, 1)
-        fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
-        const tile = this.grid[y][x]
-        fence.x = tile!.x
-        fence.y = tile!.y
-        this.addChild(fence)
-        this.fences.push(fence)
+      for (
+        let x = this.tileBorderRadius;
+        x < this.level.width - this.tileBorderRadius;
+        x++
+      ) {
+        const y =
+          i === 0
+            ? this.tileBorderRadius - 1
+            : this.level.height - this.tileBorderRadius;
+        const fenceVariant = i === 0 ? 1 : 3;
+        const fence = new Sprite(Texture.from(`fence${fenceVariant}`));
+        fence.anchor.set(0, 1);
+        fence.hitArea = new TileHitbox(
+          `fence${fenceVariant}`,
+          Tile.Constants.TileDimensions.tileWidth,
+          Tile.Constants.TileDimensions.tileHeight
+        );
+        const tile = this.grid[y][x];
+        fence.x = tile!.x;
+        fence.y = tile!.y;
+        this.addChild(fence);
+        this.fences.push(fence);
       }
     }
 
     // place fences from top to left
     for (let i = 0; i < 2; i++) {
-      for (let y = this.tileBorderRadius; y < this.level.height - this.tileBorderRadius; y++) {
-        const x = i === 0 ? this.tileBorderRadius - 1 : this.level.width - this.tileBorderRadius
-        const fenceVariant = i === 0 ? 0 : 2
-        const fence = new Sprite(Texture.from(`fence${fenceVariant}`))
-        fence.anchor.set(0, 1)
-        fence.hitArea = new TileHitbox(`fence${fenceVariant}`, Tile.Constants.TileDimensions.tileWidth, Tile.Constants.TileDimensions.tileHeight)
-        const tile = this.grid[y][x]
-        fence.x = tile!.x
-        fence.y = tile!.y
-        this.addChild(fence)
-        this.fences.push(fence)
+      for (
+        let y = this.tileBorderRadius;
+        y < this.level.height - this.tileBorderRadius;
+        y++
+      ) {
+        const x =
+          i === 0
+            ? this.tileBorderRadius - 1
+            : this.level.width - this.tileBorderRadius;
+        const fenceVariant = i === 0 ? 0 : 2;
+        const fence = new Sprite(Texture.from(`fence${fenceVariant}`));
+        fence.anchor.set(0, 1);
+        fence.hitArea = new TileHitbox(
+          `fence${fenceVariant}`,
+          Tile.Constants.TileDimensions.tileWidth,
+          Tile.Constants.TileDimensions.tileHeight
+        );
+        const tile = this.grid[y][x];
+        fence.x = tile!.x;
+        fence.y = tile!.y;
+        this.addChild(fence);
+        this.fences.push(fence);
       }
     }
 
-    this.fences = this.fences.sort((a, b) => (a.y > b.y ? 1 : -1))
+    this.fences = this.fences.sort((a, b) => (a.y > b.y ? 1 : -1));
   }
 }

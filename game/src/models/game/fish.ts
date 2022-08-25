@@ -88,4 +88,13 @@ export class Fish extends Sprite {
 
     this.tint = this.dead ? 0xff0000 : 0xffffff;
   }
+
+  reset(): void {
+    this.dead = false;
+    this.addedFish = false;
+    this.swim = false;
+    this.currentTile = this.startTile;
+    this.pathIndex = 0;
+    this.updatePosition({ x: this.currentTile.x, y: this.currentTile.y });
+  }
 }
