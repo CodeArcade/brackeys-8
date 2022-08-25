@@ -15,8 +15,8 @@ export class Fish extends Sprite {
   timer = 0;
   swim = false;
   swimTimeElapsed = 0;
-
   tween?: Tween<Vector2>;
+  dead = false;
 
   constructor(tile: Tile) {
     super(Texture.from("fisher"));
@@ -30,7 +30,6 @@ export class Fish extends Sprite {
   }
 
   private updatePosition(coordinates: Vector2): void {
-    console.warn("updating position:", coordinates);
     this.x = coordinates.x;
     this.y = coordinates.y;
   }
@@ -38,7 +37,7 @@ export class Fish extends Sprite {
   public startSwimming() {
     this.swim = true;
     this.tweenPosition();
-    this.animate(0)
+    this.animate(0);
   }
 
   private animate(time: number) {
@@ -86,22 +85,5 @@ export class Fish extends Sprite {
     } else if (this.swimTimeElapsed !== 0) {
       this.swimTimeElapsed = 0;
     }
-    // if (this.swim) {
-    //   this.timer += delta;
-    //   if (this.timer >= this.moveSpeed) {
-    //     this.timer = 0;
-
-    //     if (!isEmpty(this.path)) {
-    //       if (this.currentTile === last(this.path)!) {
-    //       } else {
-    //         this.currentTile = this.path[this.pathIndex];
-    //         this.pathIndex += 1;
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   this.currentTile = this.startTile;
-    //   this.pathIndex = 0;
-    // }
   }
 }

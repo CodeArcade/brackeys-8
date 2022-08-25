@@ -653,7 +653,7 @@ export class GameScene extends Container implements IScene {
       const connectableNeighbours = this.getNeighbours(
         currentTile.gridX,
         currentTile.gridY
-      ).filter((x) => this.canConnect(currentTile, x) && !visited.includes(x));
+      ).filter((x) => !visited.includes(x) && this.canConnect(currentTile, x));
 
       if (connectableNeighbours?.length > 0) {
         stack.push(currentTile);
@@ -688,31 +688,32 @@ export class GameScene extends Container implements IScene {
       return false;
     }
 
-    for (let end of tile1.riverEndsWithRotation) {
-      for (let entry of tile2.riverEndsWithRotation) {
-        switch (entry) {
-          case Rotation.Left:
-            if (end === Rotation.Right) {
-              return true;
-            }
-            break;
-          case Rotation.Top:
-            if (end === Rotation.Bottom) {
-              return true;
-            }
-            break;
-          case Rotation.Right:
-            if (end === Rotation.Left) {
-              return true;
-            }
-            break;
-          case Rotation.Bottom:
-            if (end === Rotation.Top) {
-              return true;
-            }
-            break;
-        }
-      }
+    if (tile1.gridX > tile2.gridX) {
+      return (
+        tile1.riverEndsWithRotation.includes(Rotation.Left) &&
+        tile2.riverEndsWithRotation.includes(Rotation.Right)
+      );
+    }
+
+    if (tile1.gridX < tile2.gridX) {
+      return (
+        tile1.riverEndsWithRotation.includes(Rotation.Right) &&
+        tile2.riverEndsWithRotation.includes(Rotation.Left)
+      );
+    }
+
+    if (tile1.gridY > tile2.gridY) {
+      return (
+        tile1.riverEndsWithRotation.includes(Rotation.Top) &&
+        tile2.riverEndsWithRotation.includes(Rotation.Bottom)
+      );
+    }
+
+    if (tile1.gridY < tile2.gridY) {
+      return (
+        tile1.riverEndsWithRotation.includes(Rotation.Bottom) &&
+        tile2.riverEndsWithRotation.includes(Rotation.Top)
+      );
     }
 
     return false;
@@ -761,7 +762,7 @@ export class GameScene extends Container implements IScene {
     });
 
     // success
-    if (endTile && this.fish.every((x) => x.currentTile === endTile)) {
+    if (endTile && endTile.fishReached === endTile.fish) {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels)!;
       let levelIndex = -Infinity;
 
