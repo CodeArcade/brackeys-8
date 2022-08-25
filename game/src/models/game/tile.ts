@@ -266,6 +266,8 @@ export abstract class Tile extends Container {
 
 export namespace Tile {
   export namespace Constants {
+    export const BorderRadius = 10;
+
     export const TileDimensions: TileDimensions = {
       imageWidth: 220,
       imageHeight: 379,
@@ -274,8 +276,8 @@ export namespace Tile {
     };
 
     export const RenderOffset: Vector2 = {
-      x: 600,
-      y: 120,
+      x: TileDimensions.tileWidth * BorderRadius * 0.45,
+      y: -(TileDimensions.tileHeight * BorderRadius) * 0.6,
     };
   }
 }

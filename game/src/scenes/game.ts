@@ -30,18 +30,12 @@ export class GameScene extends Container implements IScene {
   private level!: Level;
   private grid!: Array<Array<Tile | undefined>>;
   private placableButtons!: Array<Button>;
-  private readonly tileDimensions: TileDimensions = {
-    imageWidth: 220,
-    imageHeight: 379,
-    tileWidth: 180,
-    tileHeight: 115,
-  };
   private selectedPlacable?: Placeable;
-  private tileBorderRadius = 2;
   private canPlaceTiles: boolean = true;
   private fish: Array<Fish> = [];
   private fisher: Array<FisherTile> = [];
   private fences: Array<Sprite> = [];
+  private startButton!: Button;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -53,7 +47,7 @@ export class GameScene extends Container implements IScene {
     menuButton.onClick = () => Game.changeScene(new MenuScene());
     this.addChild(menuButton);
 
-    const startButton = new Button(
+    this.startButton = new Button(
       0,
       0,
       "buttonSelectTile",
@@ -62,18 +56,18 @@ export class GameScene extends Container implements IScene {
       "arrowRight"
     );
     const padding = 20;
-    startButton.y = Game.height - startButton.height - padding;
-    startButton.x = Game.width - padding - startButton.width;
-    startButton.contentSprite!.scale.set(2);
-    startButton.contentSprite!.x =
-      startButton.width / 2 - startButton.contentSprite!.width / 2;
-    startButton.contentSprite!.y =
-      startButton.height / 2 - startButton.contentSprite!.height / 2;
-    startButton.onClick = () => {
+    this.startButton.y = Game.height - this.startButton.height - padding;
+    this.startButton.x = Game.width - padding - this.startButton.width;
+    this.startButton.contentSprite!.scale.set(2);
+    this.startButton.contentSprite!.x =
+      this.startButton.width / 2 - this.startButton.contentSprite!.width / 2;
+    this.startButton.contentSprite!.y =
+      this.startButton.height / 2 - this.startButton.contentSprite!.height / 2;
+    this.startButton.onClick = () => {
       if (!this.canPlaceTiles) return;
       this.startLevel();
     };
-    this.addChild(startButton);
+    this.addChild(this.startButton);
 
     if (level === "continue") {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels);
@@ -93,16 +87,16 @@ export class GameScene extends Container implements IScene {
   private generateLevel(): void {
     this.grid = [];
 
-    this.level.height += this.tileBorderRadius * 2;
-    this.level.width += this.tileBorderRadius * 2;
+    this.level.height += Tile.Constants.BorderRadius * 2;
+    this.level.width += Tile.Constants.BorderRadius * 2;
 
-    for (let i = 0; i < this.tileBorderRadius; i++) {
+    for (let i = 0; i < Tile.Constants.BorderRadius; i++) {
       this.level.tiles.unshift([]);
       this.level.tiles.push([]);
     }
 
     for (let i = 0; i < this.level.height; i++) {
-      for (let k = 0; k < this.tileBorderRadius; k++) {
+      for (let k = 0; k < Tile.Constants.BorderRadius; k++) {
         this.level.tiles[i].unshift({ rotation: 0, type: Type.Blocked });
       }
 
@@ -161,11 +155,11 @@ export class GameScene extends Container implements IScene {
 
     let tile: Tile;
     if (type === Type.Blocked) {
-      tile = new BlockedTile(baseTile, this.tileDimensions, x, y);
+      tile = new BlockedTile(baseTile, Tile.Constants.TileDimensions, x, y);
     } else if (type === Type.Straight) {
-      tile = new StraightTile(baseTile, this.tileDimensions, x, y);
+      tile = new StraightTile(baseTile, Tile.Constants.TileDimensions, x, y);
     } else if (type === Type.Fisher) {
-      tile = new FisherTile(baseTile, this.tileDimensions, x, y);
+      tile = new FisherTile(baseTile, Tile.Constants.TileDimensions, x, y);
       (baseTile as any).fishers.forEach(
         (f: { direction: Rotation; count: number }) => {
           let { direction, count } = f;
@@ -176,15 +170,15 @@ export class GameScene extends Container implements IScene {
       );
       this.fisher.push(tile as FisherTile);
     } else if (type === Type.Bendy) {
-      tile = new BendyTile(baseTile, this.tileDimensions, x, y);
+      tile = new BendyTile(baseTile, Tile.Constants.TileDimensions, x, y);
     } else if (type === Type.T) {
-      tile = new TTile(baseTile, this.tileDimensions, x, y);
+      tile = new TTile(baseTile, Tile.Constants.TileDimensions, x, y);
     } else if (type === Type.Cross) {
-      tile = new CrossTile(baseTile, this.tileDimensions, x, y);
+      tile = new CrossTile(baseTile, Tile.Constants.TileDimensions, x, y);
     } else if (type === Type.Start) {
       tile = new StartTile(
         baseTile,
-        this.tileDimensions,
+        Tile.Constants.TileDimensions,
         x,
         y,
         this.level.startFishes
@@ -201,13 +195,13 @@ export class GameScene extends Container implements IScene {
     } else if (type === Type.End) {
       tile = new EndTile(
         baseTile,
-        this.tileDimensions,
+        Tile.Constants.TileDimensions,
         x,
         y,
         this.level.goalFishes
       );
     } else {
-      tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
+      tile = new EmptyTile(baseTile, Tile.Constants.TileDimensions, x, y);
       tile.bindEvents();
 
       tile.onClick = () => {
@@ -497,6 +491,9 @@ export class GameScene extends Container implements IScene {
       this.removeChild(button);
       this.addChild(button);
     });
+
+    this.removeChild(this.startButton);
+    this.addChild(this.startButton);
   }
 
   private startLevel(): void {
@@ -634,7 +631,7 @@ export class GameScene extends Container implements IScene {
   private findShortestPath(): Array<Tile> {
     const paths: Array<Array<Tile>> = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
       paths.push(this.findPath());
     }
 
@@ -852,7 +849,9 @@ export class GameScene extends Container implements IScene {
 
   private generateFences() {
     const topBendyFenceTile =
-      this.grid[this.tileBorderRadius - 1][this.tileBorderRadius - 1];
+      this.grid[Tile.Constants.BorderRadius - 1][
+        Tile.Constants.BorderRadius - 1
+      ];
     const topBendyFence = new Sprite(Texture.from("bendyFence3"));
     (topBendyFenceTile as BlockedTile).hasFence = true;
     topBendyFence.anchor.set(0, 1);
@@ -868,8 +867,8 @@ export class GameScene extends Container implements IScene {
 
     const rightBendyFence = new Sprite(Texture.from("bendyFence0"));
     const rightBendyFenceTile =
-      this.grid[this.tileBorderRadius - 1][
-        this.level.width - this.tileBorderRadius
+      this.grid[Tile.Constants.BorderRadius - 1][
+        this.level.width - Tile.Constants.BorderRadius
       ];
     (rightBendyFenceTile as BlockedTile).hasFence = true;
     rightBendyFence.anchor.set(0, 1);
@@ -885,8 +884,8 @@ export class GameScene extends Container implements IScene {
 
     const bottomBendyFence = new Sprite(Texture.from("bendyFence1"));
     const bottomBendyFenceTile =
-      this.grid[this.level.height - this.tileBorderRadius][
-        this.level.width - this.tileBorderRadius
+      this.grid[this.level.height - Tile.Constants.BorderRadius][
+        this.level.width - Tile.Constants.BorderRadius
       ];
     (bottomBendyFenceTile as BlockedTile).hasFence = true;
     bottomBendyFence.anchor.set(0, 1);
@@ -902,8 +901,8 @@ export class GameScene extends Container implements IScene {
 
     const leftBendyFence = new Sprite(Texture.from("bendyFence2"));
     const leftBendyFenceTile =
-      this.grid[this.level.height - this.tileBorderRadius][
-        this.tileBorderRadius - 1
+      this.grid[this.level.height - Tile.Constants.BorderRadius][
+        Tile.Constants.BorderRadius - 1
       ];
     (leftBendyFenceTile as BlockedTile).hasFence = true;
     leftBendyFence.anchor.set(0, 1);
@@ -921,14 +920,14 @@ export class GameScene extends Container implements IScene {
     // and bottom to right
     for (let i = 0; i < 2; i++) {
       for (
-        let x = this.tileBorderRadius;
-        x < this.level.width - this.tileBorderRadius;
+        let x = Tile.Constants.BorderRadius;
+        x < this.level.width - Tile.Constants.BorderRadius;
         x++
       ) {
         const y =
           i === 0
-            ? this.tileBorderRadius - 1
-            : this.level.height - this.tileBorderRadius;
+            ? Tile.Constants.BorderRadius - 1
+            : this.level.height - Tile.Constants.BorderRadius;
         const fenceVariant = i === 0 ? 1 : 3;
         const fence = new Sprite(Texture.from(`fence${fenceVariant}`));
         fence.anchor.set(0, 1);
@@ -949,14 +948,14 @@ export class GameScene extends Container implements IScene {
     // place fences from top to left
     for (let i = 0; i < 2; i++) {
       for (
-        let y = this.tileBorderRadius;
-        y < this.level.height - this.tileBorderRadius;
+        let y = Tile.Constants.BorderRadius;
+        y < this.level.height - Tile.Constants.BorderRadius;
         y++
       ) {
         const x =
           i === 0
-            ? this.tileBorderRadius - 1
-            : this.level.width - this.tileBorderRadius;
+            ? Tile.Constants.BorderRadius - 1
+            : this.level.width - Tile.Constants.BorderRadius;
         const fenceVariant = i === 0 ? 0 : 2;
         const fence = new Sprite(Texture.from(`fence${fenceVariant}`));
         fence.anchor.set(0, 1);
