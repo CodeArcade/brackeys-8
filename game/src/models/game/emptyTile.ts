@@ -1,5 +1,4 @@
 import { Tile as BaseTile } from "@models";
-import { Easing, Tween, update } from "@tweenjs/tween.js";
 import { Vector2 } from "models/Vector2";
 import { Sprite, Texture } from "pixi.js";
 import { Tile } from "./tile";
@@ -28,12 +27,8 @@ export class EmptyTile extends Tile {
     { x: 0, y: 70 },
   ];
 
-  readonly basePosition: Vector2;
-
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
     super(tile, size, x, y);
-
-    this.basePosition = {x: this.x, y: this.y}
 
     this.normalTexture = Texture.from("blockedTile0");
     this.sprite.texture = this.normalTexture;
@@ -86,40 +81,4 @@ export class EmptyTile extends Tile {
   getDecorationRotation = (decorationAsset: string, rotation: number) => {
     return `${decorationAsset}${rotation}`;
   };
-
-  private animate(time: number) {
-    window.requestAnimationFrame(this.animate.bind(this))
-    update(time)
-  }
-
-  onButtonOver(): void {
-    if (!this.blocking) {
-      new Tween<Vector2>({x: this.x, y: this.y})
-        .to({y: this.y - 7 * 0.91}, 100)
-        .easing(Easing.Quadratic.InOut)
-        .onUpdate((coordinates) => {
-          this.y = coordinates.y
-        })
-        .start()
-      this.isActive = true;
-      requestAnimationFrame(this.animate.bind(this))
-    }
-
-    if (this.isValid) this.sprite.tint = 0xa3f779;
-  }
-
-  onButtonOut(): void {
-    if (!this.blocking) {
-      new Tween<Vector2>({x: this.x, y: this.y})
-        .to({y: this.basePosition.y}, 100)
-        .easing(Easing.Quadratic.InOut)
-        .onUpdate((coordinates) => {
-          this.y = coordinates.y
-        })
-        .start()
-      this.isActive = false;
-      requestAnimationFrame(this.animate.bind(this))
-    }
-    if (this.isValid) this.sprite.tint = 0xffffff;
-  }
 }
