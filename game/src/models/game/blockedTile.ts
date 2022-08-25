@@ -29,13 +29,13 @@ export class BlockedTile extends Tile {
     const decoration =
       this.decorations[Math.floor(Math.random() * this.decorations.length)];
     const sprite = new Sprite(Texture.from(`${decoration}${tileRotation}`));
-    sprite.x = 80
-    sprite.y = -50
+    sprite.x = 80;
+    sprite.y = -50;
     if (decoration.startsWith("bigRock")) {
-      sprite.scale.set(0.6)
+      sprite.scale.set(0.6);
     }
-    sprite.hitArea = new TileHitbox(`${decoration}${tileRotation}`, sprite.width, sprite.height)
-    sprite.anchor.set(0, 1)
-    this.addChild(sprite)
+    sprite.hitArea = { contains: () => false };
+    sprite.anchor.set(0, 1);
+    this.addChild(sprite);
   }
 }
