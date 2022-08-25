@@ -16,7 +16,7 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, isEmpty, last, remove } from "lodash";
+import { cloneDeep, first, isEmpty, remove } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";

@@ -4,6 +4,7 @@ import { EndTile } from "./endTile";
 import { Tile } from "./tile";
 import { Tween, update as updateTween, Easing } from "@tweenjs/tween.js";
 import { Vector2 } from "models/Vector2";
+import { getRandomNumber } from "../../utils/random";
 
 export class Fish extends Sprite {
   path: Array<Tile> = [];
@@ -19,19 +20,20 @@ export class Fish extends Sprite {
   dead = false;
 
   constructor(tile: Tile) {
-    super(Texture.from("fisher"));
+    super(Texture.from("fish" + getRandomNumber(0, 4)));
 
     this.startTile = tile;
     this.currentTile = tile;
     this.anchor.set(0, 1);
+    this.scale.set(0.3);
 
     this.updatePosition({ x: this.currentTile.x, y: this.currentTile.y });
     this.updateTile();
   }
 
   private updatePosition(coordinates: Vector2): void {
-    this.x = coordinates.x;
-    this.y = coordinates.y;
+    this.x = coordinates.x + 70;
+    this.y = coordinates.y - 50;
   }
 
   public startSwimming() {
@@ -47,7 +49,10 @@ export class Fish extends Sprite {
 
   private tweenPosition() {
     this.tween = new Tween<Vector2>({ x: this.x, y: this.y })
-      .to({ x: this.currentTile.x, y: this.currentTile.y }, this.moveSpeed)
+      .to(
+        { x: this.currentTile.x + 70, y: this.currentTile.y - 50 },
+        this.moveSpeed
+      )
       .easing(Easing.Quadratic.InOut)
       .onUpdate((coordinates) => {
         this.position.set(coordinates.x, coordinates.y);
@@ -71,7 +76,21 @@ export class Fish extends Sprite {
             (this.currentTile as EndTile).addFish();
           }
         } else {
-          this.currentTile = this.path[this.pathIndex];
+          const nextTile = this.path[this.pathIndex];
+          if (this.currentTile.gridX > nextTile.gridX) {
+            this.texture = Texture.from("fish0");
+          }
+          if (this.currentTile.gridX < nextTile.gridX) {
+            this.texture = Texture.from("fish2");
+          }
+          if (this.currentTile.gridY > nextTile.gridY) {
+            this.texture = Texture.from("fish1");
+          }
+          if (this.currentTile.gridY < nextTile.gridY) {
+            this.texture = Texture.from("fish3");
+          }
+
+          this.currentTile = nextTile;
           this.pathIndex += 1;
           this.tweenPosition();
         }
@@ -95,6 +114,7 @@ export class Fish extends Sprite {
     this.swim = false;
     this.currentTile = this.startTile;
     this.pathIndex = 0;
+    this.texture = Texture.from("fish" + getRandomNumber(0, 4));
     this.updatePosition({ x: this.currentTile.x, y: this.currentTile.y });
   }
 }
