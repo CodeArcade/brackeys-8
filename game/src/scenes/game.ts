@@ -503,7 +503,7 @@ export class GameScene extends Container implements IScene {
       const path = this.findShortestPath();
       this.fish.forEach((f, i) => {
         f.path = path;
-        setTimeout(() => (f.swim = true), i * 750);
+        setTimeout(() => f.startSwimming(), i * 750);
       });
     } else {
       this.togglePlacement(true);

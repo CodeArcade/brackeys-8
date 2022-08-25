@@ -17,6 +17,7 @@
     "@pixi/assets": "^6.5.1",
     "@pixi/basis": "^6.5.1",
     "@pixi/sound": "^4.3.0",
+    "@tweenjs/tween.js": "^18.6.4",
     "lodash": "^4.17.21",
     "pixi.js": "^6.5.1"
   }
