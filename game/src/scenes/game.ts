@@ -39,6 +39,7 @@ export class GameScene extends Container implements IScene {
   private tileContextMenu!: Container;
   private canPlaceTiles: boolean = true;
   private fish: Array<Fish> = [];
+  private fisher: Array<FisherTile> = [];
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -248,6 +249,7 @@ export class GameScene extends Container implements IScene {
           }
         }
       );
+      this.fisher.push(tile as FisherTile);
     } else if (type === Type.Bendy) {
       tile = new BendyTile(baseTile, this.tileDimensions, x, y);
     } else if (type === Type.T) {
@@ -753,15 +755,9 @@ export class GameScene extends Container implements IScene {
     return undefined;
   }
 
-  update(delta: number): void {
-    this.updateUi();
-
+  private checkWin(): void {
     const endTile = this.findEndTile()!;
-    this.fish.forEach((f) => {
-      f.update(delta);
-    });
 
-    // success
     if (endTile && endTile.fishReached === endTile.fish) {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels)!;
       let levelIndex = -Infinity;
@@ -783,5 +779,48 @@ export class GameScene extends Container implements IScene {
         Game.changeScene(new MenuScene());
       }
     }
+  }
+
+  private updateFish(delta: number): void {
+    this.fish.forEach((fish) => {
+      fish.update(delta);
+
+      if (fish.dead) return;
+
+      const fishers = this.getNeighbours(
+        fish.currentTile.gridX,
+        fish.currentTile.gridY
+      ).filter((x) => "fisher" in x);
+      fishers.forEach((fisher) => {
+        let directionToFisher: Rotation;
+        if (fisher.gridX > fish.currentTile.gridX)
+          directionToFisher = Rotation.Left;
+        if (fisher.gridX < fish.currentTile.gridX)
+          directionToFisher = Rotation.Right;
+        if (fisher.gridY > fish.currentTile.gridY)
+          directionToFisher = Rotation.Top;
+        if (fisher.gridY < fish.currentTile.gridY)
+          directionToFisher = Rotation.Bottom;
+
+        const actualFisher = first(
+          (fisher as FisherTile).fisher.filter(
+            (x) => x.rotation === directionToFisher
+          )
+        );
+        if (!actualFisher) return;
+
+        if (actualFisher.caught < actualFisher.count) {
+          fish.dead = true;
+          actualFisher.caught += 1;
+        }
+      });
+    });
+  }
+
+  update(delta: number): void {
+    this.updateUi();
+
+    this.updateFish(delta);
+    this.checkWin();
   }
 }

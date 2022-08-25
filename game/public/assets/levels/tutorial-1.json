@@ -2,8 +2,8 @@
   "name": "Tutorial 1",
   "width": 7,
   "height": 5,
-  "startFishes": 2,
-  "goalFishes": 2,
+  "startFishes": 10,
+  "goalFishes": 8,
   "tiles": [
     [
       {
@@ -45,8 +45,26 @@
         "type": "Empty"
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 0
+          },
+          {
+            "direction": 1,
+            "count": 1
+          },
+          {
+            "direction": 2,
+            "count": 2
+          },
+          {
+            "direction": 3,
+            "count": 3
+          }
+        ]
       },
       {
         "type": "Empty",
@@ -57,8 +75,26 @@
         "rotation": 0
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 0
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 0
+          },
+          {
+            "direction": 3,
+            "count": 0
+          }
+        ]
       },
       {
         "rotation": 0,

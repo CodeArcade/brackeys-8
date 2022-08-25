@@ -59,7 +59,7 @@ export class Fish extends Sprite {
   }
 
   private updateTile() {
-    if (this.swim) {
+    if (this.swim && !this.dead) {
       this.swimTimeElapsed = 0;
       if (!isEmpty(this.path)) {
         if (this.currentTile === last(this.path)!) {
@@ -85,5 +85,7 @@ export class Fish extends Sprite {
     } else if (this.swimTimeElapsed !== 0) {
       this.swimTimeElapsed = 0;
     }
+
+    this.tint = this.dead ? 0xff0000 : 0xffffff;
   }
 }
