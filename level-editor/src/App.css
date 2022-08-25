@@ -148,6 +148,10 @@
   top: 50%;
 }
 
+.tile-t .line-through:nth-child(2) {
+  transform: rotate(90deg);
+}
+
 .tile-t .half-line {
   width: 1px;
   height: 50%;
@@ -155,4 +159,10 @@
   position: absolute;
   top: 0;
   left: 50%;
+}
+
+.tile-t .half-line + .half-line {
+  transform: rotate(90deg);
+  left: 75%;
+  top: 25%;
 }

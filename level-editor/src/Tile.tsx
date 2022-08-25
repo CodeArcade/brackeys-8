@@ -1,10 +1,13 @@
 import classNames from "classnames";
 import { FC } from "react";
+import Bendy from "./Tiles/BendyTile";
 import BlockedTile from "./Tiles/BlockedTile";
+import Cross from "./Tiles/Cross";
 import EndTile from "./Tiles/EndTile";
 import FactoryTile from "./Tiles/FactoryTile";
 import FisherTile from "./Tiles/FisherTile";
 import StartTile from "./Tiles/StartTile";
+import Straight from "./Tiles/StraightTile";
 import TCross from "./Tiles/TCross";
 import { Tile as TileModel, TileType, FisherTile as FisherTileModel } from "./TileType";
 
@@ -42,6 +45,16 @@ export const Tile: FC<TileProps> = ({ tile, selected, onClick }) => {
       break;
     case TileType.TCross:
       currentTile = <TCross />
+      break;
+    case TileType.Cross:
+      currentTile = <Cross />
+      break;
+    case TileType.Straight:
+      currentTile = <Straight />
+      break;
+    case TileType.Bendy:
+      currentTile = <Bendy />
+      break;
   }
 
   return <div style={{

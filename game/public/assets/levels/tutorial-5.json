@@ -1,0 +1,177 @@
+{
+  "name": "Tutorial 5",
+  "width": 7,
+  "height": 5,
+  "startFishes": 2,
+  "goalFishes": 2,
+  "tiles": [
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Start"
+      },
+      {
+        "rotation": 3,
+        "type": "T"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "End"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ]
+  ],
+  "placeables": [
+    {
+      "type": "Straight",
+      "count": 0
+    },
+    {
+      "type": "Bendy",
+      "count": 0
+    },
+    {
+      "type": "Cross",
+      "count": 0
+    },
+    {
+      "type": "T",
+      "count": 0
+    }
+  ]
+}
