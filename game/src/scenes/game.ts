@@ -110,6 +110,7 @@ export class GameScene extends Container implements IScene {
       const placeable = first(
         this.level.placeables.filter((x) => x.type === tile.baseTile.type)
       )!;
+      tile.unbindEvents();
       this.removeChild(tile);
       this.grid[tile.gridY][tile.gridX] = this.getTile(
         Type.Empty,
@@ -117,6 +118,8 @@ export class GameScene extends Container implements IScene {
         tile.gridY
       );
       this.addChild(this.grid[tile.gridY][tile.gridX]!);
+      this.grid[tile.gridY][tile.gridX]!.bindEvents();
+
       placeable.count += 1;
 
       this.updateLakes();
@@ -285,6 +288,7 @@ export class GameScene extends Container implements IScene {
       };
     } else {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
+      tile.bindEvents();
 
       tile.onClick = () => {
         if (this.selectedPlacable && this.canPlaceTiles) {
@@ -298,10 +302,11 @@ export class GameScene extends Container implements IScene {
 
           placeable.count -= 1;
 
+          this.grid[y][x]!.unbindEvents();
           this.removeChild(this.grid[y][x]!);
           this.grid[y][x] = this.getTile(placeable.type, x, y, {
             type: placeable.type,
-            rotation: this.selectedPlacable.rotation,
+            rotation: this.grid[y][x]!.baseTile.rotation,
           });
           this.grid[y][x]!.canBeRemoved = true;
           this.grid[y][x]!.interactive = true;
@@ -309,15 +314,18 @@ export class GameScene extends Container implements IScene {
           this.grid[y][x]!.contextMenu = this.tileContextMenu;
           this.grid[y][x]!.showConextMenu();
           this.addChild(this.grid[y][x]!);
+          this.grid[y][x]!.bindEvents();
 
           this.updateLakes();
         }
       };
     }
 
-    tile.onRotation = () => {
-      this.updateLakes();
-    };
+    if (!tile.onRotation) {
+      tile.onRotation = () => {
+        this.updateLakes();
+      };
+    }
 
     return tile;
   }
@@ -512,6 +520,14 @@ export class GameScene extends Container implements IScene {
 
     this.grid.forEach((row) => {
       row.forEach((cell) => {
+        if (cell?.baseTile.type === Type.Empty) {
+          const empty = cell as EmptyTile;
+          empty.showDecoration = !this.selectedPlacable;
+          empty.hoverTexture = this.selectedPlacable
+            ? this.selectedPlacable.texture!
+            : "blockedTile";
+        }
+
         this.removeChild(cell!);
         this.addChild(cell!);
       });
@@ -522,6 +538,13 @@ export class GameScene extends Container implements IScene {
       this.addChild(fence);
     });
 
+    this.fish = this.fish.sort((a, b) => (a.y > b.y ? 1 : -1));
+
+    this.fish.forEach((f) => {
+      this.removeChild(f);
+      this.addChild(f);
+    });
+
     this.placableButtons.forEach((button) => {
       button.text!.text = `${button.tag.count}`;
       button.buttonSprite.tint =
@@ -529,13 +552,6 @@ export class GameScene extends Container implements IScene {
 
       this.removeChild(button);
       this.addChild(button);
-    });
-
-    this.fish = this.fish.sort((a, b) => (a.y > b.y ? 1 : -1));
-
-    this.fish.forEach((f) => {
-      this.removeChild(f);
-      this.addChild(f);
     });
   }
 
@@ -825,11 +841,11 @@ export class GameScene extends Container implements IScene {
         }
       }
 
-      console.log(levels)
-      console.log(levelIndex)
+      console.log(levels);
+      console.log(levelIndex);
       if (levelIndex + 1 < levels.length) {
         const level = levels[levelIndex + 1];
-        console.log(level)
+        console.log(level);
         level.unlocked = true;
         Storage.set(Keys.UnlockedLevels, levels);
         Game.changeScene(new GameScene(), level.id);

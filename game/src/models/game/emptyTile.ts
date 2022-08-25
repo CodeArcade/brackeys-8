@@ -1,12 +1,15 @@
 import { Tile as BaseTile } from "@models";
-import { Vector2 } from "models/Vector2";
+import { Vector2 } from "../Vector2";
 import { Sprite, Texture } from "pixi.js";
 import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
+import { Rotation } from "../level/tile";
 
 export class EmptyTile extends Tile {
-  public normalTexture: Texture;
-
+  normalTexture: Texture;
+  hoverTexture: string;
+  showDecoration: boolean = true;
+  decorations: Array<Sprite> = [];
   private readonly decorationItems: string[] = [
     "redFlower",
     "shrub1-",
@@ -31,6 +34,7 @@ export class EmptyTile extends Tile {
     super(tile, size, x, y);
 
     this.normalTexture = Texture.from("blockedTile0");
+    this.hoverTexture = "blockedTile";
     this.sprite.texture = this.normalTexture;
 
     this.buttonMode = true;
@@ -75,10 +79,55 @@ export class EmptyTile extends Tile {
     spritesToRender = spritesToRender.sort((a, b) => (a.y > b.y ? 1 : -1));
     for (let s of spritesToRender) {
       this.addChild(s);
+      this.decorations.push(s);
     }
   }
 
   getDecorationRotation = (decorationAsset: string, rotation: number) => {
     return `${decorationAsset}${rotation}`;
   };
+
+  onButtonOver(): void {
+    if (!this.canHover) return;
+    super.onButtonOver();
+
+    this.sprite.texture = Texture.from(
+      this.hoverTexture + this.baseTile.rotation
+    );
+
+    if (this.showDecoration) {
+      this.decorations.forEach((d) => {
+        if (this.children.includes(d)) return;
+
+        this.addChild(d);
+      });
+    } else {
+      this.decorations.forEach((d) => {
+        this.removeChild(d);
+      });
+    }
+  }
+
+  onButtonOut(): void {
+    if (!this.canHover) return;
+    super.onButtonOut();
+    this.sprite.texture = this.normalTexture;
+
+    this.showDecoration = true;
+    this.decorations.forEach((d) => {
+      if (this.children.includes(d)) return;
+
+      this.addChild(d);
+    });
+  }
+
+  public updateRotation(rotation: Rotation) {
+    this.baseTile.rotation = rotation;
+
+    this.sprite.texture = Texture.from(`${this.hoverTexture}${rotation}`);
+
+    if (this.onRotation) {
+      this.onRotation(this);
+    }
+  }
 }

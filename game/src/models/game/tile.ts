@@ -83,7 +83,15 @@ export abstract class Tile extends Container {
     this.on("pointerover", this.onButtonOver)
       .on("pointerout", this.onButtonOut)
       .on("pointerdown", this.onButtonDown);
+  }
 
+  unbindEvents(): void {
+    window.removeEventListener("keydown", this.keyRotateEvent.bind(this));
+    window.removeEventListener("keydown", this.keyHideContextEvent.bind(this));
+    window.removeEventListener("wheel", this.wheelRotateEvent.bind(this));
+  }
+
+  bindEvents(): void {
     window.addEventListener("keydown", this.keyRotateEvent.bind(this));
     window.addEventListener("keydown", this.keyHideContextEvent.bind(this));
     window.addEventListener("wheel", this.wheelRotateEvent.bind(this));
