@@ -1,5 +1,6 @@
 import { isEmpty, last } from "lodash";
 import { Sprite, Texture } from "pixi.js";
+import { EndTile } from "./endTile";
 import { Tile } from "./tile";
 import { Tween, update as updateTween, Easing } from "@tweenjs/tween.js";
 import { Vector2 } from "models/Vector2";
@@ -9,8 +10,8 @@ export class Fish extends Sprite {
   pathIndex = 0;
   startTile: Tile;
   currentTile: Tile;
-
-  moveSpeed = 500;
+  addedFish: boolean = false;
+  moveSpeed = 750;
   timer = 0;
   swim = false;
   swimTimeElapsed = 0;
@@ -47,7 +48,7 @@ export class Fish extends Sprite {
 
   private tweenPosition() {
     this.tween = new Tween<Vector2>({ x: this.x, y: this.y })
-      .to({ x: this.currentTile.x, y: this.currentTile.y }, 1000)
+      .to({ x: this.currentTile.x, y: this.currentTile.y }, this.moveSpeed)
       .easing(Easing.Quadratic.InOut)
       .onUpdate((coordinates) => {
         this.position.set(coordinates.x, coordinates.y);
@@ -66,6 +67,10 @@ export class Fish extends Sprite {
           this.tween?.stop();
           this.swim = false;
           this.tween = undefined;
+          if (!this.addedFish) {
+            this.addedFish = true;
+            (this.currentTile as EndTile).addFish();
+          }
         } else {
           this.currentTile = this.path[this.pathIndex];
           this.pathIndex += 1;

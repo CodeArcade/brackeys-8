@@ -739,6 +739,8 @@ export class GameScene extends Container implements IScene {
   }
 
   private findEndTile(): EndTile | undefined {
+    if (!this.level) return undefined;
+
     for (let y = 0; y < this.level.tiles.length; y++) {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         if (this.grid[y][x]?.baseTile.type === Type.End) {
@@ -753,12 +755,32 @@ export class GameScene extends Container implements IScene {
   update(delta: number): void {
     this.updateUi();
 
-    this.fish.forEach((f) => f.update(delta));
-    if (this.fish.every((x) => x.currentTile === this.findEndTile())) {
-      this.togglePlacement(true);
-      this.fish.forEach((f) => {
-        f.swim = false;
-      });
+    const endTile = this.findEndTile()!;
+    this.fish.forEach((f) => {
+      f.update(delta);
+    });
+
+    // success
+    if (endTile && this.fish.every((x) => x.currentTile === endTile)) {
+      const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels)!;
+      let levelIndex = -Infinity;
+
+      for (let i = 0; i < levels.length; i++) {
+        if (levelIndex !== -Infinity) break;
+
+        if (levels[i].id === this.level.name) {
+          levelIndex = i;
+        }
+      }
+
+      if (levelIndex + 1 < levels.length) {
+        const level = levels[levelIndex + 1];
+        level.unlocked = true;
+        Storage.set(Keys.UnlockedLevels, levels);
+        Game.changeScene(new GameScene(), level.id);
+      } else {
+        Game.changeScene(new MenuScene());
+      }
     }
   }
 }
