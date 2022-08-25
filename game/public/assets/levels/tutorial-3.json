@@ -1,16 +1,12 @@
 {
-  "name": "Fisher 1",
-  "width": 5,
-  "height": 7,
-  "startFishes": 3,
+  "name": "Tutorial 3",
+  "width": 7,
+  "height": 5,
+  "startFishes": 2,
   "goalFishes": 2,
   "tiles": [
     [
       {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
         "type": "Empty",
         "rotation": 0
       },
@@ -19,37 +15,9 @@
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
-      }
-    ],
-    [
-      {
         "type": "Empty",
         "rotation": 0
       },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Start"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
-      }
-    ],
-    [
       {
         "type": "Empty",
         "rotation": 0
@@ -63,15 +31,15 @@
         "type": "Empty"
       },
       {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
+        "rotation": 0,
+        "type": "Empty"
       }
     ],
     [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
       {
         "type": "Empty",
         "rotation": 0
@@ -103,48 +71,16 @@
         ]
       },
       {
-        "type": "Fisher",
-        "rotation": 0,
-        "fishers": [
-          {
-            "direction": 0,
-            "count": 0
-          },
-          {
-            "direction": 1,
-            "count": 0
-          },
-          {
-            "direction": 2,
-            "count": 0
-          },
-          {
-            "direction": 3,
-            "count": 2
-          }
-        ]
+        "type": "Empty",
+        "rotation": 0
       },
       {
-        "type": "Fisher",
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
         "rotation": 0,
-        "fishers": [
-          {
-            "direction": 0,
-            "count": 0
-          },
-          {
-            "direction": 1,
-            "count": 0
-          },
-          {
-            "direction": 2,
-            "count": 0
-          },
-          {
-            "direction": 3,
-            "count": 3
-          }
-        ]
+        "type": "Empty"
       }
     ],
     [
@@ -153,26 +89,16 @@
         "rotation": 0
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "rotation": 0,
+        "type": "Start"
       },
       {
         "type": "Empty",
         "rotation": 0
       },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      }
-    ],
-    [
       {
         "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty"
       },
       {
         "type": "Empty",
@@ -185,6 +111,32 @@
       {
         "type": "Empty",
         "rotation": 0
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "type": "Empty",
@@ -194,11 +146,19 @@
     [
       {
         "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty"
       },
       {
         "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "type": "Empty",
@@ -221,7 +181,7 @@
     },
     {
       "type": "Bendy",
-      "count": 0
+      "count": 2
     },
     {
       "type": "Cross",

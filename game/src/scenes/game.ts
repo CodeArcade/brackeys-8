@@ -825,8 +825,11 @@ export class GameScene extends Container implements IScene {
         }
       }
 
+      console.log(levels)
+      console.log(levelIndex)
       if (levelIndex + 1 < levels.length) {
         const level = levels[levelIndex + 1];
+        console.log(level)
         level.unlocked = true;
         Storage.set(Keys.UnlockedLevels, levels);
         Game.changeScene(new GameScene(), level.id);

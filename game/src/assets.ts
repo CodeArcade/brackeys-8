@@ -1,10 +1,11 @@
 export const assets: Array<{ name: string; url: string }> = [
-  // LEVEL
-  { name: "Level 1", url: "/assets/levels/1.json" },
+  //#region LEVEL
   { name: "Tutorial 1", url: "/assets/levels/tutorial-1.json" },
-  { name: "render test", url: "/assets/levels/render-test.json" },
-  { name: "Fisher 1", url: "/assets/levels/Fisher 1.json" },
-  // UI
+  { name: "Tutorial 2", url: "/assets/levels/tutorial-2.json" },
+  { name: "Tutorial 3", url: "/assets/levels/tutorial-3.json" },
+  { name: "Tutorial 4", url: "/assets/levels/tutorial-4.json" },
+  //#endregion
+  //#region UI
   { name: "button", url: "/assets/sprites/ui/button.png" },
   { name: "buttonHover", url: "/assets/sprites/ui/buttonHover.png" },
   { name: "buttonLock", url: "/assets/sprites/ui/buttonLock.png" },
@@ -14,6 +15,7 @@ export const assets: Array<{ name: string; url: string }> = [
     name: "buttonSelectTileHover",
     url: "/assets/sprites/ui/buttonSelectTileHover.png",
   },
+  //#endregion
   //#region SPRITES
   { name: "fisher", url: "/assets/sprites/entities/fisher.png" },
   { name: "fish0", url: "/assets/sprites/entities/fish_0.png" },
