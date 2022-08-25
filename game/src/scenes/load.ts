@@ -13,7 +13,9 @@ export class LoadScene extends Container implements IScene {
 
   private levels: Array<Level> = [
     { id: "Tutorial 1", unlocked: true },
-    { id: "Level 1" },
+    { id: "Tutorial 2" },
+    { id: "Tutorial 3" },
+    { id: "Tutorial 4" },
   ];
 
   load(): void {

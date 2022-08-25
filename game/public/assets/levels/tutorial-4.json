@@ -1,5 +1,5 @@
 {
-  "name": "Level 1",
+  "name": "Tutorial 4",
   "width": 7,
   "height": 5,
   "startFishes": 2,
@@ -11,10 +11,6 @@
         "type": "Empty"
       },
       {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
         "type": "Empty",
         "rotation": 0
       },
@@ -31,8 +27,12 @@
         "type": "Blocked"
       },
       {
-        "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       }
     ],
     [
@@ -41,10 +41,6 @@
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
         "type": "Empty",
         "rotation": 0
       },
@@ -61,8 +57,12 @@
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       }
     ],
     [
@@ -83,8 +83,8 @@
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "rotation": 0,
@@ -105,20 +105,20 @@
         "rotation": 0
       },
       {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
         "rotation": 0,
         "type": "Blocked"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
       },
       {
         "type": "Empty",
@@ -127,24 +127,24 @@
     ],
     [
       {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
         "rotation": 0,
         "type": "Blocked"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "type": "Empty",
@@ -159,11 +159,11 @@
   "placeables": [
     {
       "type": "Straight",
-      "count": 3
+      "count": 1
     },
     {
       "type": "Bendy",
-      "count": 0
+      "count": 2
     },
     {
       "type": "Cross",
@@ -171,7 +171,7 @@
     },
     {
       "type": "T",
-      "count": 0
+      "count": 2
     }
   ]
 }
