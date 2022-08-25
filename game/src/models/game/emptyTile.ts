@@ -105,7 +105,7 @@ export class EmptyTile extends Tile {
       requestAnimationFrame(this.animate.bind(this))
     }
 
-    if (this.isValid) this.sprite.tint = 0xaadb1e;
+    if (this.isValid) this.sprite.tint = 0xa3f779;
   }
 
   onButtonOut(): void {
