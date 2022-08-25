@@ -501,9 +501,9 @@ export class GameScene extends Container implements IScene {
     this.resetValidity();
     if (this.validateTiles()) {
       const path = this.findShortestPath();
-      this.fish.forEach((f) => {
+      this.fish.forEach((f, i) => {
         f.path = path;
-        f.swim = true;
+        setTimeout(() => (f.swim = true), i * 750);
       });
     } else {
       this.togglePlacement(true);
@@ -752,6 +752,7 @@ export class GameScene extends Container implements IScene {
 
   update(delta: number): void {
     this.updateUi();
+
     this.fish.forEach((f) => f.update(delta));
     if (this.fish.every((x) => x.currentTile === this.findEndTile())) {
       this.togglePlacement(true);

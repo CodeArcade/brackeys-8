@@ -32,13 +32,10 @@ export class Fish extends Sprite {
       this.timer += delta;
       if (this.timer >= this.moveSpeed) {
         this.timer = 0;
-        console.warn("update");
 
         if (!isEmpty(this.path)) {
           if (this.currentTile === last(this.path)!) {
-            console.warn("reached end");
           } else {
-            console.warn("next Tile");
             this.currentTile = this.path[this.pathIndex];
             this.pathIndex += 1;
           }
