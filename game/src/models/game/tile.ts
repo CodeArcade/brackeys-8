@@ -122,9 +122,9 @@ export abstract class Tile extends Container {
     if (!this.blocking) {
       this.y -= 7 * 0.91;
       this.isActive = true;
+    } else {
+      if (this.isValid) this.sprite.tint = 0x8b0000;
     }
-
-    // if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   onButtonOut(): void {
@@ -133,9 +133,9 @@ export abstract class Tile extends Container {
     if (!this.blocking) {
       this.y += 7 * 0.91;
       this.isActive = false;
+    } else {
+      if (this.isValid) this.sprite.tint = 0xffffff;
     }
-
-    // if (!this.isValid) this.sprite.tint = 0xff0000;
   }
 
   public showConextMenu(): void {

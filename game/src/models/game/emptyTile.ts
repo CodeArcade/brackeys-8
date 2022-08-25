@@ -42,7 +42,6 @@ export class EmptyTile extends Tile {
     let spritesToRender: Sprite[] = [];
 
     for (let i = 0; i < decorationAmount; i++) {
-      const decorationRotation = Math.floor(Math.random() * 4);
       const randomDecoration =
         this.decorationItems[
           Math.floor(Math.random() * this.decorationItems.length)
@@ -82,4 +81,21 @@ export class EmptyTile extends Tile {
   getDecorationRotation = (decorationAsset: string, rotation: number) => {
     return `${decorationAsset}${rotation}`;
   };
+
+  onButtonOver(): void {
+    if (!this.blocking) {
+      this.y -= 7 * 0.91;
+      this.isActive = true;
+    }
+
+    if (this.isValid) this.sprite.tint = 0xaadb1e;
+  }
+
+  onButtonOut(): void {
+    if (!this.blocking) {
+      this.y += 7 * 0.91;
+      this.isActive = false;
+    }
+    if (this.isValid) this.sprite.tint = 0xffffff;
+  }
 }

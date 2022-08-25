@@ -16,12 +16,13 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, isEmpty, remove } from "lodash";
+import { cloneDeep, first, isEmpty, last, remove } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";
 import { CrossTile } from "../models/game/crossTile";
 import { FisherTile } from "../models/game/fisherTile";
+import { Fish } from "../models/game/fish";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -37,7 +38,7 @@ export class GameScene extends Container implements IScene {
   private tileBorderRadius = 2;
   private tileContextMenu!: Container;
   private canPlaceTiles: boolean = true;
-  private currentlySelected?: Tile;
+  private fish: Array<Fish> = [];
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -266,6 +267,10 @@ export class GameScene extends Container implements IScene {
         if (!this.canPlaceTiles) return;
         this.startLevel();
       };
+
+      for (let i = 0; i < this.level.startFishes; i++) {
+        this.fish.push(new Fish(tile));
+      }
     } else if (type === Type.End) {
       tile = new EndTile(
         baseTile,
@@ -327,8 +332,6 @@ export class GameScene extends Container implements IScene {
         }
       };
     }
-
-    this.currentlySelected = tile;
 
     return tile;
   }
@@ -472,15 +475,6 @@ export class GameScene extends Container implements IScene {
 
     this.grid.forEach((row) => {
       row.forEach((cell) => {
-        // if (cell?.baseTile.type === Type.Empty) {
-        //   const empty = cell as EmptyTile;
-        //   // empty.hoverTexture = Texture.from(
-        //   //   this.selectedPlacable
-        //   //     ? this.selectedPlacable.texture! + this.selectedPlacable!.rotation
-        //   //     : "emptyTile"
-        //   // );
-        // }
-
         this.removeChild(cell!);
         this.addChild(cell!);
       });
@@ -494,16 +488,26 @@ export class GameScene extends Container implements IScene {
       this.removeChild(button);
       this.addChild(button);
     });
+
+    this.fish.forEach((f) => {
+      this.removeChild(f);
+      this.addChild(f);
+    });
   }
 
   private startLevel(): void {
     this.togglePlacement(false);
 
     this.resetValidity();
-    console.warn(this.validateTiles());
-    console.warn(this.findShortestPath().map((x) => `${x.gridX}|${x.gridY}`));
-
-    this.togglePlacement(true);
+    if (this.validateTiles()) {
+      const path = this.findShortestPath();
+      this.fish.forEach((f) => {
+        f.path = path;
+        f.swim = true;
+      });
+    } else {
+      this.togglePlacement(true);
+    }
   }
 
   private togglePlacement(enabled: boolean): void {
@@ -746,7 +750,14 @@ export class GameScene extends Container implements IScene {
     return undefined;
   }
 
-  update(_delta: number): void {
+  update(delta: number): void {
     this.updateUi();
+    this.fish.forEach((f) => f.update(delta));
+    if (this.fish.every((x) => x.currentTile === this.findEndTile())) {
+      this.togglePlacement(true);
+      this.fish.forEach((f) => {
+        f.swim = false;
+      });
+    }
   }
 }
