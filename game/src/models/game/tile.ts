@@ -139,6 +139,7 @@ export abstract class Tile extends Container {
     }
 
     if (this.isValid) this.sprite.tint = 0xa3f779;
+    if (this.blocking) this.sprite.tint = 0xeb4034;
   }
 
   onButtonOut(): void {
