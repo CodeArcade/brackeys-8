@@ -4,9 +4,9 @@ import { TileDimensions } from "./tileDimensions";
 import { toScreenCoordinate } from "../../utils/isometricCoordinates";
 import TileHitbox from "./tileHitbox";
 import { Rotation, Type } from "../../models/level/tile";
-import { Button } from "ui/button";
 import { Vector2 } from "models/Vector2";
 import { Easing, Tween, update } from "@tweenjs/tween.js";
+import _ from "lodash";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -15,17 +15,17 @@ export abstract class Tile extends Container {
   gridY: number;
   border!: Graphics;
   canBeRemoved: boolean = false;
-  contextMenu?: Container;
-  canShowContextMenu: boolean = true;
   isValid = true;
   riverEnds?: Array<Rotation>;
   isActive = false;
   blocking = false;
   canHover = true;
+  canBeDeleted = false;
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;
   onRotation?: (sender?: Tile) => void;
+  onRemove?: (sender?: Tile) => void;
   readonly basePosition: Vector2;
 
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
@@ -86,14 +86,12 @@ export abstract class Tile extends Container {
   }
 
   unbindEvents(): void {
-    window.removeEventListener("keydown", this.keyRotateEvent.bind(this));
-    window.removeEventListener("keydown", this.keyHideContextEvent.bind(this));
+    window.removeEventListener("keydown", this.keyDownEvent.bind(this));
     window.removeEventListener("wheel", this.wheelRotateEvent.bind(this));
   }
 
   bindEvents(): void {
-    window.addEventListener("keydown", this.keyRotateEvent.bind(this));
-    window.addEventListener("keydown", this.keyHideContextEvent.bind(this));
+    window.addEventListener("keydown", this.keyDownEvent.bind(this));
     window.addEventListener("wheel", this.wheelRotateEvent.bind(this));
   }
 
@@ -122,18 +120,21 @@ export abstract class Tile extends Container {
   }
 
   onLeftClick() {
-    if (this.isActive) {
-      this.showConextMenu();
-    }
-
     if (!this.onClick) return;
     this.onClick(this);
   }
 
-  onRightClick() {}
+  onRightClick() {
+    if (this.canBeDeleted) {
+      if (this.onRemove) {
+        this.onRemove(this);
+      }
+    }
+  }
 
   onButtonOver(): void {
     if (!this.canHover) return;
+    this.canBeDeleted = true;
 
     if (!this.blocking) {
       new Tween<Vector2>({ x: this.x, y: this.y })
@@ -153,6 +154,7 @@ export abstract class Tile extends Container {
 
   onButtonOut(): void {
     if (!this.canHover) return;
+    this.canBeDeleted = false;
 
     if (!this.blocking) {
       new Tween<Vector2>({ x: this.x, y: this.y })
@@ -168,42 +170,12 @@ export abstract class Tile extends Container {
     if (this.isValid) this.sprite.tint = 0xffffff;
   }
 
-  public showConextMenu(): void {
-    if (this.contextMenu && this.canShowContextMenu) {
-      // this.isActive = true;
-      if (!!this.onIsActive) {
-        this.onIsActive(this);
-      }
-      this.addChild(this.contextMenu);
-      this.contextMenu.children.forEach((child) => {
-        (child as Button).tag = this;
-      });
-    }
-  }
-
-  public hideContextMenu(): void {
-    // this.isActive = false;
-    if (this.contextMenu) {
-      this.contextMenu.children.forEach((child) => {
-        (child as Button).tag = undefined;
-      });
-      this.removeChild(this.contextMenu);
-    }
-  }
-
   public updateValiditiy(valid: boolean): void {
     this.isValid = valid;
     this.sprite.tint = valid ? 0xffffff : 0xff0000;
   }
 
-  public keyHideContextEvent(event: KeyboardEvent) {
-    if (!this.isActive) return;
-    if (event.key === "Escape") {
-      this.hideContextMenu();
-    }
-  }
-
-  public keyRotateEvent(event: KeyboardEvent) {
+  public keyDownEvent(event: KeyboardEvent) {
     if (!this.isActive) return;
     let rotation = this.baseTile.rotation;
     switch (event.key) {
@@ -213,6 +185,14 @@ export abstract class Tile extends Container {
       case "e":
         rotation += 1;
         break;
+      case "x":
+      case "Escape":
+      case "Backspace":
+        if (this.canBeDeleted) {
+          if (this.onRemove) {
+            this.onRemove(this);
+          }
+        }
     }
 
     this.updateRotationFromEvent(rotation);

@@ -16,7 +16,7 @@ import { BlockedTile } from "../models/game/blockedTile";
 import { StartTile } from "../models/game/startTile";
 import { EndTile } from "../models/game/endTile";
 import { Placeable } from "@models";
-import { cloneDeep, first, isEmpty, remove } from "lodash";
+import { cloneDeep, first, isEmpty, pad, remove } from "lodash";
 import { StraightTile } from "../models/game/straightTile";
 import { BendyTile } from "../models/game/bendyTile";
 import { TTile } from "../models/game/tTile";
@@ -38,7 +38,6 @@ export class GameScene extends Container implements IScene {
   };
   private selectedPlacable?: Placeable;
   private tileBorderRadius = 2;
-  private tileContextMenu!: Container;
   private canPlaceTiles: boolean = true;
   private fish: Array<Fish> = [];
   private fisher: Array<FisherTile> = [];
@@ -54,7 +53,27 @@ export class GameScene extends Container implements IScene {
     menuButton.onClick = () => Game.changeScene(new MenuScene());
     this.addChild(menuButton);
 
-    this.generateContextMenu();
+    const startButton = new Button(
+      0,
+      0,
+      "buttonSelectTile",
+      "buttonSelectTileHover",
+      undefined,
+      "arrowRight"
+    );
+    const padding = 20;
+    startButton.y = Game.height - startButton.height - padding;
+    startButton.x = Game.width - padding - startButton.width;
+    startButton.contentSprite!.scale.set(2);
+    startButton.contentSprite!.x =
+      startButton.width / 2 - startButton.contentSprite!.width / 2;
+    startButton.contentSprite!.y =
+      startButton.height / 2 - startButton.contentSprite!.height / 2;
+    startButton.onClick = () => {
+      if (!this.canPlaceTiles) return;
+      this.startLevel();
+    };
+    this.addChild(startButton);
 
     if (level === "continue") {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels);
@@ -69,103 +88,6 @@ export class GameScene extends Container implements IScene {
         this.addTileSelection();
       }
     );
-  }
-
-  private generateContextMenu(): void {
-    const padding = 20;
-    this.tileContextMenu = new Container();
-    this.tileContextMenu.y = -this.tileDimensions.tileHeight - padding * 2;
-    this.tileContextMenu.x = padding;
-
-    const rotateLeftButton = new Button(
-      0,
-      0,
-      "buttonSelectTile",
-      "buttonSelectTileHover",
-      "<-"
-    );
-    rotateLeftButton.scale.set(0.5);
-    rotateLeftButton.onClick = () => {
-      const tile = removeButton.tag as Tile;
-      let rotation = tile.baseTile.rotation;
-
-      rotation -= 1;
-      if (rotation < 0) {
-        rotation = 3;
-      }
-      tile.updateRotation(rotation);
-    };
-
-    const removeButton = new Button(
-      rotateLeftButton.x + rotateLeftButton.width + padding,
-      -padding - padding / 2,
-      "buttonSelectTile",
-      "buttonSelectTileHover",
-      "X"
-    );
-    removeButton.scale.set(0.5);
-    removeButton.onClick = () => {
-      this.canPlaceTiles = false;
-
-      const tile = removeButton.tag as Tile;
-      const placeable = first(
-        this.level.placeables.filter((x) => x.type === tile.baseTile.type)
-      )!;
-      tile.unbindEvents();
-      this.removeChild(tile);
-      this.grid[tile.gridY][tile.gridX] = this.getTile(
-        Type.Empty,
-        tile.gridX,
-        tile.gridY
-      );
-      this.addChild(this.grid[tile.gridY][tile.gridX]!);
-      this.grid[tile.gridY][tile.gridX]!.bindEvents();
-
-      placeable.count += 1;
-
-      this.updateLakes();
-
-      setTimeout(() => (this.canPlaceTiles = true), 50);
-    };
-
-    const hideButton = new Button(
-      rotateLeftButton.x + rotateLeftButton.width + padding,
-      padding + padding / 2,
-      "buttonSelectTile",
-      "buttonSelectTileHover",
-      "Hide"
-    );
-    hideButton.scale.set(0.5);
-    hideButton.onClick = () => {
-      const tile = removeButton.tag as Tile;
-      tile.canShowContextMenu = false;
-      this.hideContextMenu();
-      setTimeout(() => (tile.canShowContextMenu = true), 50);
-    };
-
-    const rotateRightButton = new Button(
-      removeButton.x + removeButton.width + padding,
-      0,
-      "buttonSelectTile",
-      "buttonSelectTileHover",
-      "->"
-    );
-    rotateRightButton.scale.set(0.5);
-    rotateRightButton.onClick = () => {
-      const tile = removeButton.tag as Tile;
-      let rotation = tile.baseTile.rotation;
-
-      rotation += 1;
-      if (rotation > 3) {
-        rotation = 0;
-      }
-      tile.updateRotation(rotation);
-    };
-
-    this.tileContextMenu.addChild(removeButton);
-    this.tileContextMenu.addChild(hideButton);
-    this.tileContextMenu.addChild(rotateLeftButton);
-    this.tileContextMenu.addChild(rotateRightButton);
   }
 
   private generateLevel(): void {
@@ -240,9 +162,6 @@ export class GameScene extends Container implements IScene {
     let tile: Tile;
     if (type === Type.Blocked) {
       tile = new BlockedTile(baseTile, this.tileDimensions, x, y);
-      tile.onClick = () => {
-        this.hideContextMenu();
-      };
     } else if (type === Type.Straight) {
       tile = new StraightTile(baseTile, this.tileDimensions, x, y);
     } else if (type === Type.Fisher) {
@@ -287,9 +206,6 @@ export class GameScene extends Container implements IScene {
         y,
         this.level.goalFishes
       );
-      tile.onClick = () => {
-        this.hideContextMenu();
-      };
     } else {
       tile = new EmptyTile(baseTile, this.tileDimensions, x, y);
       tile.bindEvents();
@@ -315,8 +231,6 @@ export class GameScene extends Container implements IScene {
           this.grid[y][x]!.canBeRemoved = true;
           this.grid[y][x]!.interactive = true;
           this.grid[y][x]!.buttonMode = true;
-          this.grid[y][x]!.contextMenu = this.tileContextMenu;
-          this.grid[y][x]!.showConextMenu();
           this.addChild(this.grid[y][x]!);
           this.grid[y][x]!.bindEvents();
 
@@ -328,6 +242,34 @@ export class GameScene extends Container implements IScene {
     if (!tile.onRotation) {
       tile.onRotation = () => {
         this.updateLakes();
+      };
+    }
+
+    if (!tile.onRemove) {
+      tile.onRemove = (tile) => {
+        if (!tile) return;
+        if (tile.blocking) return;
+        if (tile.baseTile.type === Type.Empty) return;
+        const x = tile.gridX;
+        const y = tile.gridY;
+
+        this.canPlaceTiles = false;
+
+        const placeable = first(
+          this.level.placeables.filter((x) => x.type === tile!.baseTile.type)
+        )!;
+        tile.unbindEvents();
+        tile.canBeDeleted = false;
+        this.removeChild(tile);
+        this.grid[y][x] = this.getTile(Type.Empty, x, y);
+        this.addChild(this.grid[y][x]!);
+        this.grid[y][x]!.bindEvents();
+
+        placeable.count += 1;
+
+        this.updateLakes();
+
+        setTimeout(() => (this.canPlaceTiles = true), 50);
       };
     }
 
@@ -498,8 +440,6 @@ export class GameScene extends Container implements IScene {
       button.tag = placeable;
 
       button.onClick = () => {
-        this.hideContextMenu();
-
         if (placeable.count < 1 || !this.canPlaceTiles) return;
 
         if (
@@ -591,18 +531,6 @@ export class GameScene extends Container implements IScene {
 
     if (!enabled) {
       this.selectedPlacable = undefined;
-
-      this.hideContextMenu();
-    }
-  }
-
-  private hideContextMenu(): void {
-    const contextMenuButton = first(this.tileContextMenu.children) as Button;
-    if (contextMenuButton) {
-      const tile = contextMenuButton.tag;
-      if (!tile) return;
-
-      tile.removeChild(tile.contextMenu!);
     }
   }
 
