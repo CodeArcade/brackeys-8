@@ -65,6 +65,7 @@ export class GameScene extends Container implements IScene {
       (levelAsset) => {
         this.level = cloneDeep(levelAsset);
         this.generateLevel();
+        this.updateLakes();
         this.addTileSelection();
       }
     );
@@ -202,6 +203,9 @@ export class GameScene extends Container implements IScene {
       for (let x = 0; x < this.level.tiles[y].length; x++) {
         let tile: Tile = this.getTile(this.level.tiles[y][x].type, x, y);
         this.grid[y][x] = tile;
+        if (tile.baseTile.type !== Type.Empty) {
+          tile.blocking = true;
+        }
         this.addChild(tile);
       }
     }
