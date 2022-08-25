@@ -6,6 +6,7 @@ import TileHitbox from "./tileHitbox";
 import { Rotation, Type } from "../../models/level/tile";
 import { Button } from "ui/button";
 import { Vector2 } from "models/Vector2";
+import { Easing, Tween, update } from "@tweenjs/tween.js";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -23,6 +24,7 @@ export abstract class Tile extends Container {
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;
+  readonly basePosition: Vector2;
 
   constructor(tile: BaseTile, size: TileDimensions, x: number, y: number) {
     super();
@@ -74,6 +76,8 @@ export abstract class Tile extends Container {
 
     this.interactive = true;
 
+    this.basePosition = {x: this.x, y: this.y}
+
     this.on("pointerover", this.onButtonOver)
       .on("pointerout", this.onButtonOut)
       .on("pointerdown", this.onButtonDown);
@@ -117,25 +121,34 @@ export abstract class Tile extends Container {
   onRightClick() {}
 
   onButtonOver(): void {
-    // this.sprite.tint = this.canBeRemoved ? 0xdcdcdc : 0xff0000;
-    // this.x -= 10 * 0.5
     if (!this.blocking) {
-      this.y -= 7 * 0.91;
+      new Tween<Vector2>({x: this.x, y: this.y})
+        .to({y: this.basePosition.y - 7 * 0.91}, 100)
+        .easing(Easing.Quadratic.InOut)
+        .onUpdate((coordinates) => {
+          this.y = coordinates.y
+        })
+        .start()
       this.isActive = true;
-    } else {
-      if (this.isValid) this.sprite.tint = 0xff7575;
+      requestAnimationFrame(this.animate.bind(this))
     }
+
+    if (this.isValid) this.sprite.tint = 0xa3f779;
   }
 
   onButtonOut(): void {
-    // this.sprite.tint = 0xffffff;
-    // this.x += 10 * 0.5
     if (!this.blocking) {
-      this.y += 7 * 0.91;
+      new Tween<Vector2>({x: this.x, y: this.y})
+        .to({y: this.basePosition.y}, 100)
+        .easing(Easing.Quadratic.InOut)
+        .onUpdate((coordinates) => {
+          this.y = coordinates.y
+        })
+        .start()
       this.isActive = false;
-    } else {
-      if (this.isValid) this.sprite.tint = 0xffffff;
+      requestAnimationFrame(this.animate.bind(this))
     }
+    if (this.isValid) this.sprite.tint = 0xffffff;
   }
 
   public showConextMenu(): void {
@@ -242,6 +255,11 @@ export abstract class Tile extends Container {
       default:
         return "blockedTile0";
     }
+  }
+
+  private animate(time: number) {
+    window.requestAnimationFrame(this.animate.bind(this))
+    update(time)
   }
 }
 
