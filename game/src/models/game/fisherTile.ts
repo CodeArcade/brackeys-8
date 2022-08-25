@@ -1,6 +1,6 @@
 import { Tile as BaseTile } from "@models";
 import { Tile } from "./tile";
-import { Sprite, Texture, Text, Graphics } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 import { Rotation } from "../level/tile";
 import { BlockedTile } from "./blockedTile";
 import { TileDimensions } from "./tileDimensions";
@@ -91,7 +91,7 @@ export class FisherTile extends BlockedTile {
     return coordinates;
   }
 
-  private getRotateSpriteTexture(rotation: Rotation): string {
+  private getRotateSpriteTexture(_: Rotation): string {
     return "fisher";
   }
 }
