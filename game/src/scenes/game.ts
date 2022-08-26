@@ -24,6 +24,7 @@ import { FisherTile } from "../models/game/fisherTile";
 import { Fish } from "../models/game/fish";
 import TileHitbox from "../models/game/tileHitbox";
 import { getRandomNumber } from "../utils/random";
+import { Sound } from "@pixi/sound";
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -36,10 +37,15 @@ export class GameScene extends Container implements IScene {
   private fences: Array<Sprite> = [];
   private startButton!: Button;
   private menuButton!: Button;
+  private placeSound!: Sound;
+  private removeSound!: Sound;
 
   load(args: Array<any>): void {
     let level = args[0];
     this.placableButtons = [];
+
+    this.placeSound = Sound.from("assets/sounds/game/placeTile.mp3");
+    this.removeSound = Sound.from("assets/sounds/game/removeTile.mp3");
 
     this.menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
     this.menuButton.x = 20;
@@ -215,6 +221,7 @@ export class GameScene extends Container implements IScene {
           if (placeable.count < 1) return;
 
           placeable.count -= 1;
+          this.placeSound.play();
 
           this.grid[y][x]!.unbindEvents();
           this.removeChild(this.grid[y][x]!);
@@ -249,6 +256,7 @@ export class GameScene extends Container implements IScene {
 
         this.canPlaceTiles = false;
 
+        this.removeSound.play();
         const placeable = first(
           this.level.placeables.filter((x) => x.type === tile!.baseTile.type)
         )!;

@@ -124,6 +124,8 @@ export class EmptyTile extends Tile {
   }
 
   public updateRotation(rotation: Rotation) {
+    Tile.rotateSound.stop();
+    Tile.rotateSound.play();
     this.baseTile.rotation = rotation;
 
     this.sprite.texture = Texture.from(`${this.hoverTexture}${rotation}`);

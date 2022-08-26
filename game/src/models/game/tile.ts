@@ -7,6 +7,7 @@ import { Rotation, Type } from "../../models/level/tile";
 import { Vector2 } from "models/Vector2";
 import { Easing, Tween, update } from "@tweenjs/tween.js";
 import _ from "lodash";
+import { Sound } from "@pixi/sound";
 
 export abstract class Tile extends Container {
   baseTile: BaseTile;
@@ -21,6 +22,7 @@ export abstract class Tile extends Container {
   blocking = false;
   canHover = true;
   canBeDeleted = false;
+  static rotateSound: Sound = Sound.from("assets/sounds/game/rotateTile.mp3");
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;

@@ -5,6 +5,7 @@ import { Tile } from "./tile";
 import { Tween, update as updateTween, Easing } from "@tweenjs/tween.js";
 import { Vector2 } from "models/Vector2";
 import { getRandomNumber } from "../../utils/random";
+import { Sound } from "@pixi/sound";
 
 export class Fish extends Sprite {
   path: Array<Tile> = [];
@@ -18,6 +19,7 @@ export class Fish extends Sprite {
   swimTimeElapsed = 0;
   tween?: Tween<Vector2>;
   dead = false;
+  static swimSound: Sound = Sound.from("assets/sounds/game/swim.mp3");
 
   constructor(tile: Tile) {
     super(Texture.from("fish" + getRandomNumber(0, 4)));
@@ -48,6 +50,9 @@ export class Fish extends Sprite {
   }
 
   private tweenPosition() {
+    if (!Fish.swimSound.isPlaying) {
+      Fish.swimSound.play();
+    }
     this.tween = new Tween<Vector2>({ x: this.x, y: this.y })
       .to(
         { x: this.currentTile.x + 70, y: this.currentTile.y - 50 },

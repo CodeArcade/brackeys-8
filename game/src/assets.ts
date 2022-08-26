@@ -1,3 +1,4 @@
+// https://www.fesliyanstudios.com/policy
 export const assets: Array<{ name: string; url: string }> = [
   //#region LEVEL
   { name: "Tutorial 1", url: "./assets/levels/tutorial-1.json" },
@@ -27,7 +28,10 @@ export const assets: Array<{ name: string; url: string }> = [
   //#endregion
   //#region TERRAIN
   { name: "emptyTile", url: "./assets/sprites/terrain/emptyTile.png" },
-  { name: "emptyTileHover", url: "./assets/sprites/terrain/emptyTileHover.png" },
+  {
+    name: "emptyTileHover",
+    url: "./assets/sprites/terrain/emptyTileHover.png",
+  },
   { name: "blockedTile0", url: "./assets/sprites/terrain/empty_0.png" },
   { name: "blockedTile1", url: "./assets/sprites/terrain/empty_1.png" },
   { name: "blockedTile2", url: "./assets/sprites/terrain/empty_2.png" },
@@ -116,7 +120,6 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "bendyFence2", url: "./assets/sprites/decoration/bendyFence2.png" },
   { name: "bendyFence3", url: "./assets/sprites/decoration/bendyFence3.png" },
   //#endregion
-
   //#region BigDecoration
   { name: "bigRock1-0", url: "./assets/sprites/decoration/bigRock1-0.png" },
   { name: "bigRock1-1", url: "./assets/sprites/decoration/bigRock1-1.png" },
