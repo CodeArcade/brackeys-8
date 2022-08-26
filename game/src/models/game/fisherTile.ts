@@ -86,10 +86,6 @@ export class FisherTile extends BlockedTile {
       };
       this.fisher.push(f);
       this.addChild(sprite);
-
-      console.warn(this.x, this.y);
-      console.warn(sprite.x, sprite.y);
-      console.warn(this.x + sprite.x, sprite.y + this.y);
     }
   }
 

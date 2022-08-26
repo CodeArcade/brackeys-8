@@ -781,8 +781,6 @@ export class GameScene extends Container implements IScene {
         }
       }
 
-      console.log(levels);
-      console.log(levelIndex);
       if (levelIndex + 1 < levels.length) {
         const level = levels[levelIndex + 1];
         console.log(level);
@@ -797,7 +795,7 @@ export class GameScene extends Container implements IScene {
     if (
       endTile &&
       endTile.fishReached < endTile.fish &&
-      this.fish.every((x) => x.dead || x.addedFish)
+      this.fish.every((x) => (x.dead || x.addedFish) && !x.tween?.isPlaying())
     ) {
       this.fish.forEach((f) => {
         f.reset();
@@ -853,8 +851,8 @@ export class GameScene extends Container implements IScene {
 
   update(delta: number): void {
     this.updateUi();
-
     this.updateFish(delta);
+
     this.checkWin();
   }
 

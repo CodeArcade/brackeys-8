@@ -114,6 +114,7 @@ export class Fish extends Sprite {
   }
 
   reset(): void {
+    this.tween?.stop();
     this.dead = false;
     this.addedFish = false;
     this.swim = false;
