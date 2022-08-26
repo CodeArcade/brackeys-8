@@ -20,7 +20,10 @@ export const assets: Array<{ name: string; url: string }> = [
   },
   //#endregion
   //#region SPRITES
-  { name: "fisher", url: "./assets/sprites/entities/fisher.png" },
+  { name: "fisher0", url: "./assets/sprites/entities/fisher_0.png" },
+  { name: "fisher1", url: "./assets/sprites/entities/fisher_1.png" },
+  { name: "fisher2", url: "./assets/sprites/entities/fisher_2.png" },
+  { name: "fisher3", url: "./assets/sprites/entities/fisher_3.png" },
   { name: "fish0", url: "./assets/sprites/entities/fish_0.png" },
   { name: "fish1", url: "./assets/sprites/entities/fish_1.png" },
   { name: "fish2", url: "./assets/sprites/entities/fish_2.png" },

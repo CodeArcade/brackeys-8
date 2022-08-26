@@ -1,6 +1,6 @@
 import { Tile as BaseTile } from "@models";
 import { Tile } from "./tile";
-import { Sprite, Texture } from "pixi.js";
+import { Rectangle, Sprite, Texture } from "pixi.js";
 import { Rotation } from "../level/tile";
 import { BlockedTile } from "./blockedTile";
 import { TileDimensions } from "./tileDimensions";
@@ -26,7 +26,6 @@ export class FisherTile extends BlockedTile {
       const sprite = new Sprite(
         Texture.from(this.getRotateSpriteTexture(rotation))
       );
-
       const coordinates = this.getCoordinates();
 
       switch (rotation) {
@@ -36,8 +35,10 @@ export class FisherTile extends BlockedTile {
             Tile.Constants.RenderOffset.x -
             this.x +
             35 +
-            i * 20 + (count === 1 ? 20 : 0);
-          sprite.y = coordinates.y - this.y - 15 - i * 10 - (count === 1 ? 10 : 0);
+            i * 20 +
+            (count === 1 ? 20 : 0);
+          sprite.y =
+            coordinates.y - this.y - 15 - i * 10 - (count === 1 ? 10 : 0);
           break;
         case Rotation.Top:
           sprite.x =
@@ -45,8 +46,10 @@ export class FisherTile extends BlockedTile {
             Tile.Constants.RenderOffset.x -
             this.x +
             100 +
-            i * 20 + (count === 1 ? 20 : 0);
-          sprite.y = coordinates.y - this.y - 35 + i * 10 + (count === 1 ? 10 : 0);
+            i * 20 +
+            (count === 1 ? 20 : 0);
+          sprite.y =
+            coordinates.y - this.y - 35 + i * 10 + (count === 1 ? 10 : 0);
           break;
         case Rotation.Right:
           sprite.x =
@@ -54,20 +57,26 @@ export class FisherTile extends BlockedTile {
             Tile.Constants.RenderOffset.x -
             this.x +
             140 -
-            i * 20 - (count === 1 ? 20 : 0);
+            i * 20 -
+            (count === 1 ? 20 : 0);
           sprite.y = coordinates.y - this.y + i * 10 + (count === 1 ? 10 : 0);
           break;
         case Rotation.Bottom:
           sprite.x =
             coordinates.x +
             Tile.Constants.RenderOffset.x -
-            this.x + 35 +
-            i * 20 + (count === 1 ? 20 : 0);
+            this.x +
+            35 +
+            i * 20 +
+            (count === 1 ? 20 : 0);
           sprite.y = coordinates.y - this.y + i * 10 + (count === 1 ? 10 : 0);
 
           break;
       }
-      sprite.scale.set(0.2);
+
+      sprite.x -= 140;
+      sprite.y -= 475;
+      sprite.hitArea = new Rectangle(0, 0, 0, 0);
 
       const f = {
         rotation,
@@ -77,6 +86,10 @@ export class FisherTile extends BlockedTile {
       };
       this.fisher.push(f);
       this.addChild(sprite);
+
+      console.warn(this.x, this.y);
+      console.warn(sprite.x, sprite.y);
+      console.warn(this.x + sprite.x, sprite.y + this.y);
     }
   }
 
@@ -91,7 +104,7 @@ export class FisherTile extends BlockedTile {
     return coordinates;
   }
 
-  private getRotateSpriteTexture(_: Rotation): string {
-    return "fisher";
+  private getRotateSpriteTexture(rotation: Rotation): string {
+    return "fisher" + rotation;
   }
 }
