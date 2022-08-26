@@ -85,8 +85,9 @@ export class FisherTile extends BlockedTile {
         caught: 0,
       };
       this.fisher.push(f);
-      this.addChild(sprite);
     }
+    this.fisher.sort((a, b) => a.sprite.y > b.sprite.y ? 1 : -1)
+    this.fisher.forEach((fisher => this.addChild(fisher.sprite)))
   }
 
   private getCoordinates(): Vector2 {

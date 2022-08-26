@@ -6,7 +6,6 @@ import TileHitbox from "./tileHitbox";
 import { Rotation, Type } from "../../models/level/tile";
 import { Vector2 } from "models/Vector2";
 import { Easing, Tween, update } from "@tweenjs/tween.js";
-import _ from "lodash";
 import { Sound } from "@pixi/sound";
 
 export abstract class Tile extends Container {

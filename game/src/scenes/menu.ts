@@ -1,5 +1,5 @@
 import { Game, IScene } from "../game";
-import { Container, Sprite, Text, Texture } from "pixi.js";
+import { Container, Text } from "pixi.js";
 import { Button } from "../ui/button";
 import { centerX } from "../utils/ui";
 import { GameScene } from "./game";
