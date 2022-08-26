@@ -39,6 +39,7 @@ export class GameScene extends Container implements IScene {
   private menuButton!: Button;
   private placeSound!: Sound;
   private removeSound!: Sound;
+  private fishedSound!: Sound;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -46,6 +47,8 @@ export class GameScene extends Container implements IScene {
 
     this.placeSound = Sound.from("assets/sounds/game/placeTile.mp3");
     this.removeSound = Sound.from("assets/sounds/game/removeTile.mp3");
+    this.fishedSound = Sound.from("assets/sounds/game/fished.mp3");
+    this.fishedSound.volume = 0.5;
 
     this.menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
     this.menuButton.x = 20;
@@ -783,7 +786,6 @@ export class GameScene extends Container implements IScene {
 
       if (levelIndex + 1 < levels.length) {
         const level = levels[levelIndex + 1];
-        console.log(level);
         level.unlocked = true;
         Storage.set(Keys.UnlockedLevels, levels);
         Game.changeScene(new GameScene(), level.id);
@@ -842,6 +844,7 @@ export class GameScene extends Container implements IScene {
         if (!actualFisher) return;
 
         if (actualFisher.caught < actualFisher.count) {
+          this.fishedSound.play();
           fish.dead = true;
           actualFisher.caught += 1;
         }

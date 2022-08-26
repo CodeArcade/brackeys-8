@@ -19,7 +19,11 @@ export class Fish extends Sprite {
   swimTimeElapsed = 0;
   tween?: Tween<Vector2>;
   dead = false;
-  static swimSound: Sound = Sound.from("assets/sounds/game/swim.mp3");
+  static swimSound: Sound = Sound.from({
+    url: "assets/sounds/game/swim.mp3",
+    volume: 0.5,
+  });
+  static goalSound: Sound = Sound.from("assets/sounds/game/goalReached.mp3");
 
   constructor(tile: Tile) {
     super(Texture.from("fish" + getRandomNumber(0, 4)));
@@ -56,7 +60,7 @@ export class Fish extends Sprite {
     this.tween = new Tween<Vector2>({ x: this.x, y: this.y })
       .to(
         { x: this.currentTile.x + 70, y: this.currentTile.y - 50 },
-        this.moveSpeed
+        this.startTile === this.currentTile ? 1 : this.moveSpeed
       )
       .easing(Easing.Quadratic.InOut)
       .onUpdate((coordinates) => {
@@ -79,6 +83,7 @@ export class Fish extends Sprite {
           if (!this.addedFish) {
             this.addedFish = true;
             (this.currentTile as EndTile).addFish();
+            Fish.goalSound.play();
           }
         } else {
           const nextTile = this.path[this.pathIndex];
