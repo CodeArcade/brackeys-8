@@ -36,16 +36,17 @@ export class GameScene extends Container implements IScene {
   private fisher: Array<FisherTile> = [];
   private fences: Array<Sprite> = [];
   private startButton!: Button;
+  private menuButton!: Button;
 
   load(args: Array<any>): void {
     let level = args[0];
     this.placableButtons = [];
 
-    const menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
-    menuButton.x = 20;
-    menuButton.y = 20;
-    menuButton.onClick = () => Game.changeScene(new MenuScene());
-    this.addChild(menuButton);
+    this.menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
+    this.menuButton.x = 20;
+    this.menuButton.y = 20;
+    this.menuButton.onClick = () => Game.changeScene(new MenuScene());
+    this.addChild(this.menuButton);
 
     this.startButton = new Button(
       0,
@@ -494,6 +495,9 @@ export class GameScene extends Container implements IScene {
 
     this.removeChild(this.startButton);
     this.addChild(this.startButton);
+
+    this.removeChild(this.menuButton);
+    this.addChild(this.menuButton);
   }
 
   private startLevel(): void {

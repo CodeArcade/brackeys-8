@@ -22,7 +22,6 @@ export class Game {
       x: this.width / this.baseDimensions.width,
       y: this.height / this.baseDimensions.height,
     };
-    // return (Game.baseDimensions.height / Game.baseDimensions.width) / (Game.height / Game.width);
   }
 
   public static get width(): number {
