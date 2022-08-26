@@ -4,6 +4,8 @@ import { Button } from "../ui/button";
 import { centerX } from "../utils/ui";
 import { GameScene } from "./game";
 import { LevelSelectionScene } from "./levelSelection";
+import { ControlsScene } from "./controls";
+import { InstructionsScene } from "./instructions";
 
 export class MenuScene extends Container implements IScene {
   load(): void {
@@ -35,6 +37,32 @@ export class MenuScene extends Container implements IScene {
     levelSelectionButton.onClick = () =>
       Game.changeScene(new LevelSelectionScene());
     this.addChild(levelSelectionButton);
+
+    const instructionsButton = new Button(
+      0,
+      0,
+      "button",
+      "buttonHover",
+      "Instructions"
+    );
+    instructionsButton.x = centerX(instructionsButton);
+    instructionsButton.y =
+      20 + levelSelectionButton.y + levelSelectionButton.height;
+    instructionsButton.onClick = () =>
+      Game.changeScene(new InstructionsScene());
+    this.addChild(instructionsButton);
+
+    const controlsButton = new Button(
+      0,
+      0,
+      "button",
+      "buttonHover",
+      "Controls"
+    );
+    controlsButton.x = centerX(controlsButton);
+    controlsButton.y = 20 + instructionsButton.y + instructionsButton.height;
+    controlsButton.onClick = () => Game.changeScene(new ControlsScene());
+    this.addChild(controlsButton);
   }
 
   update(_delta: number): void {}
