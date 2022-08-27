@@ -187,7 +187,7 @@ export abstract class Tile extends Container {
         rotation += 1;
         break;
       case "x":
-      case "Escape":
+      case "Delete":
       case "Backspace":
         if (this.canBeDeleted) {
           if (this.onRemove) {
@@ -214,7 +214,16 @@ export abstract class Tile extends Container {
       rotation += 4;
     }
 
+    if (this.baseTile.rotation !== rotation) {
+      this.playSound()
+    }
+    
     this.updateRotation(rotation);
+  }
+
+  protected playSound() {
+    Tile.rotateSound.stop();
+    Tile.rotateSound.play();
   }
 
   public updateRotation(rotation: Rotation) {
