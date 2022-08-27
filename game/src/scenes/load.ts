@@ -1,6 +1,6 @@
 import { Game, IScene } from "../game";
 import { Container, Graphics, Loader, Text } from "pixi.js";
-import { assets } from "../assets";
+import { assets, textStyle } from "../assets";
 import { MenuScene } from "./menu";
 import { centerX } from "../utils/ui";
 import { Level } from "../models/level-selection/level";
@@ -25,17 +25,7 @@ export class LoadScene extends Container implements IScene {
   ];
 
   load(): void {
-    const title = new Text(Game.title, { fontSize: 72 });
-    title.x = centerX(title);
-    title.y = 20;
-    this.addChild(title);
-
-    const subTitle = new Text("Loading", { fontSize: 48 });
-    subTitle.x = centerX(subTitle);
-    subTitle.y = 20 + title.y + title.height;
-    this.addChild(subTitle);
-
-    const loaderBarWidth = Game.width * 0.8;
+    const loaderBarWidth = Game.width * 0.2;
 
     this.loaderBarFill = new Graphics();
     this.loaderBarFill.beginFill(0x008800, 1);
@@ -50,9 +40,14 @@ export class LoadScene extends Container implements IScene {
     this.loaderBar = new Container();
     this.loaderBar.addChild(this.loaderBarFill);
     this.loaderBar.addChild(this.loaderBarBoder);
-    this.loaderBar.position.x = (Game.width - this.loaderBar.width) / 2;
-    this.loaderBar.position.y = (Game.height - this.loaderBar.height) / 2;
+    this.loaderBar.position.x = Game.width - this.loaderBar.width - 20;
+    this.loaderBar.position.y = Game.height - this.loaderBar.height - 20;
     this.addChild(this.loaderBar);
+
+    const subTitle = new Text("Loading", { ...textStyle, fill: 0xffffff });
+    subTitle.x = this.loaderBar.position.x;
+    subTitle.y = this.loaderBar.position.y - subTitle.height;
+    this.addChild(subTitle);
 
     if (!Storage.get<Array<Level>>(Keys.UnlockedLevels)) {
       Storage.set(Keys.UnlockedLevels, this.levels);

@@ -3,6 +3,7 @@ body {
   overflow: hidden;
   width: 100vmax;
   height: 100vmax;
+  font-family: "Fredoka One", system-ui, sans-serif;
 }
 
 canvas {

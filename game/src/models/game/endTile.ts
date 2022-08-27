@@ -3,6 +3,7 @@ import { Tile } from "./tile";
 import { TileDimensions } from "./tileDimensions";
 import { Text } from "pixi.js";
 import { Rotation } from "../level/tile";
+import { textStyle } from "../../assets";
 
 export class EndTile extends Tile {
   fish: number;
@@ -21,12 +22,12 @@ export class EndTile extends Tile {
 
     this.fish = fish;
 
-    this.text = new Text(`${this.fishReached}/${fish}`);
+    this.text = new Text(`${this.fishReached}/${fish}`, textStyle);
     this.text.x = size.tileWidth / 2;
     this.text.y = -size.tileHeight;
     this.text.style.fill = "#FFFFFF";
     this.text.style.dropShadow = true;
-    this.text.style.dropShadowDistance = 2;
+    this.text.style.dropShadowDistance = 3;
     this.addChild(this.text);
 
     this.riverEnds = [];

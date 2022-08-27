@@ -3,24 +3,23 @@ import { Container, Sprite, Text, Texture } from "pixi.js";
 import { centerX } from "../utils/ui";
 import { MenuScene } from "./menu";
 import { Button } from "../ui/button";
+import { textStyle } from "../assets";
 
 export class ControlsScene extends Container implements IScene {
   load(): void {
-    this.addChild(new Sprite(Texture.from("menuBackground")))
+    this.addChild(new Sprite(Texture.from("menuBackground")));
 
-    const title = new Text(Game.title, { fontSize: 72 });
+    const title = new Text(Game.title, {
+      ...textStyle,
+      fontSize: 72,
+    });
     title.x = centerX(title);
     title.y = 20;
     this.addChild(title);
 
-    const subTitle = new Text("Controls", { fontSize: 48 });
-    subTitle.x = centerX(subTitle);
-    subTitle.y = 20 + title.y + title.height;
-    this.addChild(subTitle);
-
-    const mouseTitle = new Text("Mouse Controls", { fontSize: 36 });
+    const mouseTitle = new Text("Mouse Controls", { ...textStyle, fontSize: 36 });
     mouseTitle.x = centerX(mouseTitle);
-    mouseTitle.y = 20 + subTitle.y + subTitle.height;
+    mouseTitle.y = 20 + title.y + title.height;
     this.addChild(mouseTitle);
 
     let label = this.addLabel(
@@ -41,7 +40,7 @@ export class ControlsScene extends Container implements IScene {
       20 + label.height + label.y
     );
 
-    const keyboardTitle = new Text("Keyboard Controls", { fontSize: 36 });
+    const keyboardTitle = new Text("Keyboard Controls", { ...textStyle, fontSize: 36 });
     keyboardTitle.x = centerX(keyboardTitle);
     keyboardTitle.y = 20 + label.y + label.height;
     this.addChild(keyboardTitle);
@@ -74,12 +73,12 @@ export class ControlsScene extends Container implements IScene {
     text: string,
     y: number
   ): { height: number; y: number } {
-    const labelText = new Text(label);
+    const labelText = new Text(label, textStyle);
     labelText.x = Game.width / 2 - 200;
     labelText.y = y;
     this.addChild(labelText);
 
-    const textText = new Text(text);
+    const textText = new Text(text, textStyle);
     textText.x = Game.width / 2 + 100;
     textText.y = y;
     this.addChild(textText);

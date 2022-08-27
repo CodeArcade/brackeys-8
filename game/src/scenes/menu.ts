@@ -6,24 +6,20 @@ import { GameScene } from "./game";
 import { LevelSelectionScene } from "./levelSelection";
 import { ControlsScene } from "./controls";
 import { InstructionsScene } from "./instructions";
+import { textStyle } from "../assets";
 
 export class MenuScene extends Container implements IScene {
   load(): void {
     this.addChild(new Sprite(Texture.from("menuBackground")))
 
-    const title = new Text(Game.title, { fontSize: 72 });
+    const title = new Text(Game.title, { ...textStyle, fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;
     this.addChild(title);
 
-    const subTitle = new Text("Menu", { fontSize: 48 });
-    subTitle.x = centerX(subTitle);
-    subTitle.y = 20 + title.y + title.height;
-    this.addChild(subTitle);
-
     const playButton = new Button(0, 0, "button", "buttonHover", "Play");
     playButton.x = centerX(playButton);
-    playButton.y = 40 + subTitle.y + subTitle.height;
+    playButton.y = 40 + title.y + title.height;
     playButton.onClick = () => Game.changeScene(new GameScene(), "continue");
     this.addChild(playButton);
 
@@ -32,7 +28,7 @@ export class MenuScene extends Container implements IScene {
       0,
       "button",
       "buttonHover",
-      "Level Selection"
+      "Select Level"
     );
     levelSelectionButton.x = centerX(levelSelectionButton);
     levelSelectionButton.y = 20 + playButton.y + playButton.height;

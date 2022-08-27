@@ -1,4 +1,5 @@
 import { Sound } from "@pixi/sound";
+import { textStyle } from "../assets";
 import { Sprite, Texture, Container, Text } from "pixi.js";
 
 export class Button extends Container {
@@ -46,7 +47,7 @@ export class Button extends Container {
     }
 
     if (text) {
-      this.text = new Text(text);
+      this.text = new Text(text, {...textStyle, fill: 0xffffff, dropShadowColor: 0, dropShadow: true, dropShadowDistance: 3});
       this.text.x = this.width / 2 - this.text.width / 2;
       this.text.y = this.height / 2 - this.text.height / 2;
 

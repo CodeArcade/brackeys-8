@@ -1,4 +1,5 @@
-// https://www.fesliyanstudios.com/policy
+import { TextStyle } from "pixi.js";
+
 export const assets: Array<{ name: string; url: string }> = [
   //#region LEVEL
   { name: "Tutorial 1", url: "./assets/levels/tutorial-1.json" },
@@ -6,11 +7,11 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "Tutorial 3", url: "./assets/levels/tutorial-3.json" },
   { name: "Tutorial 4", url: "./assets/levels/tutorial-4.json" },
   { name: "Tutorial 5", url: "./assets/levels/tutorial-5.json" },
-  { name: "World 1 - 1", url: "./assets/levels/World 1 - 1.json"},
-  { name: "World 1 - 2", url: "./assets/levels/World 1 - 2.json"},
-  { name: "World 1 - 3", url: "./assets/levels/World 1 - 3.json"},
-  { name: "World 1 - 4", url: "./assets/levels/World 1 - 4.json"},
-  { name: "World 2 - 4", url: "./assets/levels/World 2 - 4.json"},
+  { name: "World 1 - 1", url: "./assets/levels/World 1 - 1.json" },
+  { name: "World 1 - 2", url: "./assets/levels/World 1 - 2.json" },
+  { name: "World 1 - 3", url: "./assets/levels/World 1 - 3.json" },
+  { name: "World 1 - 4", url: "./assets/levels/World 1 - 4.json" },
+  { name: "World 2 - 4", url: "./assets/levels/World 2 - 4.json" },
   //#endregion
   //#region UI
   { name: "button", url: "./assets/sprites/ui/button.png" },
@@ -22,7 +23,7 @@ export const assets: Array<{ name: string; url: string }> = [
     name: "buttonSelectTileHover",
     url: "./assets/sprites/ui/buttonSelectTileHover.png",
   },
-  { name: "menuBackground", url: "./assets/sprites/ui/menu-background.png"},
+  { name: "menuBackground", url: "./assets/sprites/ui/menu-background.png" },
   //#endregion
   //#region SPRITES
   { name: "fisher0", url: "./assets/sprites/entities/fisher_0.png" },
@@ -143,3 +144,11 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "pineTree3", url: "./assets/sprites/decoration/pineTree3.png" },
   //#endregion
 ];
+
+export const textStyle = new TextStyle({
+  fontFamily: '"Fredoka One", sans-serif',
+  fill: 0xffffff,
+  dropShadow: true,
+  dropShadowColor: 0,
+  dropShadowDistance: 3,
+});
