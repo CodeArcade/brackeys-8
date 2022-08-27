@@ -14,6 +14,7 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "World 2 - 4", url: "./assets/levels/World 2 - 4.json" },
   { name: "World 2 - 5", url: "./assets/levels/World 2 - 5.json" },
   { name: "World 3 - 1", url: "./assets/levels/World 3 - 1.json" },
+  { name: "World 3 - 2", url: "./assets/levels/World 3 - 2.json" },
   //#endregion
   //#region UI
   { name: "button", url: "./assets/sprites/ui/button.png" },
