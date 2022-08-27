@@ -14,7 +14,7 @@ export class LoadScene extends Container implements IScene {
   static backgroundNoise = Sound.from({
     url: "./assets/sounds/game/background-noise.ogg",
     loop: true,
-  })
+  });
 
   private levels: Array<Level> = [
     { id: "Tutorial 1", unlocked: true },
@@ -27,6 +27,7 @@ export class LoadScene extends Container implements IScene {
     { id: "World 1 - 3", unlocked: true },
     { id: "World 1 - 4", unlocked: true },
     { id: "World 2 - 4", unlocked: true },
+    { id: "World 2 - 5", unlocked: true },
   ];
 
   load(): void {
