@@ -2,14 +2,19 @@ import { Game, IScene } from "../game";
 import { Container, Graphics, Loader, Text } from "pixi.js";
 import { assets, textStyle } from "../assets";
 import { MenuScene } from "./menu";
-import { centerX } from "../utils/ui";
 import { Level } from "../models/level-selection/level";
 import { Keys, Storage } from "../utils/storage";
+import { Sound } from "@pixi/sound";
 
 export class LoadScene extends Container implements IScene {
   private loaderBar!: Container;
   private loaderBarBoder!: Graphics;
   private loaderBarFill!: Graphics;
+
+  static backgroundNoise = Sound.from({
+    url: "./assets/sounds/game/background-noise.ogg",
+    loop: true,
+  })
 
   private levels: Array<Level> = [
     { id: "Tutorial 1", unlocked: true },
@@ -26,6 +31,7 @@ export class LoadScene extends Container implements IScene {
 
   load(): void {
     const loaderBarWidth = Game.width * 0.2;
+    LoadScene.backgroundNoise.play();
 
     this.loaderBarFill = new Graphics();
     this.loaderBarFill.beginFill(0x008800, 1);
