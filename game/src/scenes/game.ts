@@ -94,7 +94,11 @@ export class GameScene extends Container implements IScene {
       padding -
       padding;
     this.resetButton.onClick = () => {
-      Game.changeScene(new GameScene(), this.level.name);
+      if (
+        this.fish.every((x) => !x.dead && !x.addedFish && !x.tween?.isPlaying())
+      ) {
+        Game.changeScene(new GameScene(), this.level.name);
+      }
     };
 
     this.addChild(this.resetButton);
@@ -551,7 +555,7 @@ export class GameScene extends Container implements IScene {
       this.fish.forEach((f, i) => {
         pathIndex = i % paths.length;
         f.path = paths[pathIndex];
-        console.warn(pathIndex);
+
         setTimeout(() => f.startSwimming(), i * 750);
       });
     } else {
