@@ -26,6 +26,7 @@ export const assets: Array<{ name: string; url: string }> = [
     url: "./assets/sprites/ui/buttonSelectTileHover.png",
   },
   { name: "menuBackground", url: "./assets/sprites/ui/menu-background.png" },
+  { name: "panelBrown", url: "./assets/sprites/ui/panel_brown.png" },
   //#endregion
   //#region SPRITES
   { name: "fisher0", url: "./assets/sprites/entities/fisher_0.png" },
