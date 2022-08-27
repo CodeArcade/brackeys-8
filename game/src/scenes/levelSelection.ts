@@ -11,6 +11,8 @@ export class LevelSelectionScene extends Container implements IScene {
   private levels!: Array<Level>;
 
   load(): void {
+    this.addChild(new Sprite(Texture.from("menuBackground")))
+
     const title = new Text(Game.title, { fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;

@@ -11,19 +11,18 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "World 1 - 3", url: "./assets/levels/World 1 - 3.json"},
   { name: "World 1 - 4", url: "./assets/levels/World 1 - 4.json"},
   { name: "World 2 - 4", url: "./assets/levels/World 2 - 4.json"},
-
   //#endregion
   //#region UI
   { name: "button", url: "./assets/sprites/ui/button.png" },
   { name: "buttonHover", url: "./assets/sprites/ui/buttonHover.png" },
   { name: "buttonLock", url: "./assets/sprites/ui/buttonLock.png" },
-  { name: "buttonSound", url: "./assets/sounds/ui/button.mp3" },
   { name: "buttonSelectTile", url: "./assets/sprites/ui/buttonSelectTile.png" },
   { name: "arrowRight", url: "./assets/sprites/ui/arrowRight.png" },
   {
     name: "buttonSelectTileHover",
     url: "./assets/sprites/ui/buttonSelectTileHover.png",
   },
+  { name: "menuBackground", url: "./assets/sprites/ui/menu-background.png"},
   //#endregion
   //#region SPRITES
   { name: "fisher0", url: "./assets/sprites/entities/fisher_0.png" },

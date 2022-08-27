@@ -20,10 +20,10 @@ export class Fish extends Sprite {
   tween?: Tween<Vector2>;
   dead = false;
   static swimSound: Sound = Sound.from({
-    url: "assets/sounds/game/swim.mp3",
-    volume: 0.5,
+    url: "./assets/sounds/game/swim.ogg",
+    volume: 0.5
   });
-  static goalSound: Sound = Sound.from("assets/sounds/game/goalReached.mp3");
+  static goalSound: Sound = Sound.from("./assets/sounds/game/goalReached.ogg");
 
   constructor(tile: Tile) {
     super(Texture.from("fish" + getRandomNumber(0, 4)));

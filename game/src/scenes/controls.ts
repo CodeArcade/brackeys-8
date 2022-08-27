@@ -1,11 +1,13 @@
 import { Game, IScene } from "../game";
-import { Container, Text } from "pixi.js";
+import { Container, Sprite, Text, Texture } from "pixi.js";
 import { centerX } from "../utils/ui";
 import { MenuScene } from "./menu";
 import { Button } from "../ui/button";
 
 export class ControlsScene extends Container implements IScene {
   load(): void {
+    this.addChild(new Sprite(Texture.from("menuBackground")))
+
     const title = new Text(Game.title, { fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;

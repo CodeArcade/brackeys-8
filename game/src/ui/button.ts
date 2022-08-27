@@ -24,7 +24,7 @@ export class Button extends Container {
 
     this.buttonTexture = Texture.from(buttonTexture);
     this.hoverTexture = Texture.from(hoverTexture);
-    this.buttonSound = Sound.from("assets/sounds/ui/button.mp3");
+    this.buttonSound = Sound.from("./assets/sounds/ui/button.ogg");
     this.interactive = true;
     this.buttonMode = true;
     this.x = x;

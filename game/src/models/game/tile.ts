@@ -21,7 +21,10 @@ export abstract class Tile extends Container {
   blocking = false;
   canHover = true;
   canBeDeleted = false;
-  static rotateSound: Sound = Sound.from("assets/sounds/game/rotateTile.mp3");
+  static rotateSound: Sound = Sound.from({
+    url: "./assets/sounds/game/rotateTile.ogg",
+    volume: 0.5
+  });
 
   onClick?: (sender?: Tile) => void;
   onIsActive?: (sender?: Tile) => void;

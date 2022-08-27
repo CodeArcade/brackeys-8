@@ -38,7 +38,7 @@ export class GameScene extends Container implements IScene {
   private startButton!: Button;
   private resetButton!: Button;
   private menuButton!: Button;
-  private placeSound!: Sound;
+  static placeSound = Sound.from("./assets/sounds/game/placeTile.ogg");
   private removeSound!: Sound;
   private fishedSound!: Sound;
 
@@ -46,10 +46,10 @@ export class GameScene extends Container implements IScene {
     let level = args[0];
     this.placableButtons = [];
 
-    this.placeSound = Sound.from("assets/sounds/game/placeTile.mp3");
-    this.removeSound = Sound.from("assets/sounds/game/removeTile.mp3");
-    this.fishedSound = Sound.from("assets/sounds/game/fished.mp3");
-    this.fishedSound.volume = 0.5;
+    this.removeSound = Sound.from("./assets/sounds/game/removeTile.ogg");
+    this.fishedSound = Sound.from({
+      url: "./assets/sounds/game/fished.ogg",
+    });
 
     this.menuButton = new Button(0, 0, "button", "buttonHover", "Menu");
     this.menuButton.x = 20;
@@ -80,15 +80,22 @@ export class GameScene extends Container implements IScene {
     this.addChild(this.startButton);
 
     this.resetButton = new Button(
-      0, 0, "buttonSelectTile",
+      0,
+      0,
+      "buttonSelectTile",
       "buttonSelectTileHover",
-      "Reset\nLevel",
-    )
+      "Reset\nLevel"
+    );
     this.resetButton.y = Game.height - this.resetButton.height - padding;
-    this.resetButton.x = Game.width - this.startButton.width - this.resetButton.width - padding - padding;
+    this.resetButton.x =
+      Game.width -
+      this.startButton.width -
+      this.resetButton.width -
+      padding -
+      padding;
     this.resetButton.onClick = () => {
-      Game.changeScene(new GameScene(), this.level.name)
-    }
+      Game.changeScene(new GameScene(), this.level.name);
+    };
 
     this.addChild(this.resetButton);
 
@@ -238,7 +245,7 @@ export class GameScene extends Container implements IScene {
           if (placeable.count < 1) return;
 
           placeable.count -= 1;
-          this.placeSound.play();
+          GameScene.placeSound.play();
 
           this.grid[y][x]!.unbindEvents();
           this.removeChild(this.grid[y][x]!);
@@ -523,8 +530,8 @@ export class GameScene extends Container implements IScene {
     this.removeChild(this.menuButton);
     this.addChild(this.menuButton);
 
-    this.removeChild(this.resetButton)
-    this.addChild(this.resetButton)
+    this.removeChild(this.resetButton);
+    this.addChild(this.resetButton);
   }
 
   private startLevel(): void {
@@ -536,9 +543,9 @@ export class GameScene extends Container implements IScene {
       const paths = this.findShortestPath();
       let pathIndex = 0;
       this.fish.forEach((f, i) => {
-        pathIndex = i % paths.length
+        pathIndex = i % paths.length;
         f.path = paths[pathIndex];
-        console.warn(pathIndex)
+        console.warn(pathIndex);
         setTimeout(() => f.startSwimming(), i * 750);
       });
     } else {
@@ -667,21 +674,31 @@ export class GameScene extends Container implements IScene {
 
     for (let i = 0; i < 1000; i++) {
       const p = this.findPath();
-      if (paths.some(path => path.every((tile, index) => {
-        if (index >= path.length) return false;
-        return p[index].gridX === tile.gridX && p[index].gridY === tile.gridY
-      }))) {
+      if (
+        paths.some((path) =>
+          path.every((tile, index) => {
+            if (index >= path.length) return false;
+            return (
+              p[index].gridX === tile.gridX && p[index].gridY === tile.gridY
+            );
+          })
+        )
+      ) {
         continue;
       }
-      paths.push(p)
+      paths.push(p);
     }
 
     const lengths = paths.map((x) => x.length);
     const min = Math.min.apply(Math, lengths);
 
-    let shortestPaths = paths.filter(path => path.length === min)
+    let shortestPaths = paths.filter((path) => path.length === min);
 
-    console.warn(shortestPaths.map(x => x.map(y => ({x: y.gridX - 5, y: y.gridY - 5}))))
+    console.warn(
+      shortestPaths.map((x) =>
+        x.map((y) => ({ x: y.gridX - 5, y: y.gridY - 5 }))
+      )
+    );
 
     return shortestPaths;
   }
