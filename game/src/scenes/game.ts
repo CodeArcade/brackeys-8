@@ -36,6 +36,7 @@ export class GameScene extends Container implements IScene {
   private fisher: Array<FisherTile> = [];
   private fences: Array<Sprite> = [];
   private startButton!: Button;
+  private resetButton!: Button;
   private menuButton!: Button;
   private placeSound!: Sound;
   private removeSound!: Sound;
@@ -77,6 +78,19 @@ export class GameScene extends Container implements IScene {
       this.startLevel();
     };
     this.addChild(this.startButton);
+
+    this.resetButton = new Button(
+      0, 0, "buttonSelectTile",
+      "buttonSelectTileHover",
+      "Reset\nLevel",
+    )
+    this.resetButton.y = Game.height - this.resetButton.height - padding;
+    this.resetButton.x = Game.width - this.startButton.width - this.resetButton.width - padding - padding;
+    this.resetButton.onClick = () => {
+      Game.changeScene(new GameScene(), this.level.name)
+    }
+
+    this.addChild(this.resetButton);
 
     if (level === "continue") {
       const levels = Storage.get<Array<LevelSelection>>(Keys.UnlockedLevels);
@@ -508,6 +522,9 @@ export class GameScene extends Container implements IScene {
 
     this.removeChild(this.menuButton);
     this.addChild(this.menuButton);
+
+    this.removeChild(this.resetButton)
+    this.addChild(this.resetButton)
   }
 
   private startLevel(): void {
