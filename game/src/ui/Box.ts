@@ -8,6 +8,7 @@ export default class Box extends Container {
 
   /**
    * THE BOX HAS TO BE SQUARE. I DONT WANT TO FIX IT!
+   * ... i fixed it
    */
   constructor(dimensions: Vector2) {
     super();
@@ -60,13 +61,11 @@ export default class Box extends Container {
         if (y > 0) {
           textureY = 1
         }
-        if (y === this.tileWidth - 1) {
+        if (y === this.tileHeight - 1) {
           textureY = 2
         }
 
-        const texture = this.tilemap[textureY + (textureX *3)]
-
-        const sprite = new Sprite(texture);
+        const sprite = new Sprite(this.tilemap[textureY + (textureX * 3)]);
         sprite.x = x * 33;
         sprite.y = y * 33;
         this.addChild(sprite)

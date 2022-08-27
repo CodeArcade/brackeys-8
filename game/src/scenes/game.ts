@@ -1,12 +1,12 @@
 import { Game, IScene } from "../game";
-import { Container, Sprite, Texture } from "pixi.js";
+import { Container, Sprite, Text, Texture } from "pixi.js";
 import { Button } from "../ui/button";
 import { MenuScene } from "./menu";
 import { Storage, Keys } from "../utils/storage";
 import { Level as LevelSelection } from "../models/level-selection/level";
 import { Level } from "../models/level/level";
 import { Assets } from "@pixi/assets";
-import { assets } from "../assets";
+import { assets, textStyle } from "../assets";
 import { Tile } from "../models/game/tile";
 import { Tile as BaseTile } from "../models/level/tile";
 import { Rotation, Type } from "../models/level/tile";
@@ -25,6 +25,8 @@ import { Fish } from "../models/game/fish";
 import TileHitbox from "../models/game/tileHitbox";
 import { getRandomNumber } from "../utils/random";
 import { Sound } from "@pixi/sound";
+import Box from "../ui/Box";
+import { centerX, centerY } from "../utils/ui"
 
 export class GameScene extends Container implements IScene {
   private level!: Level;
@@ -41,6 +43,7 @@ export class GameScene extends Container implements IScene {
   static placeSound = Sound.from("./assets/sounds/game/placeTile.ogg");
   private removeSound!: Sound;
   private fishedSound!: Sound;
+  private uiBox?: Box;
 
   load(args: Array<any>): void {
     let level = args[0];
@@ -74,6 +77,7 @@ export class GameScene extends Container implements IScene {
     this.startButton.contentSprite!.y =
       this.startButton.height / 2 - this.startButton.contentSprite!.height / 2;
     this.startButton.onClick = () => {
+      if (this.uiBox) return;
       if (!this.canPlaceTiles) return;
       this.startLevel();
     };
@@ -94,6 +98,7 @@ export class GameScene extends Container implements IScene {
       padding -
       padding;
     this.resetButton.onClick = () => {
+      if (this.uiBox) return;
       if (
         this.fish.every((x) => !x.dead && !x.addedFish && !x.tween?.isPlaying())
       ) {
@@ -476,6 +481,7 @@ export class GameScene extends Container implements IScene {
       button.tag = placeable;
 
       button.onClick = () => {
+        if (this.uiBox) return;
         if (placeable.count < 1 || !this.canPlaceTiles) return;
 
         if (
@@ -542,6 +548,11 @@ export class GameScene extends Container implements IScene {
 
     this.removeChild(this.resetButton);
     this.addChild(this.resetButton);
+
+    if (this.uiBox) {
+      this.removeChild(this.uiBox);
+      this.addChild(this.uiBox);
+    }
   }
 
   private startLevel(): void {
@@ -843,13 +854,42 @@ export class GameScene extends Container implements IScene {
         }
       }
 
+      this.uiBox = new Box({x: 16, y: 7})
+      this.uiBox.x = centerX({width: this.uiBox.width})
+      this.uiBox.y = centerY({height: this.uiBox.height})
+
+      this.addChild(this.uiBox)
+
+      const successText = new Text("Success!", {
+        ...textStyle,
+        fontSize: 48
+      })
+
+      successText.x = this.uiBox.width / 2 - successText.width / 2
+      successText.y = 20
+
+      this.uiBox.addChild(successText)
+
       if (levelIndex + 1 < levels.length) {
         const level = levels[levelIndex + 1];
         level.unlocked = true;
         Storage.set(Keys.UnlockedLevels, levels);
-        Game.changeScene(new GameScene(), level.id);
+
+        const nextLevelButton = new Button(0, 0, "button", "buttonHover", "Next Level")
+        nextLevelButton.x = this.uiBox.width / 2 - nextLevelButton.width / 2
+        nextLevelButton.y = this.uiBox.height / 2 - nextLevelButton.height / 2 + 40
+        nextLevelButton.onClick = () => Game.changeScene(new GameScene(), level.id)
+
+        this.uiBox.addChild(nextLevelButton)
       } else {
-        Game.changeScene(new MenuScene());
+        const thanksText = new Text("Thank you\nfor playing!", {
+          ...textStyle,
+          fontSize: 36
+        })
+
+        thanksText.x = this.uiBox.width / 2 - thanksText.width / 2
+        thanksText.y = thanksText.height + 20
+        this.uiBox.addChild(thanksText)
       }
     }
 
@@ -858,19 +898,51 @@ export class GameScene extends Container implements IScene {
       endTile.fishReached < endTile.fish &&
       this.fish.every((x) => (x.dead || x.addedFish) && !x.tween?.isPlaying())
     ) {
-      this.fish.forEach((f) => {
-        f.reset();
+      this.uiBox = new Box({x: 16, y: 7})
+      this.uiBox.x = centerX({width: this.uiBox.width})
+      this.uiBox.y = centerY({ height: this.uiBox.height})
+      this.addChild(this.uiBox)
+
+      const statusText = new Text("Level Failed", {
+        ...textStyle, 
+        fontSize: 48
+      })
+
+      statusText.x = this.uiBox.width / 2 - statusText.width / 2
+      statusText.y = 20
+      this.uiBox.addChild(statusText)
+      
+      const tryAgainButton = new Button(0, 0, "button", "buttonHover", "Try Again?")
+      tryAgainButton.onClick = () => this.resetLevelAfterLoss(endTile)
+      tryAgainButton.x = this.uiBox.width / 2 - tryAgainButton.width / 2
+      tryAgainButton.y = statusText.height + 20
+      this.uiBox.addChild(tryAgainButton)
+
+      const quitButton = new Button(0, 0, "button", "buttonHover", "Quit")
+      quitButton.onClick = () => Game.changeScene(new MenuScene())
+      quitButton.x = this.uiBox.width / 2 - tryAgainButton.width / 2
+      quitButton.y = statusText.height + tryAgainButton.height + (20 * 2)
+      this.uiBox.addChild(quitButton)
+    }
+  }
+
+  private resetLevelAfterLoss(endTile: EndTile) {
+    this.fish.forEach((f) => {
+      f.reset();
+    });
+
+    this.fisher.forEach((f) => {
+      f.fisher.forEach((f2) => {
+        f2.caught = 0;
       });
+    });
 
-      this.fisher.forEach((f) => {
-        f.fisher.forEach((f2) => {
-          f2.caught = 0;
-        });
-      });
+    endTile.reset();
 
-      endTile.reset();
-
-      this.togglePlacement(true);
+    this.togglePlacement(true);
+    if (this.uiBox) {
+      this.removeChild(this.uiBox)
+      this.uiBox = undefined;
     }
   }
 
