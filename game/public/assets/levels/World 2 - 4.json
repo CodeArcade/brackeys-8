@@ -1,0 +1,195 @@
+{
+  "name": "World 2 - 4",
+  "width": 7,
+  "height": 5,
+  "startFishes": 3,
+  "goalFishes": 3,
+  "tiles": [
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 1
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 1
+          },
+          {
+            "direction": 3,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Start"
+      },
+      {
+        "rotation": 0,
+        "type": "Bendy"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 3,
+        "type": "Bendy"
+      },
+      {
+        "rotation": 0,
+        "type": "End"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ]
+  ],
+  "placeables": [
+    {
+      "type": "Straight",
+      "count": 9
+    },
+    {
+      "type": "Bendy",
+      "count": 12
+    },
+    {
+      "type": "Cross",
+      "count": 0
+    },
+    {
+      "type": "T",
+      "count": 0
+    }
+  ]
+}

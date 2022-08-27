@@ -20,6 +20,8 @@ export class LoadScene extends Container implements IScene {
     { id: "World 1 - 1", unlocked: true },
     { id: "World 1 - 2", unlocked: true },
     { id: "World 1 - 3", unlocked: true },
+    { id: "World 1 - 4", unlocked: true },
+    { id: "World 2 - 4", unlocked: true }
   ];
 
   load(): void {

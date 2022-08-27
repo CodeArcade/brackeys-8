@@ -9,6 +9,8 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "World 1 - 1", url: "./assets/levels/World 1 - 1.json"},
   { name: "World 1 - 2", url: "./assets/levels/World 1 - 2.json"},
   { name: "World 1 - 3", url: "./assets/levels/World 1 - 3.json"},
+  { name: "World 1 - 4", url: "./assets/levels/World 1 - 4.json"},
+  { name: "World 2 - 4", url: "./assets/levels/World 2 - 4.json"},
 
   //#endregion
   //#region UI
