@@ -234,34 +234,7 @@ export class GameScene extends Container implements IScene {
       tile = new EmptyTile(baseTile, Tile.Constants.TileDimensions, x, y);
       tile.bindEvents();
 
-      tile.onClick = () => {
-        if (this.selectedPlacable && this.canPlaceTiles) {
-          const placeable = first(
-            this.level.placeables.filter(
-              (x) => x.type === this.selectedPlacable?.type
-            )
-          )!;
-
-          if (placeable.count < 1) return;
-
-          placeable.count -= 1;
-          GameScene.placeSound.play();
-
-          this.grid[y][x]!.unbindEvents();
-          this.removeChild(this.grid[y][x]!);
-          this.grid[y][x] = this.getTile(placeable.type, x, y, {
-            type: placeable.type,
-            rotation: this.grid[y][x]!.baseTile.rotation,
-          });
-          this.grid[y][x]!.canBeRemoved = true;
-          this.grid[y][x]!.interactive = true;
-          this.grid[y][x]!.buttonMode = true;
-          this.addChild(this.grid[y][x]!);
-          this.grid[y][x]!.bindEvents();
-
-          this.updateLakes();
-        }
-      };
+      tile.onClick = () => this.placeTile(x, y);
     }
 
     if (!tile.onRotation) {
@@ -300,6 +273,39 @@ export class GameScene extends Container implements IScene {
     }
 
     return tile;
+  }
+
+  private placeTile(x: number, y: number): void {
+    if (this.selectedPlacable && this.canPlaceTiles) {
+      const placeable = first(
+        this.level.placeables.filter(
+          (x) => x.type === this.selectedPlacable?.type
+        )
+      )!;
+
+      if (placeable.count < 1) return;
+
+      placeable.count -= 1;
+      GameScene.placeSound.play();
+
+      this.grid[y][x]!.unbindEvents();
+      this.removeChild(this.grid[y][x]!);
+      this.grid[y][x] = this.getTile(placeable.type, x, y, {
+        type: placeable.type,
+        rotation: this.grid[y][x]!.baseTile.rotation,
+      });
+      this.grid[y][x]!.canBeRemoved = true;
+      this.grid[y][x]!.interactive = true;
+      this.grid[y][x]!.buttonMode = true;
+      this.grid[y][x]!.onClick = () => {
+        placeable.count += 1;
+        this.placeTile(x, y);
+      };
+      this.addChild(this.grid[y][x]!);
+      this.grid[y][x]!.bindEvents();
+
+      this.updateLakes();
+    }
   }
 
   private updateLakes(): void {
