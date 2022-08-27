@@ -3,7 +3,7 @@ import { toNumber } from "lodash";
 export function getRandomNumber(
   min: number,
   max: number,
-  decimals: number = 0
 ): number {
-  return toNumber((Math.random() * (min - max) + max).toFixed(decimals));
+  min = 0
+  return Math.floor(Math.random() * max) + min
 }

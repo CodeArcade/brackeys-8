@@ -533,9 +533,12 @@ export class GameScene extends Container implements IScene {
 
     this.resetValidity();
     if (this.validateTiles()) {
-      const path = this.findShortestPath();
+      const paths = this.findShortestPath();
+      let pathIndex = 0;
       this.fish.forEach((f, i) => {
-        f.path = path;
+        pathIndex = i % paths.length
+        f.path = paths[pathIndex];
+        console.warn(pathIndex)
         setTimeout(() => f.startSwimming(), i * 750);
       });
     } else {
@@ -659,16 +662,28 @@ export class GameScene extends Container implements IScene {
     return result;
   }
 
-  private findShortestPath(): Array<Tile> {
-    const paths: Array<Array<Tile>> = [];
+  private findShortestPath(): Tile[][] {
+    let paths: Array<Array<Tile>> = [];
 
     for (let i = 0; i < 1000; i++) {
-      paths.push(this.findPath());
+      const p = this.findPath();
+      if (paths.some(path => path.every((tile, index) => {
+        if (index >= path.length) return false;
+        return p[index].gridX === tile.gridX && p[index].gridY === tile.gridY
+      }))) {
+        continue;
+      }
+      paths.push(p)
     }
 
     const lengths = paths.map((x) => x.length);
     const min = Math.min.apply(Math, lengths);
-    return paths[lengths.indexOf(min)];
+
+    let shortestPaths = paths.filter(path => path.length === min)
+
+    console.warn(shortestPaths.map(x => x.map(y => ({x: y.gridX - 5, y: y.gridY - 5}))))
+
+    return shortestPaths;
   }
 
   private findPath(): Array<Tile> {
@@ -694,7 +709,7 @@ export class GameScene extends Container implements IScene {
           path.push(currentTile);
         }
 
-        const index = getRandomNumber(0, connectableNeighbours.length - 1);
+        const index = getRandomNumber(0, connectableNeighbours.length);
         const targetTile = connectableNeighbours[index];
 
         visited.push(targetTile);

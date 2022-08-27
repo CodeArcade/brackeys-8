@@ -10,6 +10,7 @@ canvas {
   top: 0;
   left: 0;
   aspect-ratio: 16 / 9 !important;
+  cursor: url("./assets/sprites/ui/cursor.png"), auto !important;
 }
 
 #mousePosition {

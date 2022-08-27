@@ -6,6 +6,9 @@ export const assets: Array<{ name: string; url: string }> = [
   { name: "Tutorial 3", url: "./assets/levels/tutorial-3.json" },
   { name: "Tutorial 4", url: "./assets/levels/tutorial-4.json" },
   { name: "Tutorial 5", url: "./assets/levels/tutorial-5.json" },
+  { name: "World 1 - 1", url: "./assets/levels/World 1 - 1.json"},
+  { name: "World 1 - 2", url: "./assets/levels/World 1 - 2.json"},
+
   //#endregion
   //#region UI
   { name: "button", url: "./assets/sprites/ui/button.png" },
