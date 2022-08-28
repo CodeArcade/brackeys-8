@@ -7,9 +7,9 @@ import { textStyle } from "../assets";
 
 export class InstructionsScene extends Container implements IScene {
   load(): void {
-    this.addChild(new Sprite(Texture.from("menuBackground")))
+    this.addChild(new Sprite(Texture.from("menuBackground")));
 
-    const title = new Text(Game.title, { ...textStyle ,fontSize: 72 });
+    const title = new Text(Game.title, { ...textStyle, fontSize: 72 });
     title.x = centerX(title);
     title.y = 20;
     this.addChild(title);
@@ -21,7 +21,7 @@ export class InstructionsScene extends Container implements IScene {
     this.addChild(menuButton);
 
     const instructionsText = new Text(
-      "Fish plan to move from one lake to another.\r\nBut they don't want to leave alone.\r\nSo they need to take their buddies with 'em.\r\n\r\nUse the given river pieces to guide the fish to their new home.",
+      "All fishes want to move from one pond to another.\r\nThey won't leave alone, so they travel in a group.\r\nBring as many fishes as possible (and required) to the\r\nother pond by placing river tiles.",
       { ...textStyle, align: "center" }
     );
     instructionsText.x = centerX(instructionsText);

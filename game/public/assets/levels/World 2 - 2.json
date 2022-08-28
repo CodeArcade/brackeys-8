@@ -1,205 +1,205 @@
 {
-  "name": "World 3 - 1",
+  "name": "World 2 - 2",
   "width": 7,
   "height": 5,
-  "startFishes": 2,
+  "startFishes": 3,
   "goalFishes": 2,
   "tiles": [
     [
       {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "rotation": 0,
-        "type": "Start"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Fisher",
-        "rotation": 0,
-        "fishers": [
-          {
-            "direction": 0,
-            "count": 1
-          },
-          {
-            "direction": 1,
-            "count": 0
-          },
-          {
-            "direction": 2,
-            "count": 1
-          },
-          {
-            "direction": 3,
-            "count": 0
-          }
-        ]
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      }
-    ],
-    [
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Cross"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "type": "Fisher",
-        "rotation": 0,
-        "fishers": [
-          {
-            "direction": 0,
-            "count": 0
-          },
-          {
-            "direction": 1,
-            "count": 0
-          },
-          {
-            "direction": 2,
-            "count": 1
-          },
-          {
-            "direction": 3,
-            "count": 1
-          }
-        ]
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Cross"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
+        "rotation": 1,
+        "type": "Bendy"
       },
       {
         "rotation": 0,
         "type": "End"
       },
       {
+        "rotation": 2,
+        "type": "Bendy"
+      },
+      {
         "rotation": 0,
         "type": "Blocked"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 1
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 1
+          },
+          {
+            "direction": 3,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 0
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 0
+          },
+          {
+            "direction": 3,
+            "count": 1
+          }
+        ]
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Start"
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       }
     ]
   ],
   "placeables": [
     {
       "type": "Straight",
-      "count": 5
+      "count": 14
     },
     {
       "type": "Bendy",
-      "count": 13
+      "count": 10
     },
     {
       "type": "Cross",
@@ -207,7 +207,7 @@
     },
     {
       "type": "T",
-      "count": 0
+      "count": 1
     }
   ]
 }

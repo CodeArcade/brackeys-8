@@ -2,8 +2,8 @@
   "name": "World 1 - 1",
   "width": 7,
   "height": 5,
-  "startFishes": 4,
-  "goalFishes": 4,
+  "startFishes": 2,
+  "goalFishes": 2,
   "tiles": [
     [
       {
@@ -49,6 +49,28 @@
         "type": "Empty"
       },
       {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
         "type": "Fisher",
         "rotation": 0,
         "fishers": [
@@ -62,11 +84,11 @@
           },
           {
             "direction": 2,
-            "count": 0
+            "count": 1
           },
           {
             "direction": 3,
-            "count": 1
+            "count": 0
           }
         ]
       },
@@ -81,6 +103,14 @@
       {
         "type": "Empty",
         "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
       }
     ],
     [
@@ -90,11 +120,7 @@
       },
       {
         "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 3,
-        "type": "T"
+        "type": "Blocked"
       },
       {
         "rotation": 0,
@@ -102,39 +128,13 @@
       },
       {
         "rotation": 0,
-        "type": "Straight"
+        "type": "Empty"
       },
       {
         "rotation": 0,
         "type": "End"
       },
       {
-        "type": "Empty",
-        "rotation": 0
-      }
-    ],
-    [
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
         "rotation": 0,
         "type": "Empty"
       },
@@ -165,8 +165,8 @@
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "type": "Empty",
@@ -177,11 +177,11 @@
   "placeables": [
     {
       "type": "Straight",
-      "count": 5
+      "count": 1
     },
     {
       "type": "Bendy",
-      "count": 8
+      "count": 3
     },
     {
       "type": "Cross",
@@ -189,7 +189,7 @@
     },
     {
       "type": "T",
-      "count": 2
+      "count": 0
     }
   ]
 }

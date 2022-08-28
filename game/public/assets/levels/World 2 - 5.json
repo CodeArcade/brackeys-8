@@ -7,24 +7,64 @@
   "tiles": [
     [
       {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
         "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty"
       },
       {
         "rotation": 0,
-        "type": "Start"
+        "type": "Empty"
       },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      }
+    ],
+    [
       {
         "type": "Empty",
         "rotation": 0
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "rotation": 0,
+        "type": "Empty"
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 0
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 2
+          },
+          {
+            "direction": 3,
+            "count": 0
+          }
+        ]
       },
       {
         "type": "Empty",
@@ -33,9 +73,51 @@
       {
         "rotation": 0,
         "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 3,
+        "type": "T"
       }
     ],
     [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "rotation": 0,
+        "type": "End"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      }
+    ],
+    [
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
       {
         "type": "Empty",
         "rotation": 0
@@ -54,7 +136,7 @@
         "fishers": [
           {
             "direction": 0,
-            "count": 1
+            "count": 0
           },
           {
             "direction": 1,
@@ -62,11 +144,11 @@
           },
           {
             "direction": 2,
-            "count": 1
+            "count": 0
           },
           {
             "direction": 3,
-            "count": 0
+            "count": 2
           }
         ]
       },
@@ -77,56 +159,10 @@
       {
         "rotation": 0,
         "type": "Empty"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
       }
     ],
     [
       {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Cross"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Cross"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
         "type": "Empty",
         "rotation": 0
       },
@@ -140,17 +176,11 @@
       },
       {
         "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "rotation": 0,
-        "type": "Blocked"
+        "type": "Start"
       },
       {
-        "type": "Empty",
-        "rotation": 0
+        "rotation": 0,
+        "type": "Straight"
       },
       {
         "rotation": 0,
@@ -159,29 +189,17 @@
       {
         "rotation": 0,
         "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "rotation": 0,
-        "type": "End"
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
       }
     ]
   ],
   "placeables": [
     {
       "type": "Straight",
-      "count": 6
+      "count": 5
     },
     {
       "type": "Bendy",
-      "count": 15
+      "count": 10
     },
     {
       "type": "Cross",
@@ -189,7 +207,7 @@
     },
     {
       "type": "T",
-      "count": 0
+      "count": 2
     }
   ]
 }

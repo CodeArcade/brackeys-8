@@ -1,5 +1,5 @@
 {
-  "name": "World 3 - 3",
+  "name": "World 2 - 3",
   "width": 7,
   "height": 5,
   "startFishes": 2,
@@ -7,28 +7,28 @@
   "tiles": [
     [
       {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
+        "rotation": 0,
+        "type": "Start"
+      },
+      {
         "type": "Empty",
         "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Empty",
+        "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Empty",
+        "rotation": 0
       },
       {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Empty",
+        "rotation": 0
       },
       {
         "rotation": 0,
@@ -39,6 +39,58 @@
       {
         "type": "Empty",
         "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Fisher",
+        "rotation": 0,
+        "fishers": [
+          {
+            "direction": 0,
+            "count": 1
+          },
+          {
+            "direction": 1,
+            "count": 0
+          },
+          {
+            "direction": 2,
+            "count": 1
+          },
+          {
+            "direction": 3,
+            "count": 0
+          }
+        ]
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Cross"
       },
       {
         "rotation": 0,
@@ -58,33 +110,63 @@
           },
           {
             "direction": 2,
-            "count": 2
+            "count": 1
           },
           {
             "direction": 3,
-            "count": 0
+            "count": 1
           }
         ]
       },
       {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
         "rotation": 0,
         "type": "Empty"
       },
       {
         "rotation": 0,
-        "type": "Empty"
+        "type": "Cross"
       },
       {
-        "rotation": 3,
-        "type": "T"
+        "rotation": 0,
+        "type": "Empty"
       }
     ],
     [
       {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "type": "Empty",
+        "rotation": 0
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      },
+      {
+        "rotation": 0,
+        "type": "Empty"
+      }
+    ],
+    [
+      {
+        "rotation": 0,
+        "type": "Blocked"
+      },
+      {
         "type": "Empty",
         "rotation": 0
       },
@@ -98,11 +180,7 @@
       },
       {
         "rotation": 0,
-        "type": "Blocked"
-      },
-      {
-        "rotation": 0,
-        "type": "Blocked"
+        "type": "Empty"
       },
       {
         "rotation": 0,
@@ -110,85 +188,7 @@
       },
       {
         "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Fisher",
-        "rotation": 0,
-        "fishers": [
-          {
-            "direction": 0,
-            "count": 0
-          },
-          {
-            "direction": 1,
-            "count": 0
-          },
-          {
-            "direction": 2,
-            "count": 0
-          },
-          {
-            "direction": 3,
-            "count": 2
-          }
-        ]
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      }
-    ],
-    [
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "type": "Empty",
-        "rotation": 0
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Start"
-      },
-      {
-        "rotation": 0,
-        "type": "Straight"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
-      },
-      {
-        "rotation": 0,
-        "type": "Empty"
+        "type": "Blocked"
       }
     ]
   ],
@@ -199,7 +199,7 @@
     },
     {
       "type": "Bendy",
-      "count": 10
+      "count": 13
     },
     {
       "type": "Cross",
@@ -207,7 +207,7 @@
     },
     {
       "type": "T",
-      "count": 2
+      "count": 0
     }
   ]
 }

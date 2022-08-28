@@ -26,12 +26,12 @@ export class LoadScene extends Container implements IScene {
     { id: "World 1 - 2" },
     { id: "World 1 - 3" },
     { id: "World 1 - 4" },
+    { id: "World 1 - 5" },
+    { id: "World 2 - 1" },
+    { id: "World 2 - 2" },
+    { id: "World 2 - 3" },
     { id: "World 2 - 4" },
     { id: "World 2 - 5" },
-    { id: "World 3 - 1" },
-    { id: "World 3 - 2" },
-    { id: "World 3 - 3" },
-    { id: "World 3 - 4" },
   ];
 
   load(): void {
