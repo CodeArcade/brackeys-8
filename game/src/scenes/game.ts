@@ -254,6 +254,7 @@ export class GameScene extends Container implements IScene {
         if (tile.baseTile.type === Type.Empty) return;
         const x = tile.gridX;
         const y = tile.gridY;
+        if (this.grid[y][x] !== tile) return;
 
         this.canPlaceTiles = false;
 
@@ -302,6 +303,8 @@ export class GameScene extends Container implements IScene {
       this.grid[y][x]!.interactive = true;
       this.grid[y][x]!.buttonMode = true;
       this.grid[y][x]!.onClick = () => {
+        if (!this.selectedPlacable) return;
+
         placeable.count += 1;
         this.placeTile(x, y);
       };
