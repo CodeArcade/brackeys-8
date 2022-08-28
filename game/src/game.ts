@@ -14,7 +14,7 @@ export class Game {
   private static currentScene: IScene;
 
   public static get title(): string {
-    return "GAME TITLE";
+    return "WANDERFISH";
   }
 
   public static get scaleFactor() {
