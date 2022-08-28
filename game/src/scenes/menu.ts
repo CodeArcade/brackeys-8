@@ -7,7 +7,6 @@ import { LevelSelectionScene } from "./levelSelection";
 import { ControlsScene } from "./controls";
 import { InstructionsScene } from "./instructions";
 import { textStyle } from "../assets";
-import Box from "../ui/Box";
 
 export class MenuScene extends Container implements IScene {
   load(): void {

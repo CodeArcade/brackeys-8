@@ -1,5 +1,3 @@
-import { toNumber } from "lodash";
-
 export function getRandomNumber(
   min: number,
   max: number,
